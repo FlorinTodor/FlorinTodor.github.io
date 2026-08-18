@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://florintodor.dev/sitemap-index.xml
