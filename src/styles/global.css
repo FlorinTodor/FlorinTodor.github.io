@@ -392,3 +392,29 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .prosa th { background: var(--panel-alto); color: var(--texto); font-weight: 650; }
 
 .prosa img { border-radius: var(--radio-s); border: 1px solid var(--borde); margin: 1.4rem 0; }
+
+
+/* ============================================================
+   Accesibilidad y ajustes finos
+   ============================================================ */
+
+/* El contorno por defecto casi no se ve sobre fondo oscuro. */
+:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Salto directo al contenido para quien navega con teclado. */
+.saltar {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--verde); color: #052616; font-weight: 700;
+  padding: .7rem 1.2rem; border-radius: 0 0 var(--radio-s) 0;
+}
+.saltar:focus { left: 0; color: #052616; }
+
+@media (max-width: 620px) {
+  /* Con la fuente algo menor caben más líneas de código sin desplazar. */
+  .prosa pre { font-size: .78rem; padding: .8rem .9rem; }
+  .prosa { font-size: .98rem; }
+}

@@ -79,6 +79,8 @@ const datosEstructurados = {
   </head>
 
   <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+
     <header class="cabecera">
       <div class="cabecera-caja">
         <a class="marca" href={base}>Florín <span>Todor</span></a>
@@ -144,7 +146,7 @@ const datosEstructurados = {
         </aside>
       )}
 
-      <main class="contenido">
+      <main class="contenido" id="contenido">
         <slot />
       </main>
     </div>
