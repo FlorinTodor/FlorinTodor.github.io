@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 
 // Sólo mostramos los proyectos que no están marcados como "no publicar".
 const publicables = proyectos.filter(
-  (p) => !(p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR'))
+  (p) => !p.oculto && !(p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR'))
 );
 const destacados = publicables.filter((p) => p.destacado);
 const resto = publicables.filter((p) => !p.destacado);
