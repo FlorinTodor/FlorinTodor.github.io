@@ -1,0 +1,97 @@
+{
+  "_nota": "Guion de demostración. Las cifras, el esquema SQL, las categorías y los nombres de herramienta son los reales del proyecto (la base ficticia se genera con semilla fija, random.Random(42), así que estos importes son exactamente los que produce). La redacción de las respuestas es un guion de ejemplo: sustitúyelo por transcripciones reales con scripts/grabar-sesion.py.",
+  "cuenta": { "titular": "Florín E. Todor", "iban": "ES21 1465 0100 72 2030876293" },
+  "turnos": [
+    {
+      "usuario": "¿Cuánto me he gastado este año en el supermercado?",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT SUM(-importe) AS total FROM movimientos WHERE categoria = 'Supermercado' AND importe < 0 AND fecha >= date('now','-12 months')"
+          },
+          "resultado": "total = 3720.30"
+        }
+      ],
+      "respuesta": "En los últimos doce meses has gastado **3.720,30 €** en supermercados, repartidos en 141 compras. Son unos 310 € al mes de media, un 20,6 % de todo tu gasto.",
+      "grafico": null
+    },
+    {
+      "usuario": "Enséñamelo por meses",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT strftime('%Y-%m', fecha) AS mes, SUM(-importe) AS total FROM movimientos WHERE categoria = 'Supermercado' AND importe < 0 GROUP BY mes ORDER BY mes"
+          },
+          "resultado": "13 filas"
+        },
+        {
+          "nombre": "generar_grafico",
+          "args": { "titulo": "Gasto mensual en supermercado", "tipo": "bar" },
+          "resultado": "spec Chart.js enviada al frontend"
+        }
+      ],
+      "respuesta": "Aquí lo tienes. Se nota bastante variación: noviembre (402 €), marzo (400 €) y sobre todo junio (427 €) y julio (420 €) se te van bastante por encima de la media, mientras que agosto de 2025 (173 €) y febrero (177 €) fueron los más contenidos.",
+      "grafico": {
+        "type": "bar",
+        "data": {
+          "labels": ["ago 25", "sep 25", "oct 25", "nov 25", "dic 25", "ene 26", "feb 26", "mar 26", "abr 26", "may 26", "jun 26", "jul 26", "ago 26"],
+          "datasets": [
+            {
+              "label": "Supermercado (€)",
+              "data": [173.08, 312.53, 188.59, 402.75, 220.25, 199.4, 177.68, 400.82, 264.7, 264.84, 427.6, 420.23, 267.83]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "usuario": "¿Y en qué se me va más el dinero en general?",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT categoria, SUM(-importe) AS total FROM movimientos WHERE importe < 0 GROUP BY categoria ORDER BY total DESC"
+          },
+          "resultado": "11 filas"
+        },
+        {
+          "nombre": "generar_grafico",
+          "args": { "titulo": "Gasto por categoría", "tipo": "doughnut" },
+          "resultado": "spec Chart.js enviada al frontend"
+        }
+      ],
+      "respuesta": "De los 18.068 € que has gastado en el año, casi la mitad se va en **vivienda** (8.632 €, un 47,8 %) entre alquiler, luz y agua. Después vienen supermercado (3.720 €) y restaurantes (1.688 €). Todo lo demás junto no llega al 20 %.",
+      "grafico": {
+        "type": "doughnut",
+        "data": {
+          "labels": ["Vivienda", "Supermercado", "Restaurantes", "Transporte", "Suscripciones", "Compras online", "Ropa", "Deporte", "Salud", "Bizum", "Ocio"],
+          "datasets": [
+            {
+              "label": "€ gastados",
+              "data": [8632.88, 3720.3, 1688.43, 1173.61, 695.57, 456.42, 414.7, 358.8, 340.44, 329.13, 258.46]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "usuario": "Mándale 20 euros a Lucía por la cena",
+      "herramientas": [
+        {
+          "nombre": "listar_contactos_bizum",
+          "args": {},
+          "resultado": "4 contactos"
+        },
+        {
+          "nombre": "transferencia_bizum",
+          "args": { "destinatario": "Lucía Fernández", "importe": 20.0, "concepto": "Cena" },
+          "resultado": "ok · nuevo saldo 4.312,47 €"
+        }
+      ],
+      "respuesta": "Hecho: he enviado **20,00 €** a Lucía Fernández con el concepto «Cena». Te quedan 4.312,47 € en la cuenta.",
+      "grafico": null
+    }
+  ]
+}

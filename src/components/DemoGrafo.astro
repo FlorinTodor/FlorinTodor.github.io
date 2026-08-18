@@ -1,0 +1,181 @@
+---
+// Explorador del grafo normativo: NIS2 / DORA -> controles ENS.
+// Datos reales derivados del grafo de conocimiento del TFG. Los textos
+// normativos (BOE, DOUE) son de dominio público.
+const base = import.meta.env.BASE_URL;
+---
+
+<div class="demo-grafo" data-origen={`${base}demo/grafo-normativo.json`}>
+  <div class="dg-barra">
+    <label class="dg-campo">
+      <span class="dg-etq">Marco de origen</span>
+      <select id="dg-marco">
+        <option value="NIS2">NIS2 — Directiva de seguridad de redes</option>
+        <option value="DORA">DORA — Resiliencia operativa digital</option>
+      </select>
+    </label>
+    <label class="dg-campo dg-crece">
+      <span class="dg-etq">Artículo</span>
+      <select id="dg-articulo"></select>
+    </label>
+  </div>
+
+  <div class="dg-cuerpo">
+    <div class="dg-origen">
+      <span class="dg-chapa" id="dg-chapa">NIS2</span>
+      <h4 id="dg-titulo">—</h4>
+      <p id="dg-desc">—</p>
+    </div>
+
+    <div class="dg-flecha" aria-hidden="true">
+      <span>exige</span>
+      <svg viewBox="0 0 40 12" width="40" height="12">
+        <path d="M0 6 H32 M27 1.5 L33 6 L27 10.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+    </div>
+
+    <div class="dg-destino">
+      <span class="dg-etq" id="dg-conteo">Controles ENS</span>
+      <ul class="dg-controles" id="dg-controles"></ul>
+    </div>
+  </div>
+
+  <p class="dg-pie">
+    Datos reales del grafo del TFG: <strong id="dg-stats">—</strong>.
+    El motor resuelve además el <em>Principio de Máximos</em>, que aquí no se
+    representa: para cada control elige la exigencia más restrictiva entre los tres marcos.
+  </p>
+</div>
+
+<!-- is:global: la lista de controles la genera el script y no lleva el atributo
+     de scope de Astro. Clases prefijadas con dg- para evitar colisiones. -->
+<style is:global>
+  .demo-grafo {
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background: var(--bg-elev);
+    overflow: hidden;
+  }
+  .dg-barra {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    padding: 1rem 1.1rem; border-bottom: 1px solid var(--borde); background: var(--bg-sunk);
+  }
+  .dg-campo { display: flex; flex-direction: column; gap: .3rem; min-width: 190px; }
+  .dg-crece { flex: 1; }
+  .dg-etq {
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--texto-tenue); font-weight: 600;
+  }
+  .demo-grafo select {
+    font: inherit; font-size: .9rem; padding: .45rem .6rem; width: 100%;
+    border: 1px solid var(--borde); border-radius: 8px;
+    background: var(--bg-elev); color: var(--texto);
+  }
+  .dg-cuerpo {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 1.2rem; align-items: center; padding: 1.3rem 1.1rem;
+  }
+  @media (max-width: 700px) {
+    .dg-cuerpo { grid-template-columns: 1fr; }
+    .dg-flecha { transform: rotate(90deg); justify-self: center; }
+  }
+  .dg-chapa {
+    display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+    padding: .15em .5em; border-radius: 5px; color: #fff; background: var(--nis2);
+  }
+  .dg-chapa[data-tipo="DORA"] { background: var(--dora); }
+  .dg-origen h4 { margin: .5rem 0 .4rem; font-size: 1rem; }
+  .dg-origen p { font-size: .87rem; color: var(--texto-suave); margin: 0; }
+  .dg-flecha {
+    display: flex; flex-direction: column; align-items: center; gap: .2rem;
+    color: var(--texto-tenue); font-size: .72rem;
+  }
+  .dg-controles { list-style: none; margin: .5rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+  .dg-controles li {
+    display: flex; gap: .55rem; align-items: baseline;
+    font-size: .87rem; padding: .4rem .6rem;
+    background: var(--bg-sunk); border-radius: 7px;
+    border-left: 3px solid var(--ens);
+  }
+  .dg-controles code { background: none; padding: 0; color: var(--ens); font-weight: 600; flex-shrink: 0; }
+  .dg-controles span { color: var(--texto-suave); }
+  .dg-pie {
+    margin: 0; padding: .85rem 1.1rem; border-top: 1px solid var(--borde);
+    font-size: .82rem; color: var(--texto-tenue); background: var(--bg-sunk);
+  }
+</style>
+
+<script>
+  const raiz = document.querySelector('.demo-grafo');
+  if (raiz) {
+    const selMarco = document.getElementById('dg-marco');
+    const selArt = document.getElementById('dg-articulo');
+    const chapa = document.getElementById('dg-chapa');
+    const titulo = document.getElementById('dg-titulo');
+    const desc = document.getElementById('dg-desc');
+    const lista = document.getElementById('dg-controles');
+    const conteo = document.getElementById('dg-conteo');
+
+    fetch(raiz.dataset.origen)
+      .then((r) => r.json())
+      .then((datos) => {
+        const porId = new Map(datos.nodos.map((n) => [n.id, n]));
+        const salidas = new Map();
+        for (const e of datos.enlaces) {
+          if (!salidas.has(e.origen)) salidas.set(e.origen, []);
+          salidas.get(e.origen).push(e.destino);
+        }
+
+        const nNis2 = datos.nodos.filter((n) => n.tipo === 'NIS2').length;
+        const nDora = datos.nodos.filter((n) => n.tipo === 'DORA').length;
+        const nEns = datos.nodos.filter((n) => n.tipo === 'ENS').length;
+        document.getElementById('dg-stats').textContent =
+          `${nNis2} artículos NIS2 y ${nDora} de DORA enlazados con ${nEns} controles ENS (${datos.enlaces.length} relaciones)`;
+
+        function pintarArticulos() {
+          const tipo = selMarco.value;
+          const arts = datos.nodos
+            .filter((n) => n.tipo === tipo && salidas.has(n.id))
+            .sort((a, b) => a.id.localeCompare(b.id, 'es', { numeric: true }));
+          selArt.innerHTML = '';
+          for (const a of arts) {
+            const o = document.createElement('option');
+            o.value = a.id;
+            o.textContent = tipo === 'NIS2' ? `${a.id.replace('NIS2 ', '')} — ${a.titulo}` : `${a.titulo} (${a.id})`;
+            selArt.appendChild(o);
+          }
+          pintarDetalle();
+        }
+
+        function pintarDetalle() {
+          const nodo = porId.get(selArt.value);
+          if (!nodo) return;
+          chapa.textContent = nodo.tipo;
+          chapa.dataset.tipo = nodo.tipo;
+          titulo.textContent = nodo.titulo;
+          desc.textContent = nodo.descripcion || '';
+
+          const ids = salidas.get(nodo.id) || [];
+          conteo.textContent = `${ids.length} control${ids.length === 1 ? '' : 'es'} ENS`;
+          lista.innerHTML = '';
+          for (const cid of ids) {
+            const c = porId.get(cid);
+            const li = document.createElement('li');
+            const code = document.createElement('code');
+            code.textContent = cid;
+            const s = document.createElement('span');
+            s.textContent = c ? c.titulo : '';
+            li.append(code, s);
+            lista.appendChild(li);
+          }
+        }
+
+        selMarco.addEventListener('change', pintarArticulos);
+        selArt.addEventListener('change', pintarDetalle);
+        pintarArticulos();
+      })
+      .catch(() => {
+        raiz.innerHTML = '<p style="padding:1.2rem;color:var(--texto-tenue)">No se pudo cargar el grafo.</p>';
+      });
+  }
+</script>
