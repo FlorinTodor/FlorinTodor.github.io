@@ -4,6 +4,6 @@ import { defineConfig } from 'astro/config';
 // Si algún día lo mueves a un repo con otro nombre, añade aquí:
 //   base: '/nombre-del-repo',
 export default defineConfig({
-  site: 'https://FlorinTodor.github.io',
+  site: 'https://florintodor.dev',
   build: { format: 'directory' },
 });
