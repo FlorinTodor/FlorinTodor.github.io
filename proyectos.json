@@ -29,8 +29,23 @@
         "Análisis de encaje en el Reglamento de IA (UE) 2024/1689: nivel de obligaciones de transparencia, con determinismo, trazabilidad y humano en el bucle",
         "Los 9 objetivos específicos alcanzados"
       ],
-      "stack": ["Python", "FastAPI", "Neo4j", "Cypher", "Sentence-BERT", "Ollama", "Next.js", "TypeScript", "pytest"],
-      "categorias": ["IA", "Ciberseguridad", "Grafos de conocimiento", "Cumplimiento normativo"],
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Neo4j",
+        "Cypher",
+        "Sentence-BERT",
+        "Ollama",
+        "Next.js",
+        "TypeScript",
+        "pytest"
+      ],
+      "categorias": [
+        "IA",
+        "Ciberseguridad",
+        "Grafos de conocimiento",
+        "Cumplimiento normativo"
+      ],
       "repo": "https://github.com/FlorinTodor/Ciber-AsesorIA",
       "anio": 2026,
       "contexto": "Trabajo de Fin de Grado — Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
@@ -58,8 +73,24 @@
         "Streaming SSE token a token",
         "Accesible por diseño: funciona íntegramente por escrito"
       ],
-      "stack": ["Python", "FastAPI", "SSE", "SQLite", "Groq", "Ollama", "Whisper", "Piper TTS", "Chart.js", "Web Speech API"],
-      "categorias": ["IA", "Agentes LLM", "Accesibilidad", "Backend"],
+      "stack": [
+        "Python",
+        "FastAPI",
+        "SSE",
+        "SQLite",
+        "Groq",
+        "Ollama",
+        "Whisper",
+        "Piper TTS",
+        "Chart.js",
+        "Web Speech API"
+      ],
+      "categorias": [
+        "IA",
+        "Agentes LLM",
+        "Accesibilidad",
+        "Backend"
+      ],
       "repo": "https://github.com/FlorinTodor/Reto_Unicaja",
       "anio": 2026,
       "contexto": "Reto Unicaja — UGR",
@@ -71,6 +102,8 @@
     {
       "id": "museo-ar",
       "destacado": true,
+      "oculto": true,
+      "motivoOculto": "Oculto hasta grabar la demo: necesita webcam y marcadores ArUco impresos.",
       "titulo": "Museo AR — Guía de museo en realidad aumentada",
       "resumen": "Aplicación de RA que detecta marcadores ArUco por webcam y superpone modelos 3D de piezas históricas, con reconocimiento facial del visitante, consultas por voz y souvenirs fotográficos enviados por email.",
       "destacados": [
@@ -80,12 +113,30 @@
         "Generación y envío automático de souvenirs fotográficos por SMTP",
         "Consciencia de contexto: identificación de zonas temáticas por imagen o marcador"
       ],
-      "stack": ["Python", "OpenCV", "ArUco", "pyrender", "OSMesa", "glTF", "Reconocimiento facial", "SMTP", "Telegram Bot API"],
-      "categorias": ["Visión por computador", "Realidad aumentada", "IA"],
+      "stack": [
+        "Python",
+        "OpenCV",
+        "ArUco",
+        "pyrender",
+        "OSMesa",
+        "glTF",
+        "Reconocimiento facial",
+        "SMTP",
+        "Telegram Bot API"
+      ],
+      "categorias": [
+        "Visión por computador",
+        "Realidad aumentada",
+        "IA"
+      ],
       "repo": "https://github.com/FlorinTodor/Computacion-Ubicua-e-Inteligencia-Ambiental-CUIA",
       "anio": 2025,
       "contexto": "Computación Ubicua e Inteligencia Ambiental — UGR",
-      "pendiente": ["Añadir .gitignore y eliminar __pycache__", "Mover los .glb (831 MB) a releases o Git LFS", "Grabar GIF/vídeo de demostración"]
+      "pendiente": [
+        "Añadir .gitignore y eliminar __pycache__",
+        "Mover los .glb (831 MB) a releases o Git LFS",
+        "Grabar GIF/vídeo de demostración"
+      ]
     },
     {
       "id": "tienda-online",
@@ -100,12 +151,26 @@
         "Despliegue con Docker Compose y configuración diferenciada de producción",
         "Logging centralizado y seed de base de datos reproducible"
       ],
-      "stack": ["Node.js", "Express", "MongoDB", "React", "Vite", "Tailwind CSS", "Docker Compose", "Caddy"],
-      "categorias": ["Desarrollo web", "Full-stack"],
+      "stack": [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Docker Compose",
+        "Caddy"
+      ],
+      "categorias": [
+        "Desarrollo web",
+        "Full-stack"
+      ],
       "repo": "https://github.com/FlorinTodor/DAI_practicas/tree/main/Practica7_TodorGliga_FlorinEmanuel",
       "anio": 2026,
       "contexto": "Desarrollo de Aplicaciones para Internet — UGR",
-      "pendiente": ["Extraer a su propio repositorio con README y capturas"]
+      "pendiente": [
+        "Extraer a su propio repositorio con README y capturas"
+      ]
     },
     {
       "id": "waf-modsecurity",
@@ -120,12 +185,25 @@
         "Coste medido con Apache Benchmark: 2.586 → 1.663 req/s y +2,1 ms por petición, sin una sola petición fallida",
         "Reglas del CRS que intervienen: 942100/942110 (SQLi vía libinjection), 941100/941110/941160/941320 (XSS), 930100/930120 (path traversal), 932160 (ejecución remota)"
       ],
-      "stack": ["Docker", "Docker Compose", "Nginx", "ModSecurity v3", "OWASP CRS", "Apache", "Bash"],
-      "categorias": ["Ciberseguridad", "DevOps"],
+      "stack": [
+        "Docker",
+        "Docker Compose",
+        "Nginx",
+        "ModSecurity v3",
+        "OWASP CRS",
+        "Apache",
+        "Bash"
+      ],
+      "categorias": [
+        "Ciberseguridad",
+        "DevOps"
+      ],
       "repo": "https://github.com/FlorinTodor/SWAP_Trabajo",
       "anio": 2025,
       "contexto": "Servidores Web de Altas Prestaciones — UGR",
-      "pendiente": ["Revisar y desversionar los logs commiteados"]
+      "pendiente": [
+        "Revisar y desversionar los logs commiteados"
+      ]
     },
     {
       "id": "granja-web",
@@ -139,8 +217,22 @@
         "Benchmarking bajo carga con Apache Benchmark y Locust",
         "Escenarios reproducibles y desplegables con un comando"
       ],
-      "stack": ["Docker", "Nginx", "Apache", "HAProxy", "Traefik", "Envoy", "OpenSSL", "iptables", "Locust", "Bash"],
-      "categorias": ["DevOps", "Infraestructura"],
+      "stack": [
+        "Docker",
+        "Nginx",
+        "Apache",
+        "HAProxy",
+        "Traefik",
+        "Envoy",
+        "OpenSSL",
+        "iptables",
+        "Locust",
+        "Bash"
+      ],
+      "categorias": [
+        "DevOps",
+        "Infraestructura"
+      ],
       "repo": "https://github.com/FlorinTodor/SERVIDORES-WEB-DE-ALTAS-PRESTACIONES-SWAP-",
       "anio": 2025,
       "contexto": "Servidores Web de Altas Prestaciones — UGR"
@@ -156,8 +248,16 @@
         "Tres generaciones de heurística: conteo simple → valor posicional → combinada con ítems",
         "Validado en competición contra otros agentes"
       ],
-      "stack": ["C++", "SFML", "Minimax", "Poda Alfa-Beta"],
-      "categorias": ["IA", "Algoritmos"],
+      "stack": [
+        "C++",
+        "SFML",
+        "Minimax",
+        "Poda Alfa-Beta"
+      ],
+      "categorias": [
+        "IA",
+        "Algoritmos"
+      ],
       "repo": "https://github.com/FlorinTodor/Practica3_IA_UGR",
       "anio": 2024,
       "contexto": "Inteligencia Artificial — UGR (motor de Parchís con SFML)",
@@ -180,8 +280,16 @@
         "Picking por color para selección interactiva de subpartes",
         "Múltiples cámaras conmutables con proyección ortográfica y perspectiva"
       ],
-      "stack": ["C++", "OpenGL", "GLFW", "GLEW", "GLM"],
-      "categorias": ["Gráficos por computador"],
+      "stack": [
+        "C++",
+        "OpenGL",
+        "GLFW",
+        "GLEW",
+        "GLM"
+      ],
+      "categorias": [
+        "Gráficos por computador"
+      ],
       "repo": "https://github.com/FlorinTodor/Informatica-Grafica-IG-UGR",
       "anio": 2025,
       "contexto": "Informática Gráfica — UGR",
@@ -195,6 +303,8 @@
     {
       "id": "ecommerce-oracle",
       "destacado": false,
+      "oculto": true,
+      "motivoOculto": "Oculto hasta grabar la demo: necesita una instancia de Oracle y JDK para el cliente Swing.",
       "titulo": "Plataforma de comercio electrónico con Oracle",
       "resumen": "Sistema de escritorio que conecta compradores y vendedores gestionando usuarios, productos, carrito, pedidos, pagos y reseñas sobre una base de datos Oracle.",
       "destacados": [
@@ -204,8 +314,16 @@
         "Baja lógica de productos y deshabilitación permanente de cuentas",
         "Confirmación de recepción manual o automática tras 3 días"
       ],
-      "stack": ["Java", "Java Swing", "Oracle Database", "SQL"],
-      "categorias": ["Bases de datos", "Backend"],
+      "stack": [
+        "Java",
+        "Java Swing",
+        "Oracle Database",
+        "SQL"
+      ],
+      "categorias": [
+        "Bases de datos",
+        "Backend"
+      ],
       "repo": "https://github.com/FlorinTodor/Disenio-y-Desarrollo-de-Sistemas-DDSI",
       "anio": 2025,
       "contexto": "Diseño y Desarrollo de Sistemas de Información — UGR"
@@ -221,8 +339,14 @@
         "Diseño guiado por alta cohesión y bajo acoplamiento",
         "Implementación paralela en Java y Ruby a partir del mismo diagrama de clases"
       ],
-      "stack": ["Java", "Ruby", "POO"],
-      "categorias": ["Programación orientada a objetos"],
+      "stack": [
+        "Java",
+        "Ruby",
+        "POO"
+      ],
+      "categorias": [
+        "Programación orientada a objetos"
+      ],
       "repo": "https://github.com/FlorinTodor/PDOO",
       "anio": 2024,
       "contexto": "Programación y Diseño Orientado a Objetos — UGR"
@@ -240,12 +364,25 @@
         "Factory Method para instanciar los tres tipos de evento (examen, tutoría, otro)",
         "Marcado de eventos urgentes con visualización diferenciada"
       ],
-      "stack": ["Dart", "Flutter", "Ruby on Rails", "SQLite", "REST", "Patrones de diseño"],
-      "categorias": ["Desarrollo móvil", "Full-stack"],
+      "stack": [
+        "Dart",
+        "Flutter",
+        "Ruby on Rails",
+        "SQLite",
+        "REST",
+        "Patrones de diseño"
+      ],
+      "categorias": [
+        "Desarrollo móvil",
+        "Full-stack"
+      ],
       "repo": "https://github.com/FlorinTodor/DS",
       "anio": 2026,
       "contexto": "Desarrollo de Software — UGR (trabajo en grupo)",
-      "pendiente": ["Aclarar que es trabajo en grupo y qué parte hiciste tú", "Sustituir el README por defecto de Flutter"]
+      "pendiente": [
+        "Aclarar que es trabajo en grupo y qué parte hiciste tú",
+        "Sustituir el README por defecto de Flutter"
+      ]
     },
     {
       "id": "clasificador-idiomas",
@@ -260,8 +397,15 @@
         "Clase BigramCounter con conteo matricial para el recuento eficiente",
         "Desarrollo incremental en seis iteraciones (Language0 → Language5)"
       ],
-      "stack": ["C++", "Procesamiento de texto", "Memoria dinámica"],
-      "categorias": ["Algoritmos", "Procesamiento de lenguaje"],
+      "stack": [
+        "C++",
+        "Procesamiento de texto",
+        "Memoria dinámica"
+      ],
+      "categorias": [
+        "Algoritmos",
+        "Procesamiento de lenguaje"
+      ],
       "repo": "https://github.com/FlorinTodor/Programming_Methodology",
       "anio": 2023,
       "contexto": "Metodología de la Programación — UGR",

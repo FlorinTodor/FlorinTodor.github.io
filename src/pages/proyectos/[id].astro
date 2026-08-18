@@ -5,9 +5,9 @@ import DemoBanca from '../../components/DemoBanca.astro';
 import datos from '../../../proyectos.json';
 
 export function getStaticPaths() {
-  // Los proyectos marcados "NO PUBLICAR" no generan página.
+  // No generan página los ocultos ni los marcados "NO PUBLICAR".
   return datos.proyectos
-    .filter((p) => !(p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR')))
+    .filter((p) => !p.oculto && !(p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR')))
     .map((p) => ({ params: { id: p.id }, props: { p } }));
 }
 
@@ -38,21 +38,21 @@ const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
     <div class="columnas-proyecto">
       <div>
         {/* ---------- vídeo ---------- */}
-        <section>
-          <div class="titulo-seccion"><h2>Demostración</h2><div class="linea"></div></div>
-          <div class="marco-media">
-            {hayVideo ? (
-              <video src={`${base}media/${p.id}.mp4`} controls muted loop playsinline preload="metadata"></video>
-            ) : gif ? (
-              <img src={gif.replace('/public', base.replace(/\/$/, ''))} alt={`Demostración de ${p.titulo}`} loading="lazy" />
-            ) : (
-              <div class="hueco-media">
-                <strong>Pendiente de grabar</strong>
-                <span>Coloca el vídeo en <code>public/media/{p.id}.mp4</code></span>
-              </div>
-            )}
-          </div>
-        </section>
+        {(hayVideo || gif) && (
+          <section>
+            <div class="titulo-seccion"><h2>Demostración</h2><div class="linea"></div></div>
+            <div class="marco-media">
+              {hayVideo ? (
+                <video
+                  src={`${base}media/${p.id}.mp4`}
+                  poster={`${base}media/poster/${p.id}.jpg`}
+                  controls muted loop playsinline preload="none"></video>
+              ) : (
+                <img src={gif.replace('/public', base.replace(/\/$/, ''))} alt={`Demostración de ${p.titulo}`} loading="lazy" />
+              )}
+            </div>
+          </section>
+        )}
 
         {/* ---------- demos interactivas ---------- */}
         {p.id === 'ciber-asesoria' && (
