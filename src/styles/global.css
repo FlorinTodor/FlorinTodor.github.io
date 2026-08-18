@@ -247,13 +247,16 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   display: inline-flex; align-items: center; gap: .3rem;
 }
 
-/* CV */
-.bloque-cv { display: grid; grid-template-columns: 260px 1fr; gap: 1.6rem; align-items: start; }
-@media (max-width: 760px) { .bloque-cv { grid-template-columns: 1fr; } }
+/* CV: sólo la vista previa y los botones. */
+.bloque-cv { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
 .bloque-cv .vista {
+  display: block; max-width: 400px; width: 100%;
   border: 1px solid var(--borde); border-radius: var(--radio-s); overflow: hidden;
   background: #fff; box-shadow: var(--sombra);
+  transition: transform .18s, border-color .18s;
 }
+.bloque-cv .vista:hover { transform: translateY(-3px); border-color: var(--verde); }
+.bloque-cv .acciones { margin-top: 0; justify-content: center; }
 
 /* Listas */
 .lista { list-style: none; padding: 0; margin: 0; }
