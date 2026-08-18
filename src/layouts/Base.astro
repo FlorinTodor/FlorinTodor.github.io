@@ -52,6 +52,7 @@ const datosEstructurados = {
     <meta name="description" content={descripcion} />
     <meta name="author" content={p.nombre} />
     <link rel="canonical" href={urlCanonica} />
+    <link rel="alternate" type="application/rss+xml" title="Blog de Florín Todor" href={new URL('rss.xml', Astro.site).href} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <meta property="og:site_name" content="Florín Todor" />
@@ -84,6 +85,7 @@ const datosEstructurados = {
         <nav>
           <a href={`${base}#sobre-mi`}>Sobre mí</a>
           <a href={`${base}#proyectos`}>Proyectos</a>
+          <a href={`${base}blog/`}>Blog</a>
           <a href={`${base}#competencias`}>Competencias</a>
           <a href={`${base}#formacion`}>Formación</a>
           <a href={`${base}#cv`}>CV</a>
