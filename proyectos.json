@@ -1,0 +1,275 @@
+{
+  "perfil": {
+    "nombre": "Florín Emanuel Todor Gliga",
+    "rol": "Sistemas Linux · Ciberseguridad · IA aplicada",
+    "titulo": "Doble Grado en Ingeniería Informática y ADE — Universidad de Granada",
+    "ubicacion": "Motril, Granada (España)",
+    "ciudad": "Motril, Granada",
+    "github": "https://github.com/FlorinTodor",
+    "linkedin": "https://www.linkedin.com/in/florin-emanuel-todor-gliga/",
+    "email": "florintodorgliga@gmail.com",
+    "telefono": "642 394 364"
+  },
+  "proyectos": [
+    {
+      "id": "ciber-asesoria",
+      "destacado": true,
+      "privado": true,
+      "titulo": "Ciber-AsesorIA/ST — Motor de evaluación de cumplimiento normativo",
+      "resumen": "Trabajo de Fin de Grado: motor que, dado el perfil de una empresa y un control legislativo, infiere de forma determinista qué requisitos técnicos le exigen ENS, NIS2 y DORA, y conduce una auditoría conversacional que emite un veredicto trazable con puntuación.",
+      "destacados": [
+        "Principio de Máximos resuelto en Cypher sobre Neo4j: para cada control selecciona la exigencia más restrictiva entre los tres marcos, combinando suelos, refuerzos y exclusiones",
+        "Inferencia determinista por consulta al grafo, separada de las etapas con LLM: el veredicto es reconstruible y explicable",
+        "Juez LLM anti-falsos-positivos que filtra los candidatos de la búsqueda semántica, con degradación controlada al top-3 por similitud si el modelo falla",
+        "Agente conversacional que traduce cada requisito a lenguaje de negocio y audita requisito a requisito",
+        "Puntuación determinista 1–10, caché de veredictos entre controles y traza de auditoría por sesión",
+        "Módulo CITAD para clasificar la categoría ENS de la organización",
+        "Validación por invariantes derivadas de las especificaciones normativas, no de la salida del propio motor: 346 comprobaciones (33 unitarias, 142 del PCE-NIS2, 135 de DORA, 36 de ponderación dimensional) más 1.572 contrastes entre modos, todas satisfechas",
+        "Las baterías descubrieron y permitieron corregir defectos reales en el alcance de exclusiones NIS2 y en el crosswalk ENS–DORA",
+        "Análisis de encaje en el Reglamento de IA (UE) 2024/1689: nivel de obligaciones de transparencia, con determinismo, trazabilidad y humano en el bucle",
+        "Los 9 objetivos específicos alcanzados"
+      ],
+      "stack": ["Python", "FastAPI", "Neo4j", "Cypher", "Sentence-BERT", "Ollama", "Next.js", "TypeScript", "pytest"],
+      "categorias": ["IA", "Ciberseguridad", "Grafos de conocimiento", "Cumplimiento normativo"],
+      "repo": "https://github.com/FlorinTodor/Ciber-AsesorIA",
+      "anio": 2026,
+      "contexto": "Trabajo de Fin de Grado — Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
+      "autoria": "Ciber-AsesorIA es un proyecto conjunto de dos subsistemas. Mi TFG es el módulo ST (motor de inferencia, agente de evaluación, CITAD y la integración con el Coordinador), más las piezas CITAD y Autopiloto del frontend. El módulo SN y el resto del frontend son obra de mi compañera de proyecto, Laura.",
+      "pendiente": [
+        "CRÍTICO: rotar la contraseña de Neo4j Aura hardcodeada en ST/trace/st_trace_all.py:9 y st_trace_individual.py:8",
+        "Sustituir la credencial por os.getenv y limpiar el historial de git antes de publicar",
+        "NO subir el PDF del TFG tal cual: contiene el DNI en la autorización de depósito",
+        "Confirmar con el tutor la publicación del código"
+      ]
+    },
+    {
+      "id": "habla-con-tu-dinero",
+      "destacado": true,
+      "privado": true,
+      "titulo": "Habla con tu dinero — Asistente bancario conversacional",
+      "resumen": "Asistente que permite gestionar tus finanzas por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos que el propio modelo diseña.",
+      "destacados": [
+        "Agente LLM con tool calling: cuatro herramientas orquestadas por el modelo sobre una API bancaria simulada",
+        "NL → SQL con validación en servidor: solo lectura, sentencia única y lista negra de palabras clave",
+        "Gráficos sin plantillas: el LLM decide la visualización y emite la configuración Chart.js completa",
+        "Voz bidireccional: Whisper large-v3-turbo para entrada y Piper (voz neuronal local) como fallback de salida",
+        "Cadena de fallback de tres proveedores que salta en el mismo mensaje ante un 429, con ~3 s por turno",
+        "Compactación de historial que reduce ~90% los tokens por petición",
+        "Streaming SSE token a token",
+        "Accesible por diseño: funciona íntegramente por escrito"
+      ],
+      "stack": ["Python", "FastAPI", "SSE", "SQLite", "Groq", "Ollama", "Whisper", "Piper TTS", "Chart.js", "Web Speech API"],
+      "categorias": ["IA", "Agentes LLM", "Accesibilidad", "Backend"],
+      "repo": "https://github.com/FlorinTodor/Reto_Unicaja",
+      "anio": 2026,
+      "contexto": "Reto Unicaja — UGR",
+      "pendiente": [
+        "Revisar las bases del reto antes de publicar",
+        "Grabar demo en vídeo: la interacción por voz necesita verse"
+      ]
+    },
+    {
+      "id": "museo-ar",
+      "destacado": true,
+      "titulo": "Museo AR — Guía de museo en realidad aumentada",
+      "resumen": "Aplicación de RA que detecta marcadores ArUco por webcam y superpone modelos 3D de piezas históricas, con reconocimiento facial del visitante, consultas por voz y souvenirs fotográficos enviados por email.",
+      "destacados": [
+        "Detección de marcadores ArUco DICT_5X5_50 y renderizado de modelos glTF alineados con el mundo real",
+        "Reconocimiento facial para registro persistente del visitante entre sesiones",
+        "Interacción por voz: preguntas habladas sobre las piezas expuestas",
+        "Generación y envío automático de souvenirs fotográficos por SMTP",
+        "Consciencia de contexto: identificación de zonas temáticas por imagen o marcador"
+      ],
+      "stack": ["Python", "OpenCV", "ArUco", "pyrender", "OSMesa", "glTF", "Reconocimiento facial", "SMTP", "Telegram Bot API"],
+      "categorias": ["Visión por computador", "Realidad aumentada", "IA"],
+      "repo": "https://github.com/FlorinTodor/Computacion-Ubicua-e-Inteligencia-Ambiental-CUIA",
+      "anio": 2025,
+      "contexto": "Computación Ubicua e Inteligencia Ambiental — UGR",
+      "pendiente": ["Añadir .gitignore y eliminar __pycache__", "Mover los .glb (831 MB) a releases o Git LFS", "Grabar GIF/vídeo de demostración"]
+    },
+    {
+      "id": "tienda-online",
+      "destacado": true,
+      "titulo": "Tienda online full-stack",
+      "resumen": "E-commerce completo con backend Express + MongoDB, API REST autenticada, frontend en React y despliegue containerizado con Caddy como reverse proxy.",
+      "destacados": [
+        "API REST con rutas separadas para tienda, usuarios y API pública",
+        "Autenticación y gestión de sesiones de usuario",
+        "Búsqueda anticipada (autocompletado) y carrito de compra",
+        "Frontend en React + Vite + Tailwind con componentes reutilizables",
+        "Despliegue con Docker Compose y configuración diferenciada de producción",
+        "Logging centralizado y seed de base de datos reproducible"
+      ],
+      "stack": ["Node.js", "Express", "MongoDB", "React", "Vite", "Tailwind CSS", "Docker Compose", "Caddy"],
+      "categorias": ["Desarrollo web", "Full-stack"],
+      "repo": "https://github.com/FlorinTodor/DAI_practicas/tree/main/Practica7_TodorGliga_FlorinEmanuel",
+      "anio": 2026,
+      "contexto": "Desarrollo de Aplicaciones para Internet — UGR",
+      "pendiente": ["Extraer a su propio repositorio con README y capturas"]
+    },
+    {
+      "id": "waf-modsecurity",
+      "destacado": true,
+      "titulo": "WAF con ModSecurity y OWASP CRS sobre Docker",
+      "resumen": "Web Application Firewall intercalado entre el cliente y una granja de servidores web, con reglas OWASP CRS y evaluación del impacto en rendimiento.",
+      "destacados": [
+        "Nginx + ModSecurity v3 + OWASP Core Rule Set en contenedor dedicado",
+        "Mitigación verificada de SQLi, XSS y LFI/RFI mediante pruebas funcionales",
+        "Arquitectura de 1 WAF + 2 backends Apache sobre red Docker interna",
+        "Exclusiones personalizadas de reglas para tráfico WebSocket/Socket.IO",
+        "Coste medido con Apache Benchmark: 2.586 → 1.663 req/s y +2,1 ms por petición, sin una sola petición fallida",
+        "Reglas del CRS que intervienen: 942100/942110 (SQLi vía libinjection), 941100/941110/941160/941320 (XSS), 930100/930120 (path traversal), 932160 (ejecución remota)"
+      ],
+      "stack": ["Docker", "Docker Compose", "Nginx", "ModSecurity v3", "OWASP CRS", "Apache", "Bash"],
+      "categorias": ["Ciberseguridad", "DevOps"],
+      "repo": "https://github.com/FlorinTodor/SWAP_Trabajo",
+      "anio": 2025,
+      "contexto": "Servidores Web de Altas Prestaciones — UGR",
+      "pendiente": ["Revisar y desversionar los logs commiteados"]
+    },
+    {
+      "id": "granja-web",
+      "destacado": true,
+      "titulo": "Granja web de altas prestaciones",
+      "resumen": "Diseño, despliegue y evaluación de una granja web escalable: balanceo de carga comparado entre cinco tecnologías, TLS, cortafuegos y benchmarking.",
+      "destacados": [
+        "Comparativa empírica de Nginx, HAProxy, Traefik, Envoy y GoBetween como balanceadores",
+        "HTTPS con certificados generados y gestionados vía OpenSSL",
+        "Seguridad perimetral con iptables a nivel de contenedor",
+        "Benchmarking bajo carga con Apache Benchmark y Locust",
+        "Escenarios reproducibles y desplegables con un comando"
+      ],
+      "stack": ["Docker", "Nginx", "Apache", "HAProxy", "Traefik", "Envoy", "OpenSSL", "iptables", "Locust", "Bash"],
+      "categorias": ["DevOps", "Infraestructura"],
+      "repo": "https://github.com/FlorinTodor/SERVIDORES-WEB-DE-ALTAS-PRESTACIONES-SWAP-",
+      "anio": 2025,
+      "contexto": "Servidores Web de Altas Prestaciones — UGR"
+    },
+    {
+      "id": "agente-ia",
+      "destacado": false,
+      "titulo": "Agente inteligente para juego competitivo",
+      "resumen": "Agente por turnos que decide jugadas mediante Minimax con poda Alfa-Beta y heurísticas de evaluación refinadas iterativamente.",
+      "destacados": [
+        "Minimax con poda Alfa-Beta: misma decisión que Minimax completo a mucho menor coste",
+        "Mayor profundidad de búsqueda dentro del límite de tiempo disponible",
+        "Tres generaciones de heurística: conteo simple → valor posicional → combinada con ítems",
+        "Validado en competición contra otros agentes"
+      ],
+      "stack": ["C++", "SFML", "Minimax", "Poda Alfa-Beta"],
+      "categorias": ["IA", "Algoritmos"],
+      "repo": "https://github.com/FlorinTodor/Practica3_IA_UGR",
+      "anio": 2024,
+      "contexto": "Inteligencia Artificial — UGR (motor de Parchís con SFML)",
+      "pendiente": [
+        "NO PUBLICAR TAL CUAL. Al compilarlo (2026-08-17) resultó que Poda_AlfaBeta, MiValoracion1 y MiValoracion2 se invocan en AIPlayer.cpp pero no están definidas en ningún fichero del repo",
+        "think() solo llama a thinkAleatorio; las demás ramas están comentadas. El agente que se ejecutaría juega al azar",
+        "AIPlayer.h no declara thinkAleatorio, así que el proyecto ni siquiera enlaza",
+        "El README describe heurísticas (evaluarColores2, evaluarItems2) que no existen en el código. Sube el AIPlayer.cpp real o retira el proyecto"
+      ]
+    },
+    {
+      "id": "motor-grafico",
+      "destacado": false,
+      "titulo": "Motor gráfico 3D interactivo en OpenGL",
+      "resumen": "Aplicación gráfica 3D construida de forma incremental: grafo de escena, cámaras, animación jerárquica, iluminación y selección de objetos.",
+      "destacados": [
+        "Grafo de escena con transformaciones locales por nodo",
+        "Animaciones articuladas controladas por teclado",
+        "Iluminación de Phong con materiales ambient/diffuse/specular y texturas",
+        "Picking por color para selección interactiva de subpartes",
+        "Múltiples cámaras conmutables con proyección ortográfica y perspectiva"
+      ],
+      "stack": ["C++", "OpenGL", "GLFW", "GLEW", "GLM"],
+      "categorias": ["Gráficos por computador"],
+      "repo": "https://github.com/FlorinTodor/Informatica-Grafica-IG-UGR",
+      "anio": 2025,
+      "contexto": "Informática Gráfica — UGR",
+      "pendiente": [
+        "NO PUBLICAR TAL CUAL. Al intentar compilarlo (2026-08-17) el repo resultó ser la plantilla del curso sin completar: 59 marcadores COMPLETAR, con el núcleo de la P3 (grafo-escena.cpp:111, visualización del nodo) y de la P4 (materiales y normales) sin implementar",
+        "Además no compila: examen-ec-p45.h:35 declara cuandoClick(int) como override, pero la base Objeto3D define cuandoClick(const glm::vec3&)",
+        "Contiene el trabajo de otros alumnos: IG-practicas-examenes/quintinmr y ex-p45_mariorgz",
+        "Si conservas tu versión terminada en otro sitio, súbela; si no, quita este proyecto del portafolio"
+      ]
+    },
+    {
+      "id": "ecommerce-oracle",
+      "destacado": false,
+      "titulo": "Plataforma de comercio electrónico con Oracle",
+      "resumen": "Sistema de escritorio que conecta compradores y vendedores gestionando usuarios, productos, carrito, pedidos, pagos y reseñas sobre una base de datos Oracle.",
+      "destacados": [
+        "Cinco subsistemas: usuarios, productos, carrito, pedidos y reseñas",
+        "Control de stock automático y transaccional al confirmar o cancelar pedidos",
+        "Registro con validación de correo único y recuperación de contraseña por token",
+        "Baja lógica de productos y deshabilitación permanente de cuentas",
+        "Confirmación de recepción manual o automática tras 3 días"
+      ],
+      "stack": ["Java", "Java Swing", "Oracle Database", "SQL"],
+      "categorias": ["Bases de datos", "Backend"],
+      "repo": "https://github.com/FlorinTodor/Disenio-y-Desarrollo-de-Sistemas-DDSI",
+      "anio": 2025,
+      "contexto": "Diseño y Desarrollo de Sistemas de Información — UGR"
+    },
+    {
+      "id": "irrgarten",
+      "destacado": false,
+      "titulo": "Irrgarten — el mismo juego en Java y Ruby",
+      "resumen": "Videojuego de laberinto por turnos implementado íntegramente en dos lenguajes, comparando cómo cada uno resuelve el mismo diseño orientado a objetos.",
+      "destacados": [
+        "Modelo de dominio completo: Player, Monster, Labyrinth, Game, Weapon, Shield, Dice",
+        "Aleatoriedad encapsulada en una única clase Dice",
+        "Diseño guiado por alta cohesión y bajo acoplamiento",
+        "Implementación paralela en Java y Ruby a partir del mismo diagrama de clases"
+      ],
+      "stack": ["Java", "Ruby", "POO"],
+      "categorias": ["Programación orientada a objetos"],
+      "repo": "https://github.com/FlorinTodor/PDOO",
+      "anio": 2024,
+      "contexto": "Programación y Diseño Orientado a Objetos — UGR"
+    },
+    {
+      "id": "agenda-digital",
+      "destacado": false,
+      "privado": true,
+      "titulo": "Agenda Digital — app multiplataforma de eventos académicos",
+      "resumen": "Aplicación Flutter con backend Ruby on Rails para gestionar eventos académicos organizados en un árbol jerárquico de meses, semanas, días y eventos.",
+      "destacados": [
+        "Cliente Flutter multiplataforma (iOS, Android, Web) con Material Design 3",
+        "Backend API REST en Ruby on Rails 8.1 con ActiveRecord y SQLite",
+        "Patrón Composite para la jerarquía Mes → Semana → Día → Evento",
+        "Factory Method para instanciar los tres tipos de evento (examen, tutoría, otro)",
+        "Marcado de eventos urgentes con visualización diferenciada"
+      ],
+      "stack": ["Dart", "Flutter", "Ruby on Rails", "SQLite", "REST", "Patrones de diseño"],
+      "categorias": ["Desarrollo móvil", "Full-stack"],
+      "repo": "https://github.com/FlorinTodor/DS",
+      "anio": 2026,
+      "contexto": "Desarrollo de Software — UGR (trabajo en grupo)",
+      "pendiente": ["Aclarar que es trabajo en grupo y qué parte hiciste tú", "Sustituir el README por defecto de Flutter"]
+    },
+    {
+      "id": "clasificador-idiomas",
+      "destacado": false,
+      "titulo": "Clasificador automático de idiomas por bigramas",
+      "resumen": "Sistema en C++ que modela cada idioma por la frecuencia de sus pares de caracteres y clasifica un texto desconocido midiendo su distancia a los modelos conocidos.",
+      "destacados": [
+        "Modelo de idioma como perfil de bigramas, serializado a un formato .bgr propio",
+        "Clasificación por distancia entre modelos: acierta en español, inglés, francés y alemán sobre textos literarios reales",
+        "Separación nítida: el idioma correcto queda a ~0,08 de distancia y el resto por encima de 0,21",
+        "Gestión manual de memoria dinámica, sin contenedores de la STL",
+        "Clase BigramCounter con conteo matricial para el recuento eficiente",
+        "Desarrollo incremental en seis iteraciones (Language0 → Language5)"
+      ],
+      "stack": ["C++", "Procesamiento de texto", "Memoria dinámica"],
+      "categorias": ["Algoritmos", "Procesamiento de lenguaje"],
+      "repo": "https://github.com/FlorinTodor/Programming_Methodology",
+      "anio": 2023,
+      "contexto": "Metodología de la Programación — UGR",
+      "pendiente": [
+        "El clasificador que funciona es Language4. En Language5 los main de classify.cpp y joinLanguages.cpp están vacíos, pese a que el README anuncia LEARN, JOIN y CLASSIFY",
+        "El CMakeLists.txt de Language5 referencia src/main_prueba.cpp, que no existe: el proyecto no compila al clonarlo",
+        "En learn.cpp el main está comentado; hay que descomentarlo para construirlo"
+      ]
+    }
+  ]
+}

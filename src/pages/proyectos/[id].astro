@@ -1,0 +1,130 @@
+---
+import Base from '../../layouts/Base.astro';
+import DemoGrafo from '../../components/DemoGrafo.astro';
+import DemoBanca from '../../components/DemoBanca.astro';
+import datos from '../../../proyectos.json';
+
+export function getStaticPaths() {
+  // Los proyectos marcados "NO PUBLICAR" no generan página.
+  return datos.proyectos
+    .filter((p) => !(p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR')))
+    .map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const medios = import.meta.glob('/public/media/*', { eager: true });
+const hayVideo = Object.keys(medios).some((f) => f.endsWith(`/media/${p.id}.mp4`));
+const gif = Object.keys(medios).find((f) => new RegExp(`/media/${p.id}\\.(gif|png|jpg|webp)$`).test(f));
+
+const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
+---
+
+<Base titulo={`${p.titulo} — Florín Todor`} descripcion={p.resumen} conLateral={false}>
+  <div style="max-width:1080px;margin:0 auto">
+    <a class="volver" href={`${base}#proyectos`}>← Todos los proyectos</a>
+
+    <header class="cabecera-proyecto">
+      <h1>{p.titulo}</h1>
+      <div class="meta">
+        <span class="etiqueta verde">{p.anio}</span>
+        {p.categorias.map((c) => <span class="etiqueta">{c}</span>)}
+        {p.privado && <span class="etiqueta ambar">Código privado</span>}
+      </div>
+      <p class="resumen">{p.resumen}</p>
+    </header>
+
+    <div class="columnas-proyecto">
+      <div>
+        {/* ---------- vídeo ---------- */}
+        <section>
+          <div class="titulo-seccion"><h2>Demostración</h2><div class="linea"></div></div>
+          <div class="marco-media">
+            {hayVideo ? (
+              <video src={`${base}media/${p.id}.mp4`} controls muted loop playsinline preload="metadata"></video>
+            ) : gif ? (
+              <img src={gif.replace('/public', base.replace(/\/$/, ''))} alt={`Demostración de ${p.titulo}`} loading="lazy" />
+            ) : (
+              <div class="hueco-media">
+                <strong>Pendiente de grabar</strong>
+                <span>Coloca el vídeo en <code>public/media/{p.id}.mp4</code></span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ---------- demos interactivas ---------- */}
+        {p.id === 'ciber-asesoria' && (
+          <section>
+            <div class="titulo-seccion"><h2>Explora el grafo normativo</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">
+              El núcleo del módulo es un grafo que enlaza los artículos de NIS2 y DORA con los
+              controles del ENS que los satisfacen. Elige un artículo y verás qué controles exige.
+              Son los datos reales del grafo del TFG.
+            </p>
+            <DemoGrafo />
+          </section>
+        )}
+
+        {p.id === 'habla-con-tu-dinero' && (
+          <section>
+            <div class="titulo-seccion"><h2>Pruébalo</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">
+              Pulsa las preguntas sugeridas para reproducir una conversación: verás las llamadas a
+              herramientas del modelo, el SQL que genera y los gráficos que decide dibujar.
+            </p>
+            <DemoBanca />
+          </section>
+        )}
+
+        {/* ---------- detalle ---------- */}
+        <section>
+          <div class="titulo-seccion"><h2>Qué hace</h2><div class="linea"></div></div>
+          <ul class="lista">
+            {p.destacados.map((d) => <li>{d}</li>)}
+          </ul>
+        </section>
+
+        {p.autoria && (
+          <section>
+            <div class="titulo-seccion"><h2>Autoría</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">{p.autoria}</p>
+          </section>
+        )}
+      </div>
+
+      {/* ---------- lateral ---------- */}
+      <aside>
+        <div class="panel-lateral">
+          <h4>Stack</h4>
+          <div class="etiquetas">{p.stack.map((t) => <span class="etiqueta">{t}</span>)}</div>
+        </div>
+
+        <div class="panel-lateral">
+          <h4>Contexto</h4>
+          <p style="margin:0;font-size:.89rem;color:var(--texto-suave)">{p.contexto}</p>
+        </div>
+
+        <div class="panel-lateral">
+          <h4>Código</h4>
+          {p.privado ? (
+            <p style="margin:0;font-size:.89rem;color:var(--texto-suave)">
+              Repositorio privado. Puedo enseñarlo en una entrevista —
+              <a href={`mailto:${datos.perfil.email}`}>escríbeme</a>.
+            </p>
+          ) : (
+            <p style="margin:0;font-size:.89rem">
+              <a href={p.repo} target="_blank" rel="noopener">Ver en GitHub →</a>
+            </p>
+          )}
+        </div>
+
+        <div class="panel-lateral">
+          <h4>Más</h4>
+          <p style="margin:0;font-size:.89rem"><a href={`${base}#proyectos`}>← Otros proyectos</a></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
