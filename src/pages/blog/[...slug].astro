@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articulos = await getCollection('blog', ({ data }) => !data.borrador);
+  return articulos.map((a) => ({ params: { slug: a.id }, props: { a } }));
+}
+
+const { a } = Astro.props;
+const { Content } = await render(a);
+const base = import.meta.env.BASE_URL;
+const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base titulo={`${a.data.titulo} — Florín Todor`} descripcion={a.data.descripcion} conLateral={false}>
+  <article style="max-width:760px;margin:0 auto">
+    <a class="volver" href={`${base}blog/`}>← Todos los artículos</a>
+
+    <header class="cabecera-proyecto">
+      <h1>{a.data.titulo}</h1>
+      <div class="meta">
+        <span class="etiqueta verde">{fmt(a.data.fecha)}</span>
+        {a.data.minutos && <span class="etiqueta">{a.data.minutos} min</span>}
+        {a.data.etiquetas.map((e) => <span class="etiqueta">{e}</span>)}
+      </div>
+      <p class="resumen">{a.data.descripcion}</p>
+    </header>
+
+    <div class="prosa">
+      <Content />
+    </div>
+
+    <hr class="punteado" style="margin:2.5rem 0" />
+    <p style="color:var(--texto-suave);font-size:.92rem">
+      Escrito por <strong>Florín Todor</strong>. Si te ha servido o quieres comentar algo,
+      <a href="mailto:florintodorgliga@gmail.com">escríbeme</a>.
+    </p>
+  </article>
+</Base>

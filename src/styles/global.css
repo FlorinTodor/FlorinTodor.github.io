@@ -321,3 +321,48 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ============================================================
+   Prosa del blog (Markdown renderizado)
+   ============================================================ */
+.prosa { font-size: 1.02rem; line-height: 1.8; color: var(--texto-suave); }
+.prosa > :first-child { margin-top: 0; }
+.prosa h2 {
+  font-size: 1.35rem; color: var(--texto); margin: 2.4rem 0 .9rem;
+  padding-bottom: .5rem; border-bottom: 1px dotted var(--borde);
+}
+.prosa h3 { font-size: 1.1rem; color: var(--texto); margin: 1.8rem 0 .7rem; }
+.prosa p { margin: 0 0 1.2rem; }
+.prosa strong { color: var(--texto); font-weight: 650; }
+.prosa a { text-decoration: underline; text-underline-offset: 2px; }
+
+.prosa ul, .prosa ol { padding-left: 1.3rem; margin: 0 0 1.2rem; }
+.prosa li { margin-bottom: .5rem; }
+
+.prosa hr { border: 0; border-top: 1px dotted var(--borde); margin: 2.4rem 0; }
+
+.prosa blockquote {
+  margin: 1.4rem 0; padding: .2rem 0 .2rem 1.1rem;
+  border-left: 3px solid var(--verde); color: var(--texto-suave);
+}
+
+/* Código en línea */
+.prosa :not(pre) > code {
+  background: var(--panel-alto); color: var(--verde);
+  padding: .14em .42em; border-radius: 5px; font-size: .88em;
+}
+
+/* Bloques de código: desplazamiento horizontal propio, nunca de la página */
+.prosa pre {
+  background: #04182c; border: 1px solid var(--borde); border-radius: var(--radio-s);
+  padding: 1rem 1.1rem; overflow-x: auto; margin: 0 0 1.4rem;
+  font-size: .86rem; line-height: 1.6;
+}
+.prosa pre code { background: none; padding: 0; color: inherit; }
+
+/* Las tablas también se desplazan solas */
+.prosa table { width: 100%; border-collapse: collapse; margin: 0 0 1.4rem; font-size: .92rem; display: block; overflow-x: auto; }
+.prosa th, .prosa td { border: 1px solid var(--borde); padding: .5rem .7rem; text-align: left; }
+.prosa th { background: var(--panel-alto); color: var(--texto); font-weight: 650; }
+
+.prosa img { border-radius: var(--radio-s); border: 1px solid var(--borde); margin: 1.4rem 0; }
