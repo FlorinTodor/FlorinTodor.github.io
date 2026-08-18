@@ -116,16 +116,19 @@ const competencias = [
     <div class="rejilla-proyectos">
       {destacados.map((p, i) => (
         <a class={`tarjeta-proyecto ${i === 0 ? 'destacado' : ''}`} href={`${base}proyectos/${p.id}/`}>
+          {tieneVideo(p.id) && (
           <div class="miniatura">
-            {tieneVideo(p.id) ? (
+            {(
               <>
-                <video src={`${base}media/${p.id}.mp4`} muted loop playsinline preload="metadata"></video>
+                <video
+                  src={`${base}media/${p.id}.mp4`}
+                  poster={`${base}media/poster/${p.id}.jpg`}
+                  muted loop playsinline preload="none"></video>
                 <span class="insignia-video">▶ demo</span>
               </>
-            ) : (
-              <div class="sin-video"><span>Sin vídeo todavía</span></div>
             )}
           </div>
+          )}
           <div class="cuerpo">
             <h3>{p.titulo}</h3>
             <p>{p.resumen}</p>
@@ -142,16 +145,19 @@ const competencias = [
     <div class="rejilla-proyectos">
       {resto.map((p) => (
         <a class="tarjeta-proyecto" href={`${base}proyectos/${p.id}/`}>
+          {tieneVideo(p.id) && (
           <div class="miniatura">
-            {tieneVideo(p.id) ? (
+            {(
               <>
-                <video src={`${base}media/${p.id}.mp4`} muted loop playsinline preload="metadata"></video>
+                <video
+                  src={`${base}media/${p.id}.mp4`}
+                  poster={`${base}media/poster/${p.id}.jpg`}
+                  muted loop playsinline preload="none"></video>
                 <span class="insignia-video">▶ demo</span>
               </>
-            ) : (
-              <div class="sin-video"><span>Sin vídeo todavía</span></div>
             )}
           </div>
+          )}
           <div class="cuerpo">
             <h3>{p.titulo}</h3>
             <p>{p.resumen}</p>
@@ -194,7 +200,7 @@ const competencias = [
     <div class="titulo-seccion"><h2>Currículum</h2><div class="linea"></div><div class="num">05</div></div>
     <div class="tarjeta">
       <div class="bloque-cv">
-        <a class="vista" href={`${base}CV_Florin_Todor.pdf`} target="_blank" rel="noopener">
+        <a class="vista" href={`${base}CV_Florin_Todor.pdf`} target="_blank" rel="noopener" aria-label="Abrir el currículum en PDF">
           <img src={`${base}img/cv-preview-1.png`} alt="Primera página del currículum" loading="lazy" />
         </a>
         <div>
@@ -241,26 +247,16 @@ const competencias = [
   </section>
 
   <script is:inline>
-    // Las miniaturas se reproducen al pasar el ratón; en móvil, al entrar en pantalla.
-    const tarjetas = document.querySelectorAll('.tarjeta-proyecto');
-    const finoPuntero = matchMedia('(hover: hover)').matches;
-    tarjetas.forEach((t) => {
-      const v = t.querySelector('video');
-      if (!v) return;
-      if (finoPuntero) {
+    // Las miniaturas son imágenes; el vídeo (preload="none") sólo se descarga
+    // al pasar el ratón. En móvil no se reproduce solo: cargaría megas de datos
+    // a quien únicamente está bajando por la página.
+    if (matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('.tarjeta-proyecto').forEach((t) => {
+        const v = t.querySelector('video');
+        if (!v) return;
         t.addEventListener('mouseenter', () => v.play().catch(() => {}));
         t.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
-      }
-    });
-    if (!finoPuntero && 'IntersectionObserver' in window) {
-      const obs = new IntersectionObserver((es) => {
-        es.forEach((e) => {
-          const v = e.target.querySelector('video');
-          if (!v) return;
-          e.isIntersecting ? v.play().catch(() => {}) : v.pause();
-        });
-      }, { threshold: 0.5 });
-      tarjetas.forEach((t) => obs.observe(t));
+      });
     }
   </script>
 </Base>
