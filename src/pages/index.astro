@@ -21,8 +21,8 @@ const formacion = [
     fecha: '2021 – 2026',
     centro: 'Universidad de Granada',
     titulo: 'Doble Grado en Ingeniería Informática y Administración y Dirección de Empresas',
-    detalle:
-      'Asignaturas orientadas a ciberseguridad, administración de sistemas Linux e infraestructura de servidores. El TFG trata sobre evaluación automática de cumplimiento normativo con IA generativa.',
+    enlace: 'https://grados.ugr.es/informatica-ade/docencia/plan-estudios',
+    enlaceTexto: 'Ver el plan de estudios',
   },
   {
     fecha: '2020 – 2021',
@@ -190,7 +190,12 @@ const competencias = [
         <span class="pastilla-fecha">{f.fecha}</span>
         <div style="color:var(--texto-tenue);font-size:.84rem">{f.centro}</div>
         <h3 style="font-size:1.02rem;margin:.4rem 0 .6rem">{f.titulo}</h3>
-        <p style="color:var(--texto-suave);font-size:.9rem;margin:0">{f.detalle}</p>
+        {f.detalle && <p style="color:var(--texto-suave);font-size:.9rem;margin:0">{f.detalle}</p>}
+        {f.enlace && (
+          <a href={f.enlace} target="_blank" rel="noopener" style="font-size:.9rem">
+            {f.enlaceTexto} ↗
+          </a>
+        )}
       </div>
     ))}
   </section>
