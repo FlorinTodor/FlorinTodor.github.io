@@ -11,7 +11,7 @@ const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long'
 
 <Base
   titulo="Blog — Florín Todor"
-  descripcion="Artículos sobre infraestructura, ciberseguridad e IA aplicada: fallos reales, cómo se diagnostican y qué se aprende de ellos."
+  descripcion="Notas sobre fallos de infraestructura, seguridad e IA aplicada: qué pasó, cómo lo diagnostiqué y cómo se evita."
   conLateral={false}
 >
   <div style="max-width:820px;margin:0 auto">
@@ -19,8 +19,9 @@ const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long'
       <div class="etiqueta-seccion" style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">Blog</div>
       <h1>Cosas que se rompen y por qué</h1>
       <p class="resumen">
-        Notas sobre infraestructura, seguridad e IA aplicada. Fallos reales que me he
-        encontrado, cómo los diagnostiqué y qué me llevé de cada uno.
+        Apunto aquí los fallos con los que me voy encontrando en infraestructura,
+        seguridad e IA, sobre todo cuando me cuesta dar con la causa. Escribirlos me
+        sirve para no repetirlos.
       </p>
       <p style="margin-top:1rem">
         <a href={`${base}rss.xml`} style="font-size:.88rem">Suscribirse por RSS →</a>

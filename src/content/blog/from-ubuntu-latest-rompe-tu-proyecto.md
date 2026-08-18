@@ -1,15 +1,14 @@
 ---
 titulo: "«FROM ubuntu:latest» te va a romper el proyecto (y no será hoy)"
-descripcion: "Una granja web que funcionaba perfectamente en 2025 devolvía 502 en la mitad de las peticiones en 2026. El código no había cambiado ni una línea. Así se diagnostica y así se evita."
+descripcion: "Una granja web que funcionaba en 2025 devolvía 502 en la mitad de las peticiones un año después, sin haber tocado el código. Cómo lo diagnostiqué y cómo se evita."
 fecha: 2026-08-18
 etiquetas: ["Docker", "Nginx", "PHP", "Reproducibilidad", "DevOps"]
 minutos: 6
 ---
 
 Hace unos días volví a levantar una práctica que hice para la asignatura de Servidores
-Web de Altas Prestaciones: una granja de ocho servidores web —cuatro Apache y cuatro
-Nginx— detrás de un balanceador. En su día funcionaba. La entregué, funcionaba, y ahí
-se quedó.
+Web de Altas Prestaciones: una granja de ocho servidores web (cuatro Apache y cuatro
+Nginx) detrás de un balanceador. En su día funcionaba, la entregué y ahí se quedó.
 
 Un año después la levanté otra vez, sin tocar una sola línea, y **la mitad de las
 peticiones devolvían 502 Bad Gateway**.
@@ -24,10 +23,9 @@ $ for i in $(seq 1 40); do curl -s -o /dev/null -w '%{http_code}\n' localhost:80
      20 502
 ```
 
-Exactamente la mitad. Un 50 % clavado no es casualidad: si fuera saturación o un fallo
-intermitente, los números bailarían. Un reparto tan limpio apunta a que **un subconjunto
-concreto y estable de backends está caído**, y el balanceador sigue mandándoles tráfico
-con toda la educación del mundo.
+Exactamente la mitad. Un 50 % tan exacto ya dice bastante. Si fuera saturación o un fallo intermitente los
+números no saldrían tan redondos, así que lo más probable era que hubiera **un grupo fijo
+de backends caídos** y el balanceador siguiera mandándoles peticiones igualmente.
 
 Fui backend por backend:
 
@@ -44,7 +42,7 @@ los Apache. **Los cuatro Apache servían; los cuatro Nginx, no.**
 
 ## Por qué 502 y no 500
 
-Merece la pena pararse aquí, porque el código de estado ya te está diciendo dónde mirar.
+El código de estado ya da una pista de dónde mirar.
 
 Un **500** significa «he intentado ejecutar tu aplicación y ha petado». Un **502** significa
 «soy un intermediario y el de detrás no me contesta». Nginx no ejecuta PHP: se lo pasa a
@@ -92,8 +90,8 @@ apuntaba a Ubuntu 24.04, cuyos repositorios traían PHP 8.3, y todo encajaba. Al
 un año después, `latest` ya apuntaba a otra versión de Ubuntu con PHP 8.5. Y `php-fpm`
 tampoco es una versión: instala la que toque.
 
-Dos referencias móviles alineadas por casualidad en el momento de escribir la configuración.
-En cuanto una se mueve, se rompe.
+O sea que tenía dos referencias móviles que coincidieron en el momento de escribir la
+configuración. En cuanto una de las dos cambió, dejó de funcionar.
 
 ## El arreglo
 
@@ -125,36 +123,35 @@ Y el balanceador repartiendo como debe, cuarenta y ocho peticiones entre ocho se
       6 192.168.10.9   (web8 · Nginx)
 ```
 
-Seis exactas a cada uno. Round-robin de manual.
+Seis a cada uno, que es lo que se esperaba de un round-robin.
 
-## La lección, que no es «fija la versión»
+## Lo que saco de esto
 
-Fijar la versión es el parche. Lo interesante es otra cosa: **un proyecto que funciona hoy
-no es un proyecto reproducible**. Son cosas distintas y es fácil confundirlas, porque
-mientras nada cambia parecen la misma.
+Fijar la versión es el arreglo, pero lo que me interesa es otra cosa: que un proyecto
+funcione hoy no significa que vaya a poder reconstruirse mañana. Son dos cosas distintas y
+se confunden con facilidad, porque mientras nada cambia se comportan igual.
 
-Mi práctica funcionaba. La entregué funcionando. Pero dependía de que dos referencias
-móviles siguieran alineadas, y eso no lo garantiza nadie. La bomba estaba puesta desde el
-primer día; solo hacía falta esperar.
+Mi práctica funcionaba cuando la entregué, pero dependía de que dos referencias móviles
+siguieran coincidiendo, y eso no lo garantiza nadie. El fallo estaba ahí desde el principio,
+solo que tardó un año en aparecer.
 
-Es especialmente traicionero en un portafolio. Si un reclutador clona tu repositorio para
-echarle un ojo, no ve tu proyecto: ve un 502. Y no va a investigar por qué.
+En un portafolio esto molesta especialmente. Si alguien clona tu repositorio para echarle un
+vistazo se encuentra un 502, y lo normal es que no se ponga a investigar por qué.
 
-Tres hábitos que me llevo:
+Tres cosas que voy a hacer a partir de ahora:
 
-**Fija todo lo que puedas fijar.** `ubuntu:24.04` en vez de `ubuntu:latest`. Y si quieres
-ir en serio, el digest: `ubuntu@sha256:...`, que es inmutable de verdad.
+**Fijar las versiones.** `ubuntu:24.04` en vez de `ubuntu:latest`. Si hace falta más
+garantía, el digest (`ubuntu@sha256:...`) ya es inmutable del todo.
 
-**Desconfía de las versiones implícitas.** `apt-get install php-fpm` te da la que haya.
-Si tu configuración menciona `php8.3`, instala `php8.3-fpm` explícitamente. Que las dos
-mitades hablen de lo mismo.
+**No dejar versiones implícitas.** `apt-get install php-fpm` instala la que haya en ese
+momento. Si la configuración menciona `php8.3`, hay que instalar `php8.3-fpm` de forma
+explícita para que las dos partes coincidan.
 
-**Reconstruye de vez en cuando.** Un `docker compose build --no-cache` cada pocos meses
-te avisa de esto mientras aún te acuerdas de cómo funciona el proyecto. Es mucho más barato
-que descubrirlo el día que alguien te lo pide.
+**Reconstruir de vez en cuando.** Un `docker compose build --no-cache` cada pocos meses
+avisa de este tipo de cosas mientras todavía te acuerdas de cómo iba el proyecto.
 
 ---
 
-*Este fallo salió al preparar los vídeos de demostración de este portafolio. La granja web
-está en el proyecto [Granja web de altas prestaciones](/proyectos/granja-web/), con la
-comparativa de los cuatro balanceadores.*
+*Esto salió al preparar los vídeos de este portafolio. La granja web está en
+[Granja web de altas prestaciones](/proyectos/granja-web/), con la comparativa de los
+cuatro balanceadores.*
