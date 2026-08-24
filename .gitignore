@@ -5,12 +5,7 @@ dist/
 # --- Documentos de trabajo: no forman parte del sitio ---
 SELECCION.md
 
-# --- Ficheros fuente pesados que ya están procesados dentro de public/ ---
-video_demo.mp4
-ChatGPT Image*.png
-
-# --- Nunca publicar: la memoria del TFG lleva el DNI en la autorización de depósito ---
-TFG_*.pdf
-
-# El CV del sitio vive en public/ y SÍ debe subirse; esta copia de trabajo no.
-/CV_Florin_Todor.pdf
+# --- Material original: nada de aquí se publica ---
+# Vídeos y PDF en bruto ya procesados dentro de public/, la memoria del TFG (lleva
+# el DNI en la autorización de depósito) y los certificados que muestran DNI o NIE.
+originales/

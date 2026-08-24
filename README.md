@@ -51,11 +51,13 @@ en `astro.config.mjs`. Con dominio propio, `base` sobra.
 
 ```
 proyectos.json              ← única fuente de datos: perfil y proyectos
+certificaciones.json        ← datos de las certificaciones
 src/
   layouts/Base.astro        ← cabecera flotante + barra lateral fija + pie
   pages/
     index.astro             ← portada de una sola página con secciones numeradas
     proyectos/[id].astro    ← una página por proyecto
+    certificaciones/        ← rejilla de certificaciones con filtro por área
   components/
     DemoGrafo.astro         ← explorador del grafo normativo (TFG)
     DemoBanca.astro         ← reproductor de sesión del asistente bancario
@@ -67,9 +69,14 @@ public/
   CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
   img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
   demo/*.json               ← datos de las demos interactivas
+  certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
+originales/                 ← material en bruto, fuera de git: vídeos y PDF sin
+                              procesar, la memoria del TFG y los certificados
+                              que muestran DNI o NIE
 src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compilar
 scripts/generar-og.py       ← redibuja public/img/og.jpg
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
+scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
 ```
 
 Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
@@ -101,6 +108,59 @@ Todo sale de `proyectos.json`:
 | `stack[]`, `categorias[]` | Etiquetas. |
 | `autoria` | Opcional. En trabajos compartidos, deja clara tu parte. |
 | `pendiente[]` | Notas privadas. **No se publican.** Si una empieza por `NO PUBLICAR`, el proyecto se excluye del sitio automáticamente. |
+
+## Añadir una certificación
+
+1. Copia el diploma en **`public/certificaciones/`** con el `id` como nombre:
+   `public/certificaciones/pcap-cisco.pdf`. Vale PDF, JPG, PNG o WEBP.
+2. Genera la miniatura (sólo si has subido un PDF):
+
+   ```bash
+   python3 scripts/generar-miniaturas-certificaciones.py
+   ```
+
+   Renderiza la primera página en `<id>.jpg`. No pisa las que ya existan, así que
+   se puede lanzar tantas veces como haga falta. Necesita `poppler-utils`.
+   Si prefieres hacerlo a mano, deja tú el `<id>.jpg` y listo.
+3. Añade la entrada en `certificaciones.json`:
+
+   | Campo | Para qué sirve |
+   |---|---|
+   | `id` | Enlaza con los ficheros (`public/certificaciones/<id>.pdf` y `.jpg`). |
+   | `titulo`, `entidad` | Nombre del curso y quién lo expide. |
+   | `fecha` | `2021` o `2021-06`. Ordena la rejilla, de lo más reciente a lo más antiguo. |
+   | `categoria` | Agrupa los filtros de arriba. Reutiliza las que ya haya. |
+   | `detalle` | Opcional. Una línea de qué cubre. |
+   | `credencial` | Opcional. URL de verificación del emisor. |
+   | `destacada` | `true` la coloca la primera. |
+   | `archivo`, `imagen` | Sólo si los ficheros no se llaman como el `id`. |
+
+La tarjeta funciona sin fichero: mientras no lo subas se muestra como «Documento
+pendiente de subir». Si sólo tienes el enlace de verificación y no el PDF, la
+tarjeta apunta a ese enlace.
+
+### Cuidado con el DNI
+
+Este repo es público: **todo lo que entre en `public/` acaba en internet**. Varios
+diplomas llevan el documento de identidad impreso, y algunos enlaces de
+verificación lo enseñan también. Comprueba cada PDF antes de moverlo ahí:
+
+```bash
+pdftotext certificado.pdf - | grep -inE '[0-9]{8}[A-Z]|[XYZ][0-9]{7}[A-Z]'
+```
+
+Los que dan positivo se quedan en `originales/certificaciones-con-datos-personales/`,
+que está fuera de git. A día de hoy son tres:
+
+| Documento | Qué enseña |
+|---|---|
+| `Certificado_ingles_b1.pdf` | DNI, notas por destreza y un enlace de verificación con clave que muestra el DNI a quien lo abra. |
+| `Certificado_machine_learning_MOOC.pdf` | NIE y el código seguro de verificación de la sede de la UGR. |
+| `Certificado_Software_libre_MOOC.pdf` | Ídem. |
+
+Sus fichas siguen en la web, pero sin documento. Para publicarlos hay que tapar
+antes esos datos: rasterizar la página, pintar encima y volver a montar el PDF
+(así no queda capa de texto por debajo).
 
 ## Vídeos
 

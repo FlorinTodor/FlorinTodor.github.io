@@ -1,0 +1,167 @@
+---
+import Base from '../../layouts/Base.astro';
+import datos from '../../../certificaciones.json';
+import { perfil } from '../../../proyectos.json';
+
+const base = import.meta.env.BASE_URL;
+
+// Los ficheros viven en public/certificaciones/. Como el poster de los vídeos,
+// se detectan solos: basta con que se llamen igual que el `id`.
+const ficheros = Object.keys({
+  ...import.meta.glob('/public/certificaciones/*.pdf'),
+  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
+}).map((f) => f.replace('/public/certificaciones/', ''));
+
+const buscar = (id, extensiones) =>
+  ficheros.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));
+
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+// "2021-06" → "junio de 2021"; "2021" → "2021".
+const fechaTexto = (f) => {
+  const [anio, mes] = String(f).split('-');
+  return mes ? `${MESES[Number(mes) - 1]} de ${anio}` : anio;
+};
+
+const certificaciones = datos.certificaciones
+  .map((c) => ({
+    ...c,
+    archivo: c.archivo || buscar(c.id, ['pdf']),
+    imagen: c.imagen || buscar(c.id, ['jpg', 'jpeg', 'png', 'webp']),
+  }))
+  // Las más recientes primero; las destacadas por delante de todo.
+  .sort((a, b) => (b.destacada ? 1 : 0) - (a.destacada ? 1 : 0) || String(b.fecha).localeCompare(String(a.fecha)));
+
+const categorias = [...new Set(certificaciones.map((c) => c.categoria).filter(Boolean))];
+const conPdf = certificaciones.filter((c) => c.archivo).length;
+const conCredly = certificaciones.filter((c) => c.credencial).length;
+
+const invitacion = conPdf > 0
+  ? 'Pincha en cualquiera para abrir el documento.'
+  : conCredly > 0
+    ? 'Pincha en cualquiera para verificarla en la web de quien la expide.'
+    : 'Los documentos se irán subiendo aquí.';
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+const esquema = [{
+  '@type': 'ItemList',
+  '@id': `${url}#certificaciones`,
+  name: 'Certificaciones de Florin Emanuel Todor Gliga',
+  numberOfItems: certificaciones.length,
+  itemListElement: certificaciones.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'EducationalOccupationalCredential',
+      name: c.titulo,
+      credentialCategory: 'certificate',
+      ...(c.categoria ? { about: c.categoria } : {}),
+      ...(c.detalle ? { description: c.detalle } : {}),
+      dateCreated: String(c.fecha),
+      recognizedBy: { '@type': 'Organization', name: c.entidad },
+      ...(c.credencial ? { url: c.credencial } : c.archivo ? { url: `${new URL(`certificaciones/${c.archivo}`, Astro.site).href}` } : {}),
+    },
+  })),
+}];
+---
+
+<Base
+  titulo="Certificaciones — Florin Emanuel Todor Gliga"
+  descripcion="Certificaciones y cursos de Florin Emanuel Todor Gliga: PCAP de Cisco, ciberseguridad y cursos de la Universidad de Granada, con el documento original de cada uno."
+  conLateral={false}
+  esquemaExtra={esquema}
+>
+  <div style="max-width:1100px;margin:0 auto">
+    <header class="cabecera-proyecto">
+      <div style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">
+        Certificaciones
+      </div>
+      <h1>Lo que he ido certificando</h1>
+      <p class="resumen">
+        Cursos y certificaciones oficiales, con el documento original de cada uno para
+        que se pueda comprobar. {invitacion}
+      </p>
+    </header>
+
+    {categorias.length > 1 && (
+      <div class="filtros-cert" role="group" aria-label="Filtrar por área">
+        <button class="filtro activo" data-cat="*">Todas <span>{certificaciones.length}</span></button>
+        {categorias.map((cat) => (
+          <button class="filtro" data-cat={cat}>
+            {cat} <span>{certificaciones.filter((c) => c.categoria === cat).length}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class="rejilla-cert" id="rejilla-cert">
+      {certificaciones.map((c) => {
+        // El PDF manda. Si no lo hay, vale el enlace de verificación; y si el
+        // propio certificado es una imagen (no una miniatura), se abre esa.
+        const documento = c.archivo
+          ? `${base}certificaciones/${c.archivo}`
+          : c.credencial || (c.imagen ? `${base}certificaciones/${c.imagen}` : null);
+        return (
+          <article class="tarjeta-cert" data-cat={c.categoria || ''}>
+            <div class="lamina">
+              {c.imagen ? (
+                <img src={`${base}certificaciones/${c.imagen}`} alt={`Certificado: ${c.titulo}`} loading="lazy" />
+              ) : (
+                <div class="sin-lamina">
+                  <span class="sello">{c.entidad.slice(0, 2).toUpperCase()}</span>
+                  <span class="pendiente">{documento ? 'Ver documento' : 'Documento pendiente de subir'}</span>
+                </div>
+              )}
+              {c.archivo && <span class="insignia-pdf">PDF</span>}
+            </div>
+            <div class="cuerpo">
+              <div class="entidad">{c.entidad}</div>
+              <h2>
+                {documento
+                  ? <a href={documento} target="_blank" rel="noopener">{c.titulo}</a>
+                  : c.titulo}
+              </h2>
+              {c.detalle && <p>{c.detalle}</p>}
+              <div class="pie">
+                <span class="pastilla-fecha" style="margin:0">{fechaTexto(c.fecha)}</span>
+                {c.categoria && <span class="etiqueta">{c.categoria}</span>}
+                {/* Si el enlace de la tarjeta ya es el PDF, la verificación va aparte. */}
+                {c.credencial && c.archivo && (
+                  <a class="verificar" href={c.credencial} target="_blank" rel="noopener">Verificar ↗</a>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <p class="vacio-cert" id="vacio-cert" hidden>No hay nada en esa área.</p>
+
+    <p style="margin-top:2.4rem;color:var(--texto-tenue);font-size:.9rem">
+      La titulación completa está en <a href={`${base}#formacion`}>Formación</a> y el
+      recorrido entero en el <a href={`${base}${perfil.cv}`} download>CV en PDF</a>.
+    </p>
+  </div>
+
+  <script is:inline>
+    // Filtro por área. Sin JS se ven todas, que es lo que importa.
+    const rejilla = document.getElementById('rejilla-cert');
+    const vacio = document.getElementById('vacio-cert');
+    document.querySelectorAll('.filtro').forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const cat = boton.dataset.cat;
+        document.querySelectorAll('.filtro').forEach((b) => b.classList.toggle('activo', b === boton));
+        let visibles = 0;
+        rejilla.querySelectorAll('.tarjeta-cert').forEach((t) => {
+          const mostrar = cat === '*' || t.dataset.cat === cat;
+          t.hidden = !mostrar;
+          if (mostrar) visibles++;
+        });
+        vacio.hidden = visibles > 0;
+      });
+    });
+  </script>
+</Base>
