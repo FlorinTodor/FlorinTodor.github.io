@@ -1,6 +1,6 @@
 {
   "perfil": {
-    "nombre": "Florín Emanuel Todor Gliga",
+    "nombre": "Florin Emanuel Todor Gliga",
     "rol": "Sistemas Linux · Ciberseguridad · IA aplicada",
     "titulo": "Doble Grado en Ingeniería Informática y ADE — Universidad de Granada",
     "ubicacion": "Motril, Granada (España)",
@@ -8,7 +8,8 @@
     "github": "https://github.com/FlorinTodor",
     "linkedin": "https://www.linkedin.com/in/florin-emanuel-todor-gliga/",
     "email": "florintodorgliga@gmail.com",
-    "telefono": "642 394 364"
+    "telefono": "642 394 364",
+    "cv": "CV_Florin_Emanuel_Todor_Gliga.pdf"
   },
   "proyectos": [
     {

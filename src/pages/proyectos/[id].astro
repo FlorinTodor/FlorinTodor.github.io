@@ -19,9 +19,28 @@ const hayVideo = Object.keys(medios).some((f) => f.endsWith(`/media/${p.id}.mp4`
 const gif = Object.keys(medios).find((f) => new RegExp(`/media/${p.id}\\.(gif|png|jpg|webp)$`).test(f));
 
 const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+// Cada proyecto es una obra con autor: refuerza la autoría a nombre completo.
+const esquema = [{
+  '@type': 'SoftwareSourceCode',
+  '@id': `${url}#proyecto`,
+  name: p.titulo,
+  description: p.resumen,
+  inLanguage: 'es-ES',
+  ...(p.anio ? { dateCreated: String(p.anio) } : {}),
+  ...(p.stack?.length ? { programmingLanguage: p.stack } : {}),
+  ...(p.repo && !p.privado ? { codeRepository: p.repo } : {}),
+  author: { '@id': 'https://florintodor.dev/#persona' },
+}];
 ---
 
-<Base titulo={`${p.titulo} — Florín Todor`} descripcion={p.resumen} conLateral={false}>
+<Base
+  titulo={`${p.titulo} — Florin Todor`}
+  descripcion={p.resumen}
+  conLateral={false}
+  esquemaExtra={esquema}
+>
   <div style="max-width:1080px;margin:0 auto">
     <a class="volver" href={`${base}#proyectos`}>← Todos los proyectos</a>
 
