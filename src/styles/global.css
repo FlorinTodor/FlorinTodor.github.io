@@ -196,12 +196,6 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .portada .entradilla { color: var(--texto-suave); font-size: 1.05rem; max-width: 58ch; margin-top: 1.2rem; }
 .acciones { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
 
-/* Cifras */
-.cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1.4rem; }
-.cifra { background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.2rem; text-align: center; }
-.cifra strong { display: block; font-size: 1.9rem; font-weight: 800; color: var(--verde); line-height: 1.1; }
-.cifra span { font-size: .82rem; color: var(--texto-suave); }
-
 /* Etiquetas de tecnología */
 .etiquetas { display: flex; flex-wrap: wrap; gap: .4rem; }
 .etiqueta {
