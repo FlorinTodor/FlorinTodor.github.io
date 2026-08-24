@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="FT">
+  <rect width="100" height="100" rx="22" fill="#02162b"/>
+  <g fill="#3ddc84">
+    <!-- Barra superior compartida: el brazo de la F y el travesaño de la T. -->
+    <rect x="18" y="24" width="64" height="12" rx="2"/>
+    <!-- Asta de la F y su brazo central. -->
+    <rect x="18" y="24" width="12" height="52" rx="2"/>
+    <rect x="18" y="45" width="26" height="11" rx="2"/>
+    <!-- Asta de la T. -->
+    <rect x="64" y="24" width="12" height="52" rx="2"/>
+  </g>
+</svg>
