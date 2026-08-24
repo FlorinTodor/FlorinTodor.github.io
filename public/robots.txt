@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
 
-# El CV vive en /CV_Florin_Emanuel_Todor_Gliga.pdf. La copia con el nombre
-# antiguo se mantiene sólo para que no se rompan los enlaces ya enviados;
-# no debe indexarse ni competir con la nueva.
-Disallow: /CV_Florin_Todor.pdf
-
 Sitemap: https://florintodor.dev/sitemap-index.xml
