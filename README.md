@@ -75,9 +75,10 @@ scripts/generar-og.py       ← redibuja public/img/og.jpg
 El nombre oficial es **Florin Emanuel Todor Gliga**, sin tilde: así aparece en el
 `<title>`, en el `<h1>` de la portada, en el pie, en el CV y en los datos
 estructurados. La grafía castellanizada «Florín» y las formas cortas («Florin
-Todor») van declaradas como `alternateName` en el `Person` de `Base.astro`, para
-que los buscadores las traten como la misma persona en vez de repartir señales
-entre dos nombres. Si cambias el nombre en algún sitio, cámbialo en todos.
+Todor») van declaradas como `alternateName` en el `Person` de `Base.astro` y en
+la descripción de la portada, para que los buscadores las traten como la misma
+persona en vez de repartir señales entre dos nombres. Si cambias el nombre en
+algún sitio, cámbialo en todos.
 
 ## Añadir o editar un proyecto
 
