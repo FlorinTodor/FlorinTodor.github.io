@@ -19,33 +19,22 @@ npm run preview  # sirve dist/ para comprobarlo antes de publicar
 El repo del portafolio es público, pero **no contiene el código de los proyectos
 privados** — sólo sus resúmenes, capturas y vídeos.
 
-## Dominio propio
+## Dominio
 
-Para no usar `florintodor.github.io`:
+El sitio se sirve en **https://florintodor.dev**. Ya está todo configurado:
 
-1. Compra el dominio (Namecheap, Porkbun, IONOS, Dinahosting… ~10–15 €/año para `.es`/`.dev`).
-2. Crea el fichero `public/CNAME` con **una sola línea**: tu dominio sin `https://`
-   y sin barra final. Ejemplo:
-   ```
-   florintodor.es
-   ```
-3. En el panel DNS del registrador, añade:
+- `public/CNAME` contiene el dominio (una línea, sin `https://` ni barra final).
+  Astro lo copia tal cual a `dist/`; si desaparece, GitHub Pages vuelve a
+  `florintodor.github.io` en el siguiente despliegue.
+- Los registros DNS del registrador apuntan `@` a las cuatro IP de GitHub Pages
+  (`185.199.108–111.153`) y `www` por CNAME a `florintodor.github.io.`.
+- `site:` en `astro.config.mjs` debe coincidir con el dominio: de ahí salen las
+  URL absolutas del sitemap y de las etiquetas Open Graph.
+- Con dominio propio el sitio cuelga de la raíz, así que `base` no hace falta.
 
-   | Tipo  | Nombre | Valor |
-   |-------|--------|-------|
-   | A     | `@`    | `185.199.108.153` |
-   | A     | `@`    | `185.199.109.153` |
-   | A     | `@`    | `185.199.110.153` |
-   | A     | `@`    | `185.199.111.153` |
-   | CNAME | `www`  | `florintodor.github.io.` |
-
-4. En **Settings → Pages → Custom domain** escribe el dominio y espera a que
-   verifique. Marca **Enforce HTTPS** cuando se active (puede tardar hasta 24 h).
-5. Cambia `site:` en `astro.config.mjs` a `https://tudominio.es`.
-
-Si el dominio es de tipo `usuario.github.io` no hace falta `base`; con un repo
-llamado de otra forma **y sin dominio propio**, añade `base: '/nombre-del-repo'`
-en `astro.config.mjs`. Con dominio propio, `base` sobra.
+Si alguna vez se cambia el dominio, hay que tocar esos tres sitios a la vez
+(CNAME, DNS y `site:`) y volver a marcar **Enforce HTTPS** en Settings → Pages
+cuando GitHub reemita el certificado.
 
 ## Estructura
 
