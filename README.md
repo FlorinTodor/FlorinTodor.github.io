@@ -68,6 +68,11 @@ public/
   img/cv-preview-1.png      ← primera página del CV
   CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
   img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
+  favicon.ico               ← se queda en la raíz: Google y los navegadores
+                              piden /favicon.ico sin preguntar
+  icon/                     ← el resto de iconos y el manifiesto, que sí van
+                              declarados con <link> y pueden vivir aquí
+  CNAME, robots.txt         ← atados a la raíz por el protocolo
   demo/*.json               ← datos de las demos interactivas
   docs/*.pdf                ← documentos largos (la memoria del TFG)
   certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
