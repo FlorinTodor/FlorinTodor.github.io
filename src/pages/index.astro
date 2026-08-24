@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import TarjetaProyecto from '../components/TarjetaProyecto.astro';
 import datos from '../../proyectos.json';
 import certificaciones from '../../certificaciones.json';
 
@@ -12,9 +13,6 @@ const publicables = proyectos.filter(
 );
 const destacados = publicables.filter((p) => p.destacado);
 const resto = publicables.filter((p) => !p.destacado);
-
-const medios = import.meta.glob('/public/media/*.mp4', { eager: true });
-const tieneVideo = (id) => Object.keys(medios).some((f) => f.endsWith(`/media/${id}.mp4`));
 
 // Los certificados viven en public/certificaciones/ y se llaman como su `id`,
 // igual que en /certificaciones/: así cada entrada de formación puede enseñar
@@ -148,59 +146,13 @@ const competencias = [
     <div class="subtitulo">Destacados</div>
     <div class="rejilla-proyectos">
       {destacados.map((p, i) => (
-        <a class={`tarjeta-proyecto ${i === 0 ? 'destacado' : ''}`} href={`${base}proyectos/${p.id}/`}>
-          {tieneVideo(p.id) && (
-          <div class="miniatura">
-            {(
-              <>
-                <video
-                  src={`${base}media/${p.id}.mp4`}
-                  poster={`${base}media/poster/${p.id}.jpg`}
-                  muted loop playsinline preload="none"></video>
-                <span class="insignia-video">▶ demo</span>
-              </>
-            )}
-          </div>
-          )}
-          <div class="cuerpo">
-            <h3>{p.titulo}</h3>
-            <p>{p.resumen}</p>
-            <div class="pie">
-              {p.privado && <span class="etiqueta ambar">Código privado</span>}
-              {p.stack.slice(0, i === 0 ? 6 : 3).map((t) => <span class="etiqueta">{t}</span>)}
-            </div>
-          </div>
-        </a>
+        <TarjetaProyecto p={p} destacado={i === 0} etiquetas={i === 0 ? 6 : 3} />
       ))}
     </div>
 
     <div class="subtitulo">Otros trabajos</div>
     <div class="rejilla-proyectos">
-      {resto.map((p) => (
-        <a class="tarjeta-proyecto" href={`${base}proyectos/${p.id}/`}>
-          {tieneVideo(p.id) && (
-          <div class="miniatura">
-            {(
-              <>
-                <video
-                  src={`${base}media/${p.id}.mp4`}
-                  poster={`${base}media/poster/${p.id}.jpg`}
-                  muted loop playsinline preload="none"></video>
-                <span class="insignia-video">▶ demo</span>
-              </>
-            )}
-          </div>
-          )}
-          <div class="cuerpo">
-            <h3>{p.titulo}</h3>
-            <p>{p.resumen}</p>
-            <div class="pie">
-              {p.privado && <span class="etiqueta ambar">Código privado</span>}
-              {p.stack.slice(0, 3).map((t) => <span class="etiqueta">{t}</span>)}
-            </div>
-          </div>
-        </a>
-      ))}
+      {resto.map((p) => <TarjetaProyecto p={p} />)}
     </div>
   </section>
 
