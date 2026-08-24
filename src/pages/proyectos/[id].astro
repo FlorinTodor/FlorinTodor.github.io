@@ -4,6 +4,7 @@ import DemoGrafo from '../../components/DemoGrafo.astro';
 import DemoBanca from '../../components/DemoBanca.astro';
 import datos from '../../../proyectos.json';
 import { datosVideo, duracionIso } from '../../utilidades/videos.js';
+import { hayVideo as tieneVideo, buscarGif, DEMOS_INTERACTIVAS } from '../../utilidades/demos.js';
 
 export function getStaticPaths() {
   // No generan página los ocultos ni los marcados "NO PUBLICAR".
@@ -15,11 +16,10 @@ export function getStaticPaths() {
 const { p } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-const medios = import.meta.glob('/public/media/*', { eager: true });
-const hayVideo = Object.keys(medios).some((f) => f.endsWith(`/media/${p.id}.mp4`));
-const gif = Object.keys(medios).find((f) => new RegExp(`/media/${p.id}\\.(gif|png|jpg|webp)$`).test(f));
+const hayVideo = tieneVideo(p.id);
+const gif = buscarGif(p.id);
 
-const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
+const conDemo = DEMOS_INTERACTIVAS.includes(p.id);
 const hayDemo = hayVideo || !!gif || conDemo;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
