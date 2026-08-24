@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import datos from '../../proyectos.json';
+import certificaciones from '../../certificaciones.json';
 
 const { perfil, proyectos } = datos;
 const base = import.meta.env.BASE_URL;
@@ -15,6 +16,30 @@ const resto = publicables.filter((p) => !p.destacado);
 const medios = import.meta.glob('/public/media/*.mp4', { eager: true });
 const tieneVideo = (id) => Object.keys(medios).some((f) => f.endsWith(`/media/${id}.mp4`));
 
+// Los certificados viven en public/certificaciones/ y se llaman como su `id`,
+// igual que en /certificaciones/: así cada entrada de formación puede enseñar
+// la miniatura del documento sin repetir rutas a mano.
+const ficherosCert = Object.keys({
+  ...import.meta.glob('/public/certificaciones/*.pdf'),
+  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
+}).map((f) => f.replace('/public/certificaciones/', ''));
+
+const buscarCert = (id, extensiones) =>
+  ficherosCert.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));
+
+const certPorId = Object.fromEntries(
+  certificaciones.certificaciones.map((c) => {
+    const archivo = c.archivo || buscarCert(c.id, ['pdf']);
+    const imagen = c.imagen || buscarCert(c.id, ['jpg', 'jpeg', 'png', 'webp']);
+    // El PDF manda; si no lo hay vale la verificación y, en último caso, la imagen.
+    const documento = archivo
+      ? `${base}certificaciones/${archivo}`
+      : c.credencial || (imagen ? `${base}certificaciones/${imagen}` : null);
+    return [c.id, { ...c, archivo, imagen, documento }];
+  })
+);
+
+// `certificados` son ids de certificaciones.json: se pintan como miniatura.
 const formacion = [
   {
     fecha: '2021 – 2026',
@@ -28,12 +53,18 @@ const formacion = [
     centro: 'Cisco Networking Academy',
     titulo: 'PCAP: Programming Essentials in Python',
     detalle: 'Curso completo de Python de la Networking Academy. Hice también Introduction to Cybersecurity y, más tarde, Python Essentials 1.',
+    certificados: [
+      'cisco-pcap-programming-essentials-python',
+      'cisco-introduction-to-cybersecurity',
+      'cisco-python-essentials-1',
+    ],
   },
   {
     fecha: '2021 – 2022',
     centro: 'Universidad de Granada',
     titulo: 'MOOC de Conocimiento Abierto y Software Libre · MOOC de Machine Learning y Big Data para Bioinformática',
     detalle: 'Dos cursos abiertos de la UGR: uno de software libre y otro de aprendizaje automático aplicado a datos biomédicos.',
+    certificados: ['mooc-ugr-software-libre', 'mooc-ugr-ml-bioinformatica'],
   },
 ];
 
@@ -183,6 +214,30 @@ const competencias = [
           <a href={f.enlace} target="_blank" rel="noopener" style="font-size:.9rem">
             {f.enlaceTexto} ↗
           </a>
+        )}
+        {(f.certificados || []).map((id) => certPorId[id]).filter((c) => c && c.documento).length > 0 && (
+          <div class="docs-formacion">
+            {(f.certificados || [])
+              .map((id) => certPorId[id])
+              .filter((c) => c && c.documento)
+              .map((c) => (
+                <a
+                  class="doc-mini"
+                  href={c.documento}
+                  target="_blank"
+                  rel="noopener"
+                  title={`${c.titulo} — ${c.entidad}`}
+                >
+                  <span class="lamina-mini">
+                    {c.imagen
+                      ? <img src={`${base}certificaciones/${c.imagen}`} alt={`Certificado: ${c.titulo}`} loading="lazy" />
+                      : <span class="sello-mini">{c.entidad.slice(0, 2).toUpperCase()}</span>}
+                  </span>
+                  <span class="titulo-mini">{c.titulo}</span>
+                  <span class="tipo-mini">{c.archivo ? 'PDF ↗' : 'Ver ↗'}</span>
+                </a>
+              ))}
+          </div>
         )}
       </div>
     ))}

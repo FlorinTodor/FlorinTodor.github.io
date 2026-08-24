@@ -480,3 +480,36 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   font-size: .78rem; color: var(--texto-tenue); font-style: italic;
   flex: 0; margin-bottom: .8rem;
 }
+
+/* ---------- Formación: el documento de cada curso ---------- */
+.docs-formacion { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+.doc-mini {
+  display: flex; flex-direction: column; gap: .38rem; width: 140px;
+  background: var(--panel-alto); border: 1px solid var(--borde);
+  border-radius: var(--radio-s); padding: .45rem; color: var(--texto-suave);
+  transition: border-color .18s, transform .18s, color .18s, box-shadow .18s;
+}
+.doc-mini:hover, .doc-mini:focus-visible {
+  border-color: var(--verde); color: var(--texto);
+  transform: translateY(-2px); box-shadow: var(--sombra);
+}
+/* Es un documento: se ve entero, no recortado. */
+.doc-mini .lamina-mini {
+  aspect-ratio: 16 / 11; background: var(--bg-sunk); border-radius: 4px;
+  display: grid; place-items: center; overflow: hidden;
+}
+.doc-mini .lamina-mini img { width: 100%; height: 100%; object-fit: contain; }
+.doc-mini .sello-mini {
+  font-family: var(--mono); font-weight: 700; font-size: .95rem;
+  letter-spacing: .06em; color: var(--verde);
+}
+.doc-mini .titulo-mini { font-size: .74rem; line-height: 1.32; }
+.doc-mini .tipo-mini {
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .09em;
+  color: var(--texto-tenue); margin-top: auto;
+}
+.doc-mini:hover .tipo-mini, .doc-mini:focus-visible .tipo-mini { color: var(--verde); }
+
+@media (max-width: 620px) {
+  .doc-mini { width: calc(50% - .3rem); }
+}
