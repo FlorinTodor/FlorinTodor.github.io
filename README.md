@@ -67,14 +67,15 @@ public/
   CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
   img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
   demo/*.json               ← datos de las demos interactivas
-src/datos/videos.json       ← duración y tamaño de cada demo (para el VideoObject)
+src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compilar
 scripts/generar-og.py       ← redibuja public/img/og.jpg
-scripts/datos-video.py      ← regenera src/datos/videos.json con ffprobe
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 ```
 
-Al añadir o regrabar un vídeo hay que pasar `scripts/datos-video.py`: si no, el
-`VideoObject` de esa ficha se queda con la duración vieja o directamente no sale.
+Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
+`poster/<id>.jpg`. La duración y el tamaño del `VideoObject` se leen del fichero
+al compilar, y la fecha de publicación sale del commit que lo tocó — por eso el
+workflow hace `checkout` con `fetch-depth: 0`, para tener historial.
 
 ## El nombre
 

@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # El VideoObject de cada demo saca su uploadDate del commit que tocó
+          # el MP4, así que hace falta el historial y no sólo el último commit.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
