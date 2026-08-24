@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CARPETA = Path(__file__).resolve().parent.parent / "public" / "certificaciones"
-ANCHO = 1000  # suficiente para la tarjeta y para verlo a pantalla completa
+ANCHO = 600  # se muestran a ~300 px; 600 cubre las pantallas de densidad doble
 
 def main() -> int:
     if not CARPETA.is_dir():
