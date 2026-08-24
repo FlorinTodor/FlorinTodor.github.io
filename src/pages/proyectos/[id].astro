@@ -92,8 +92,10 @@ if (video) {
 ---
 
 <Base
-  titulo={`${p.titulo} — Florin Todor`}
-  descripcion={p.resumen}
+  titulo={`${p.tituloSeo || p.titulo} — Florin Todor`}
+  descripcion={p.descripcionSeo || p.resumen}
+  imagenOg={`img/og/${p.id}.jpg`}
+  altOg={`${p.titulo} — proyecto de Florin Emanuel Todor Gliga`}
   conLateral={false}
   esquemaExtra={esquema}
 >
@@ -184,18 +186,18 @@ if (video) {
       {/* ---------- lateral ---------- */}
       <aside>
         <div class="panel-lateral">
-          <h4>Stack</h4>
+          <h3>Stack</h3>
           <div class="etiquetas">{p.stack.map((t) => <span class="etiqueta">{t}</span>)}</div>
         </div>
 
         <div class="panel-lateral">
-          <h4>Contexto</h4>
+          <h3>Contexto</h3>
           <p style="margin:0;font-size:.89rem;color:var(--texto-suave)">{p.contexto}</p>
         </div>
 
         {p.memoria && (
           <div class="panel-lateral">
-            <h4>Memoria</h4>
+            <h3>Memoria</h3>
             <p style="margin:0 0 .8rem;font-size:.89rem;color:var(--texto-suave)">
               El documento completo{p.memoriaPaginas ? `, ${p.memoriaPaginas} páginas` : ''}:
               planteamiento, diseño del grafo, evaluación y resultados.
@@ -205,7 +207,7 @@ if (video) {
         )}
 
         <div class="panel-lateral">
-          <h4>Más</h4>
+          <h3>Más</h3>
           <p style="margin:0;font-size:.89rem"><a class="enlace-suelto" href={`${base}#proyectos`}>← Otros proyectos</a></p>
         </div>
       </aside>

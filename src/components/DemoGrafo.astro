@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
   <div class="dg-cuerpo">
     <div class="dg-origen">
       <span class="dg-chapa" id="dg-chapa">NIS2</span>
-      <h4 id="dg-titulo">—</h4>
+      <h3 id="dg-titulo">—</h3>
       <p id="dg-desc">—</p>
     </div>
 
@@ -81,10 +81,11 @@ const base = import.meta.env.BASE_URL;
   }
   .dg-chapa {
     display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .06em;
-    padding: .15em .5em; border-radius: 5px; color: #fff; background: var(--nis2);
+    /* Tinta oscura: el blanco sobre el verde se queda en 1,78:1. */
+    padding: .15em .5em; border-radius: 5px; color: #052616; background: var(--nis2);
   }
   .dg-chapa[data-tipo="DORA"] { background: var(--dora); }
-  .dg-origen h4 { margin: .5rem 0 .4rem; font-size: 1rem; }
+  .dg-origen h3 { margin: .5rem 0 .4rem; font-size: 1rem; }
   .dg-origen p { font-size: .87rem; color: var(--texto-suave); margin: 0; }
   .dg-flecha {
     display: flex; flex-direction: column; align-items: center; gap: .2rem;

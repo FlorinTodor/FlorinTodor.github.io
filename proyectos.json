@@ -17,7 +17,9 @@
       "destacado": true,
       "privado": true,
       "titulo": "Ciber-AsesorIA/ST — Motor de evaluación de cumplimiento normativo",
+      "tituloSeo": "Ciber-AsesorIA: cumplimiento ENS, NIS2 y DORA",
       "resumen": "Trabajo de Fin de Grado: motor que, dado el perfil de una empresa y un control legislativo, infiere de forma determinista qué requisitos técnicos le exigen ENS, NIS2 y DORA, y conduce una auditoría conversacional que emite un veredicto trazable con puntuación.",
+      "descripcionSeo": "TFG: motor que infiere de forma determinista qué le exigen ENS, NIS2 y DORA a una empresa y conduce una auditoría con veredicto trazable.",
       "destacados": [
         "Principio de Máximos resuelto en Cypher sobre Neo4j: para cada control selecciona la exigencia más restrictiva entre los tres marcos, combinando suelos, refuerzos y exclusiones",
         "Inferencia determinista por consulta al grafo, separada de las etapas con LLM: el veredicto es reconstruible y explicable",
@@ -65,7 +67,9 @@
       "destacado": true,
       "privado": true,
       "titulo": "Habla con tu dinero — Asistente bancario conversacional",
+      "tituloSeo": "Habla con tu dinero: asistente bancario con IA",
       "resumen": "Asistente que permite gestionar tus finanzas por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos que el propio modelo diseña.",
+      "descripcionSeo": "Asistente bancario por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos con IA.",
       "destacados": [
         "Agente LLM con tool calling: cuatro herramientas orquestadas por el modelo sobre una API bancaria simulada",
         "NL → SQL con validación en servidor: solo lectura, sentencia única y lista negra de palabras clave",
@@ -359,6 +363,7 @@
       "destacado": false,
       "privado": true,
       "titulo": "Agenda Digital — app multiplataforma de eventos académicos",
+      "tituloSeo": "Agenda Digital: app Flutter con backend Rails",
       "resumen": "Aplicación Flutter con backend Ruby on Rails para gestionar eventos académicos organizados en un árbol jerárquico de meses, semanas, días y eventos.",
       "destacados": [
         "Cliente Flutter multiplataforma (iOS, Android, Web) con Material Design 3",
@@ -391,6 +396,7 @@
       "id": "clasificador-idiomas",
       "destacado": false,
       "titulo": "Clasificador automático de idiomas por bigramas",
+      "tituloSeo": "Clasificador de idiomas por bigramas en C++",
       "resumen": "Sistema en C++ que modela cada idioma por la frecuencia de sus pares de caracteres y clasifica un texto desconocido midiendo su distancia a los modelos conocidos.",
       "destacados": [
         "Modelo de idioma como perfil de bigramas, serializado a un formato .bgr propio",
