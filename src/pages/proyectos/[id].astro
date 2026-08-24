@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import DemoGrafo from '../../components/DemoGrafo.astro';
 import DemoBanca from '../../components/DemoBanca.astro';
 import datos from '../../../proyectos.json';
-import videos from '../../datos/videos.json';
+import { datosVideo, duracionIso } from '../../utilidades/videos.js';
 
 export function getStaticPaths() {
   // No generan página los ocultos ni los marcados "NO PUBLICAR".
@@ -22,9 +22,9 @@ const gif = Object.keys(medios).find((f) => new RegExp(`/media/${p.id}\\.(gif|pn
 const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
-// Los datos del vídeo los genera scripts/datos-video.py con ffprobe.
-const video = hayVideo ? videos[p.id] : null;
-const iso8601 = (s) => `PT${s >= 60 ? `${Math.floor(s / 60)}M` : ''}${s % 60}S`;
+// Duración, tamaño y fecha salen del propio MP4 al compilar: no hay nada que
+// regenerar a mano cuando se cambia un vídeo.
+const video = hayVideo ? datosVideo(p.id) : null;
 
 // Cada proyecto es una obra con autor: refuerza la autoría a nombre completo.
 const esquema = [{
@@ -50,7 +50,7 @@ if (video) {
     thumbnailUrl: new URL(`media/poster/${p.id}.jpg`, Astro.site).href,
     contentUrl: new URL(`media/${p.id}.mp4`, Astro.site).href,
     uploadDate: video.fecha,
-    duration: iso8601(video.segundos),
+    duration: duracionIso(video.segundos),
     width: video.ancho,
     height: video.alto,
     inLanguage: 'es-ES',
