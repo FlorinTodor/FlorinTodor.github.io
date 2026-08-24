@@ -1,0 +1,395 @@
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - 0 - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 10, Row: 1, Col: 11 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 5, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+
+Where? LEFT ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - 0 - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 10, Row: 1, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 5, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X C X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 7, Row: 2, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 2, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+Se han producido 3 de 10 rondas de combate.
+El monstruo ha ganado el combate.
+Where? UP ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - 0 - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 7, Row: 1, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0], S[Effect: 0, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 2, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X C X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 2, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+Se han producido 1 de 10 rondas de combate.
+El jugador  0 ha ganado el combate.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X 0 - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 3, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X 0 X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 4, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - 0 - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 5, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X 0 X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 6, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? DOWN ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - 0 - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 7, Col: 10 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? RIGHT ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - 0 M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 9, Row: 7, Col: 11 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 2]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 5, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? RIGHT ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - C - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 7, Row: 7, Col: 12 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 0, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+Se han producido 4 de 10 rondas de combate.
+El jugador  0 ha ganado el combate.
+Where? RIGHT ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M 0 E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 7, Row: 7, Col: 13 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 0, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+Where? RIGHT ARROW
+Laberinto:
+X X X X X X X X X X X X X X X 
+X - - - - - - - - - - - - - X 
+X - X X X M X - X X M X X - X 
+X - M - - - X - - X - - X - X 
+X X X X - X X X X X - X X X X 
+X - - X - - - - M - - - - - X 
+X - X X - X X X X X - X X X X 
+X - - - - - - X - - - - M - E 
+X X X X X X X X X X X X X X X 
+
+Jugadores:
+Name: Player #0, Intelligence: 3.7807321765992197, Strength: 7.008916256280681, Health: 7, Row: 7, Col: 14 
+Weapons: [W[Effect: 0, Uses: 0], W[Effect: 0, Uses: 0]]
+Shields: [S[Effect: 0.6651033340679939, Uses: 0]]
+
+Monstruos:
+Name: Ogre, Intelligence: 7.791989217672528, Strength: 7.193176324591462, Health: 5, Row: 3, Col: 2
+Name: Vampire, Intelligence: 2.0242155377131144, Strength: 7.824776892017554, Health: 0, Row: 2, Col: 10
+Name: Demon, Intelligence: 0.6414245899489213, Strength: 6.2731381877481605, Health: 5, Row: 2, Col: 5
+Name: Dragon, Intelligence: 2.7142071952397115, Strength: 2.3938238571500667, Health: 5, Row: 5, Col: 8
+Name: Zombie, Intelligence: 2.3524022788299837, Strength: 9.85026904335001, Health: 0, Row: 7, Col: 12
+
+Turno del Jugador: 0
+
+Registro del Juego:
+El jugador 0 se ha movido a una celda vacía o no le ha sido posible moverse.
+¡Felicidades! ¡Has ganado!
