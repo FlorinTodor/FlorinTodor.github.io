@@ -14,7 +14,6 @@ const resto = publicables.filter((p) => !p.destacado);
 
 const medios = import.meta.glob('/public/media/*.mp4', { eager: true });
 const tieneVideo = (id) => Object.keys(medios).some((f) => f.endsWith(`/media/${id}.mp4`));
-const conVideo = publicables.filter((p) => tieneVideo(p.id)).length;
 
 const formacion = [
   {
@@ -70,13 +69,6 @@ const competencias = [
       <a class="boton fantasma" href={`mailto:${perfil.email}`}>Escríbeme</a>
     </div>
   </section>
-
-  <div class="cifras">
-    <div class="cifra"><strong>{publicables.length}</strong><span>proyectos publicados</span></div>
-    <div class="cifra"><strong>{conVideo}</strong><span>con demo en vídeo</span></div>
-    <div class="cifra"><strong>8</strong><span>lenguajes de programación</span></div>
-    <div class="cifra"><strong>5</strong><span>años de doble grado</span></div>
-  </div>
 
   {/* ---------------- 01 Sobre mí ---------------- */}
   <section id="sobre-mi">
