@@ -20,7 +20,18 @@ const hayVideo = Object.keys(medios).some((f) => f.endsWith(`/media/${p.id}.mp4`
 const gif = Object.keys(medios).find((f) => new RegExp(`/media/${p.id}\\.(gif|png|jpg|webp)$`).test(f));
 
 const conDemo = p.id === 'ciber-asesoria' || p.id === 'habla-con-tu-dinero';
+const hayDemo = hayVideo || !!gif || conDemo;
 const url = new URL(Astro.url.pathname, Astro.site).href;
+
+// Enlaces de la cabecera, de más a menos fuerte: el primero se pinta en verde.
+// En los proyectos con el repositorio privado manda la memoria, y si tampoco la
+// hay, la demo; el correo queda siempre el último.
+const acciones = [
+  ...(!p.privado ? [{ href: p.repo, texto: 'Ver el código en GitHub ↗', externo: true }] : []),
+  ...(p.memoria ? [{ href: `${base}${p.memoria}`, texto: 'Memoria en PDF ↗', externo: true }] : []),
+  ...(hayDemo ? [{ href: '#demo', texto: '▶ Ver la demo' }] : []),
+  ...(p.privado ? [{ href: `mailto:${datos.perfil.email}`, texto: 'Código privado: escríbeme' }] : []),
+];
 
 // Duración, tamaño y fecha salen del propio MP4 al compilar: no hay nada que
 // regenerar a mano cuando se cambia un vídeo.
@@ -101,17 +112,13 @@ if (video) {
       {/* Los enlaces van arriba: quien entra busca el código y la demo, no
           quiere bajar a un panel lateral para encontrarlos. */}
       <div class="acciones-proyecto">
-        {p.privado ? (
-          <a class="boton fantasma" href={`mailto:${datos.perfil.email}`}>Código privado: escríbeme</a>
-        ) : (
-          <a class="boton" href={p.repo} target="_blank" rel="noopener">Ver el código en GitHub ↗</a>
-        )}
-        {(hayVideo || gif || conDemo) && (
-          <a class="boton fantasma" href="#demo">▶ Ver la demo</a>
-        )}
-        {p.memoria && (
-          <a class="boton fantasma" href={`${base}${p.memoria}`} target="_blank" rel="noopener">Memoria en PDF ↗</a>
-        )}
+        {acciones.map((a, i) => (
+          <a
+            class={i === 0 ? 'boton' : 'boton fantasma'}
+            href={a.href}
+            {...(a.externo ? { target: '_blank', rel: 'noopener' } : {})}
+          >{a.texto}</a>
+        ))}
       </div>
     </header>
 
@@ -199,7 +206,7 @@ if (video) {
 
         <div class="panel-lateral">
           <h4>Más</h4>
-          <p style="margin:0;font-size:.89rem"><a href={`${base}#proyectos`}>← Otros proyectos</a></p>
+          <p style="margin:0;font-size:.89rem"><a class="enlace-suelto" href={`${base}#proyectos`}>← Otros proyectos</a></p>
         </div>
       </aside>
     </div>
