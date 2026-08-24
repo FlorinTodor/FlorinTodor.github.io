@@ -417,3 +417,62 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   .prosa pre { font-size: .78rem; padding: .8rem .9rem; }
   .prosa { font-size: .98rem; }
 }
+
+/* ---------- Certificaciones ---------- */
+.filtros-cert { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.6rem; }
+.filtro {
+  background: var(--panel); border: 1px solid var(--borde); color: var(--texto-suave);
+  border-radius: 999px; padding: .42rem .95rem; font: inherit; font-size: .86rem;
+  font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: .45rem;
+  transition: border-color .18s, color .18s, background .18s;
+}
+.filtro:hover { color: var(--texto); border-color: var(--borde-fuerte); }
+.filtro span { color: var(--texto-tenue); font-family: var(--mono); font-size: .76rem; }
+.filtro.activo { background: var(--verde-tenue); border-color: var(--verde); color: var(--verde); }
+.filtro.activo span { color: inherit; opacity: .75; }
+
+.rejilla-cert { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.1rem; }
+.tarjeta-cert {
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio);
+  transition: transform .18s, border-color .18s, box-shadow .18s;
+}
+.tarjeta-cert[hidden] { display: none; }   /* display:flex gana al [hidden] del navegador */
+.tarjeta-cert:has(h2 a:hover), .tarjeta-cert:has(h2 a:focus-visible) {
+  border-color: var(--verde); transform: translateY(-3px); box-shadow: var(--sombra);
+}
+.tarjeta-cert .lamina {
+  position: relative; aspect-ratio: 16 / 11; background: var(--bg-sunk);
+  border-bottom: 1px solid var(--borde); overflow: hidden;
+}
+/* El certificado es un documento: se ve entero, no recortado. */
+.tarjeta-cert .lamina img { width: 100%; height: 100%; object-fit: contain; padding: .7rem; }
+.tarjeta-cert .sin-lamina {
+  height: 100%; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: .6rem; text-align: center; padding: 1rem;
+}
+.tarjeta-cert .sello {
+  font-family: var(--mono); font-weight: 700; font-size: 1.15rem; letter-spacing: .06em;
+  color: var(--verde); background: var(--verde-tenue); border: 1px solid var(--borde);
+  border-radius: 50%; width: 54px; height: 54px; display: grid; place-items: center;
+}
+.tarjeta-cert .sin-lamina .pendiente { color: var(--texto-tenue); font-size: .8rem; }
+.insignia-pdf {
+  position: absolute; top: .6rem; right: .6rem; background: rgba(2, 22, 43, .82);
+  border: 1px solid var(--borde); color: var(--texto-suave); font-family: var(--mono);
+  font-size: .68rem; letter-spacing: .08em; padding: .2rem .5rem; border-radius: 999px;
+}
+.tarjeta-cert .cuerpo { padding: 1.1rem; display: flex; flex-direction: column; flex: 1; }
+.tarjeta-cert .entidad {
+  color: var(--texto-tenue); font-size: .76rem; text-transform: uppercase;
+  letter-spacing: .07em; margin-bottom: .4rem;
+}
+.tarjeta-cert h2 { font-size: 1rem; line-height: 1.35; margin-bottom: .5rem; }
+.tarjeta-cert h2 a { color: var(--texto); }
+.tarjeta-cert h2 a:hover { color: var(--verde); }
+/* Toda la tarjeta abre el documento, pero «Verificar» sigue siendo pinchable. */
+.tarjeta-cert h2 a::after { content: ""; position: absolute; inset: 0; }
+.tarjeta-cert p { color: var(--texto-suave); font-size: .88rem; flex: 1; margin-bottom: .8rem; }
+.tarjeta-cert .pie { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin-top: auto; }
+.tarjeta-cert .verificar { position: relative; z-index: 1; font-size: .82rem; margin-left: auto; }
+.vacio-cert { color: var(--texto-suave); text-align: center; padding: 2.5rem 0; }

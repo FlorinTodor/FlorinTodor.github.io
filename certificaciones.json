@@ -1,0 +1,102 @@
+{
+  "_comentario": [
+    "Fuente de datos de /certificaciones/. Un objeto por título.",
+    "Los ficheros van en public/certificaciones/: el PDF y la miniatura se",
+    "detectan solos si se llaman como el `id` (cisco-python-essentials-1.pdf,",
+    "cisco-python-essentials-1.png). Campos: id, titulo, entidad (quién lo",
+    "expide), fecha (AAAA o AAAA-MM), categoria (agrupa los filtros), detalle",
+    "(opcional), credencial (URL de verificación, opcional), destacada (true la",
+    "sube al principio). Si el PDF o la imagen se llaman de otra forma,",
+    "indícalos en `archivo` e `imagen`.",
+    "OJO: este repo es público. Antes de meter un PDF en public/certificaciones/,",
+    "comprueba que no lleve DNI, NIE ni códigos de verificación. Los que sí los",
+    "llevan están guardados fuera del sitio, en originales/."
+  ],
+  "certificaciones": [
+    {
+      "id": "hack4u-introduccion-linux",
+      "titulo": "Introducción a Linux",
+      "entidad": "Hack4u — Marcelo Vázquez (S4vitar)",
+      "fecha": "2024-08",
+      "categoria": "Sistemas",
+      "destacada": true,
+      "detalle": "Manejo del sistema desde la terminal: sistema de ficheros, permisos, procesos, redirecciones y administración básica.",
+      "credencial": ""
+    },
+    {
+      "id": "cisco-python-essentials-1",
+      "titulo": "Python Essentials 1",
+      "entidad": "Cisco Networking Academy",
+      "fecha": "2023-08",
+      "categoria": "Programación",
+      "destacada": true,
+      "detalle": "Fundamentos del lenguaje: tipos, control de flujo, funciones y biblioteca estándar. Impartido con el OpenEDG Python Institute.",
+      "credencial": "https://www.credly.com/badges/b6759586-e32d-41fb-9de5-e96f2435a0bb/public_url"
+    },
+    {
+      "id": "cisco-pcap-programming-essentials-python",
+      "titulo": "PCAP — Programming Essentials in Python",
+      "entidad": "Cisco Networking Academy",
+      "fecha": "2021-06",
+      "categoria": "Programación",
+      "destacada": true,
+      "detalle": "Curso completo de Python: módulos, ficheros, excepciones y programación orientada a objetos.",
+      "credencial": ""
+    },
+    {
+      "id": "cisco-introduction-to-cybersecurity",
+      "titulo": "Introduction to Cybersecurity",
+      "entidad": "Cisco Networking Academy",
+      "fecha": "2021-05",
+      "categoria": "Ciberseguridad",
+      "destacada": true,
+      "detalle": "Amenazas y vulnerabilidades, malware, detección y defensa, y privacidad de los datos. Se supera con el examen final de la Networking Academy.",
+      "credencial": "https://www.credly.com/badges/241a7c95-db52-4966-97a1-311651b92b0b/public_url"
+    },
+    {
+      "id": "british-council-aptis-b1",
+      "titulo": "Aptis ESOL International Certificate — nivel B1",
+      "entidad": "British Council",
+      "fecha": "2026-05",
+      "categoria": "Idiomas",
+      "detalle": "Nivel B1 del MCER en las cuatro destrezas, evaluado por el British Council. Documento disponible a petición.",
+      "credencial": ""
+    },
+    {
+      "id": "t-systems-experience-ugr",
+      "titulo": "Programa T-Systems Experience",
+      "entidad": "Cátedra de Innovación en Sostenibilidad Digital · UGR y T-Systems Iberia",
+      "fecha": "2025-11",
+      "categoria": "Jornadas",
+      "detalle": "Recorrido de aprendizaje experiencial en la sede de T-Systems en el Parque Tecnológico de la Salud de Granada.",
+      "credencial": ""
+    },
+    {
+      "id": "hackathon-innovacion-puleva-ugr",
+      "titulo": "III Hackathon de Innovación",
+      "entidad": "Cátedra de Intraemprendimiento e Innovación · Lactalis Puleva y UGR",
+      "fecha": "2025-10",
+      "categoria": "Jornadas",
+      "detalle": "Resolución por equipos de retos empresariales reales planteados por directivos de la compañía.",
+      "credencial": ""
+    },
+    {
+      "id": "mooc-ugr-ml-bioinformatica",
+      "titulo": "MOOC de Machine Learning y Big Data para la Bioinformática",
+      "entidad": "Universidad de Granada",
+      "fecha": "2022-04",
+      "categoria": "IA y datos",
+      "detalle": "100 horas y 4 créditos. Aprendizaje automático aplicado a datos biomédicos y tratamiento de grandes volúmenes de datos.",
+      "credencial": ""
+    },
+    {
+      "id": "mooc-ugr-software-libre",
+      "titulo": "MOOC de Conocimiento Abierto y Software Libre",
+      "entidad": "Universidad de Granada",
+      "fecha": "2022-03",
+      "categoria": "Sistemas",
+      "detalle": "50 horas y 2 créditos. Licencias libres, trabajo colaborativo y publicación abierta de código y datos.",
+      "credencial": ""
+    }
+  ]
+}
