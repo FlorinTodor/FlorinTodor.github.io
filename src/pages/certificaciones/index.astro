@@ -124,6 +124,7 @@ const esquema = [{
                   : c.titulo}
               </h2>
               {c.detalle && <p>{c.detalle}</p>}
+              {c.nota && <p class="nota-cert">{c.nota}</p>}
               <div class="pie">
                 <span class="pastilla-fecha" style="margin:0">{fechaTexto(c.fecha)}</span>
                 {c.categoria && <span class="etiqueta">{c.categoria}</span>}

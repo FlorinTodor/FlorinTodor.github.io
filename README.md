@@ -69,6 +69,7 @@ public/
   CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
   img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
   demo/*.json               ← datos de las demos interactivas
+  docs/*.pdf                ← documentos largos (la memoria del TFG)
   certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
 originales/                 ← material en bruto, fuera de git: vídeos y PDF sin
                               procesar, la memoria del TFG y los certificados
@@ -77,6 +78,7 @@ src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compil
 scripts/generar-og.py       ← redibuja public/img/og.jpg
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
+scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
 ```
 
 Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
@@ -108,6 +110,7 @@ Todo sale de `proyectos.json`:
 | `stack[]`, `categorias[]` | Etiquetas. |
 | `autoria` | Opcional. En trabajos compartidos, deja clara tu parte. |
 | `pendiente[]` | Notas privadas. **No se publican.** Si una empieza por `NO PUBLICAR`, el proyecto se excluye del sitio automáticamente. |
+| `memoria` | Opcional. Ruta dentro de `public/` a un documento largo; añade el panel «Memoria» y lo declara como `Thesis`. |
 
 ## Añadir una certificación
 
@@ -149,18 +152,34 @@ verificación lo enseñan también. Comprueba cada PDF antes de moverlo ahí:
 pdftotext certificado.pdf - | grep -inE '[0-9]{8}[A-Z]|[XYZ][0-9]{7}[A-Z]'
 ```
 
-Los que dan positivo se quedan en `originales/certificaciones-con-datos-personales/`,
-que está fuera de git. A día de hoy son tres:
+El original se queda en `originales/certificaciones-con-datos-personales/`, fuera
+de git, y lo que se publica es una copia con el dato tapado:
 
-| Documento | Qué enseña |
+```bash
+python3 scripts/tapar-datos-personales.py
+```
+
+**Un recuadro negro encima de un PDF no tapa nada**: el texto sigue debajo y sale
+con `pdftotext` o seleccionándolo. El script lo hace bien — localiza el dato por
+sus coordenadas, rasteriza la página, pinta sobre los píxeles y vuelve a montar
+el PDF, que ya no tiene capa de texto. Tapa también los códigos de verificación
+y los **QR**, porque llevan al original en la sede electrónica, donde el dato
+vuelve a estar a la vista.
+
+Hoy pasan por ahí tres documentos:
+
+| Documento | Qué se tapa |
 |---|---|
-| `Certificado_ingles_b1.pdf` | DNI, notas por destreza y un enlace de verificación con clave que muestra el DNI a quien lo abra. |
-| `Certificado_machine_learning_MOOC.pdf` | NIE y el código seguro de verificación de la sede de la UGR. |
+| `Certificado_ingles_b1.pdf` | DNI, QR y el enlace de verificación con clave (ese enlace enseña el DNI a quien lo abra). |
+| `Certificado_machine_learning_MOOC.pdf` | NIE, QR y el código seguro de verificación (CSV) de la sede de la UGR. |
 | `Certificado_Software_libre_MOOC.pdf` | Ídem. |
 
-Sus fichas siguen en la web, pero sin documento. Para publicarlos hay que tapar
-antes esos datos: rasterizar la página, pintar encima y volver a montar el PDF
-(así no queda capa de texto por debajo).
+Cuando un documento va tapado, dilo en el campo `nota` de su ficha: sale en
+letra pequeña bajo la descripción, para que quien vea la mancha sepa qué es.
+
+La memoria del TFG lleva el DNI en la hoja de autorización de depósito. La copia
+publicada (`public/docs/memoria-tfg-ciber-asesoria.pdf`) es la misma sin esa hoja:
+145 páginas en vez de 146. El original completo está en `originales/`.
 
 ## Vídeos
 

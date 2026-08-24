@@ -48,6 +48,8 @@
         "Cumplimiento normativo"
       ],
       "repo": "https://github.com/FlorinTodor/Ciber-AsesorIA",
+      "memoria": "docs/memoria-tfg-ciber-asesoria.pdf",
+      "memoriaPaginas": 145,
       "anio": 2026,
       "contexto": "Trabajo de Fin de Grado — Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
       "autoria": "Ciber-AsesorIA es un proyecto conjunto de dos subsistemas. Mi TFG es el módulo ST (motor de inferencia, agente de evaluación, CITAD y la integración con el Coordinador), más las piezas CITAD y Autopiloto del frontend. El módulo SN y el resto del frontend son obra de mi compañera de proyecto, Laura.",
