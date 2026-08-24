@@ -7,12 +7,24 @@ const articulos = (await getCollection('blog', ({ data }) => !data.borrador))
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 
 const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+const esquema = [{
+  '@type': 'Blog',
+  '@id': `${url}#blog`,
+  name: 'Cosas que se rompen y por qué',
+  description: 'Notas sobre fallos de infraestructura, seguridad e IA aplicada.',
+  inLanguage: 'es-ES',
+  author: { '@id': 'https://florintodor.dev/#persona' },
+  publisher: { '@id': 'https://florintodor.dev/#persona' },
+}];
 ---
 
 <Base
-  titulo="Blog — Florín Todor"
+  titulo="Blog — Florin Emanuel Todor Gliga"
   descripcion="Notas sobre fallos de infraestructura, seguridad e IA aplicada: qué pasó, cómo lo diagnostiqué y cómo se evita."
   conLateral={false}
+  esquemaExtra={esquema}
 >
   <div style="max-width:820px;margin:0 auto">
     <header class="cabecera-proyecto">

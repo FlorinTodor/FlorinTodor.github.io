@@ -49,22 +49,24 @@ const competencias = [
 ---
 
 <Base
-  titulo="Florín Todor — Sistemas Linux, Ciberseguridad e IA aplicada"
-  descripcion="Portafolio de Florín Emanuel Todor Gliga: infraestructura Linux y Docker, ciberseguridad e IA aplicada. Doble Grado en Informática y ADE por la UGR."
+  titulo="Florin Emanuel Todor Gliga — Sistemas Linux, Ciberseguridad e IA aplicada"
+  descripcion="Portafolio de Florin Emanuel Todor Gliga (Florín Todor): infraestructura Linux y Docker, ciberseguridad e IA aplicada. Doble Grado en Informática y ADE por la UGR."
 >
   {/* ---------------- Portada ---------------- */}
   <section id="inicio" class="portada">
-    <div class="etiqueta-seccion">Inicio</div>
-    <h1>Construyo sistemas.<br />Y me aseguro de que <em>aguanten</em>.</h1>
+    <h1>
+      <span class="nombre-completo">Florin Emanuel Todor Gliga</span>
+      Construyo sistemas.<br />Y me aseguro de que <em>aguanten</em>.
+    </h1>
     <p class="entradilla">
-      Soy Florín, de Motril. Acabo de terminar el <strong>Doble Grado en Ingeniería
+      Soy Florin, de Motril. Acabo de terminar el <strong>Doble Grado en Ingeniería
       Informática y ADE</strong> en la Universidad de Granada. Trabajo sobre todo con
       <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e
       <strong>IA aplicada</strong>.
     </p>
     <div class="acciones">
       <a class="boton" href="#proyectos">Ver proyectos</a>
-      <a class="boton fantasma" href={`${base}CV_Florin_Todor.pdf`} download>Descargar CV</a>
+      <a class="boton fantasma" href={`${base}${perfil.cv}`} download>Descargar CV</a>
       <a class="boton fantasma" href={`mailto:${perfil.email}`}>Escríbeme</a>
     </div>
   </section>
@@ -80,6 +82,11 @@ const competencias = [
   <section id="sobre-mi">
     <div class="titulo-seccion"><h2>Sobre mí</h2><div class="linea"></div><div class="num">01</div></div>
     <div class="tarjeta">
+      <p>
+        Me llamo <strong>Florin Emanuel Todor Gliga</strong>. El nombre es rumano y se escribe sin
+        tilde, aunque en España mucha gente lo escribe <strong>Florín</strong> porque así suena al
+        pronunciarlo; en el día a día uso <strong>Florin Todor</strong>.
+      </p>
       <p>
         Estudié el <strong>Doble Grado en Ingeniería Informática y ADE</strong>, cinco años
         entre asignaturas de programación y de empresa. Al principio no lo tenía claro, pero
@@ -198,12 +205,12 @@ const competencias = [
   <section id="cv">
     <div class="titulo-seccion"><h2>Currículum</h2><div class="linea"></div><div class="num">05</div></div>
     <div class="tarjeta bloque-cv">
-      <a class="vista" href={`${base}CV_Florin_Todor.pdf`} target="_blank" rel="noopener" aria-label="Abrir el currículum en PDF">
-        <img src={`${base}img/cv-preview-1.png`} alt="Primera página del currículum" loading="lazy" />
+      <a class="vista" href={`${base}${perfil.cv}`} target="_blank" rel="noopener" aria-label="Abrir el currículum en PDF">
+        <img src={`${base}img/cv-preview-1.png`} alt="Primera página del currículum de Florin Emanuel Todor Gliga" loading="lazy" />
       </a>
       <div class="acciones">
-        <a class="boton" href={`${base}CV_Florin_Todor.pdf`} download>Descargar PDF</a>
-        <a class="boton fantasma" href={`${base}CV_Florin_Todor.pdf`} target="_blank" rel="noopener">Abrir en el navegador</a>
+        <a class="boton" href={`${base}${perfil.cv}`} download>Descargar PDF</a>
+        <a class="boton fantasma" href={`${base}${perfil.cv}`} target="_blank" rel="noopener">Abrir en el navegador</a>
       </div>
     </div>
   </section>

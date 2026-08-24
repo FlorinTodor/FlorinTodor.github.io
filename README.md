@@ -1,4 +1,4 @@
-# Portafolio — Florín Emanuel Todor Gliga
+# Portafolio — Florin Emanuel Todor Gliga
 
 Sitio estático hecho con [Astro](https://astro.build), publicado en GitHub Pages.
 
@@ -62,11 +62,22 @@ src/
   styles/global.css         ← paleta y estilos
 public/
   media/<id>.mp4            ← vídeo de cada proyecto (se detecta solo)
-  img/florin.jpg            ← retrato
+  img/florin-emanuel-todor-gliga.jpg  ← retrato
   img/cv-preview-1.png      ← primera página del CV
-  CV_Florin_Todor.pdf       ← CV descargable
+  CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
+  img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
   demo/*.json               ← datos de las demos interactivas
+scripts/generar-og.py       ← redibuja public/img/og.jpg
 ```
+
+## El nombre
+
+El nombre oficial es **Florin Emanuel Todor Gliga**, sin tilde: así aparece en el
+`<title>`, en el `<h1>` de la portada, en el pie, en el CV y en los datos
+estructurados. La grafía castellanizada «Florín» y las formas cortas («Florin
+Todor») van declaradas como `alternateName` en el `Person` de `Base.astro`, para
+que los buscadores las traten como la misma persona en vez de repartir señales
+entre dos nombres. Si cambias el nombre en algún sitio, cámbialo en todos.
 
 ## Añadir o editar un proyecto
 

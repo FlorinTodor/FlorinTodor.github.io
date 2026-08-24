@@ -2,23 +2,42 @@
 import '../styles/global.css';
 import datos from '../../proyectos.json';
 
-const { titulo, descripcion, conLateral = true } = Astro.props;
+const { titulo, descripcion, conLateral = true, esquemaExtra = [] } = Astro.props;
 const p = datos.perfil;
 const base = import.meta.env.BASE_URL;
 
 // Las redes sociales y los buscadores exigen URLs absolutas.
 const urlCanonica = new URL(Astro.url.pathname, Astro.site).href;
 const imagenSocial = new URL('img/og.jpg', Astro.site).href;
+const retrato = new URL('img/florin-emanuel-todor-gliga.jpg', Astro.site).href;
+const esPortada = Astro.url.pathname === '/';
 
-// Schema.org Person: es lo que permite a Google entender que este sitio
-// es "sobre" Florín, y lo que alimenta el panel de conocimiento al buscar su nombre.
-const datosEstructurados = {
-  '@context': 'https://schema.org',
+const ID_PERSONA = 'https://florintodor.dev/#persona';
+const ID_SITIO = 'https://florintodor.dev/#sitio';
+
+// Schema.org: es lo que permite a Google entender que este sitio es "sobre"
+// Florin, y lo que alimenta el panel de conocimiento al buscar su nombre.
+// El nombre oficial va sin tilde (como en el DNI, LinkedIn y GitHub); la grafía
+// castellanizada "Florín" y los nombres cortos se declaran como alternativos
+// para que todas las formas lleven a la misma persona en vez de repartirse.
+const persona = {
   '@type': 'Person',
-  name: 'Florín Emanuel Todor Gliga',
-  alternateName: ['Florin Todor', 'Florín Todor', 'Florin Emanuel Todor Gliga'],
+  '@id': ID_PERSONA,
+  name: 'Florin Emanuel Todor Gliga',
+  givenName: 'Florin',
+  additionalName: 'Emanuel',
+  familyName: 'Todor Gliga',
+  alternateName: [
+    'Florín Emanuel Todor Gliga',
+    'Florin E. Todor Gliga',
+    'Florin Todor Gliga',
+    'Florin Todor',
+    'Florín Todor',
+    'Florin Emanuel Todor',
+  ],
   url: 'https://florintodor.dev',
-  image: imagenSocial,
+  mainEntityOfPage: { '@id': ID_SITIO },
+  image: retrato,
   email: `mailto:${p.email}`,
   jobTitle: 'Ingeniero Informático',
   description:
@@ -34,12 +53,41 @@ const datosEstructurados = {
     name: 'Universidad de Granada',
     sameAs: 'https://www.ugr.es/',
   },
+  knowsLanguage: ['es', 'en'],
   knowsAbout: [
     'Linux', 'Docker', 'Ciberseguridad', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
     'Inteligencia artificial generativa', 'Neo4j', 'Grafos de conocimiento',
     'ENS', 'NIS2', 'DORA', 'Python', 'C++',
   ],
   sameAs: [p.github, p.linkedin],
+};
+
+const sitio = {
+  '@type': 'WebSite',
+  '@id': ID_SITIO,
+  url: 'https://florintodor.dev',
+  name: 'Florin Emanuel Todor Gliga',
+  alternateName: 'Florin Todor',
+  inLanguage: 'es-ES',
+  publisher: { '@id': ID_PERSONA },
+};
+
+// La portada es una ficha de perfil: marcarla como tal le dice a Google de quién
+// habla la página, no sólo que existe una persona con estos datos.
+const pagina = {
+  '@type': esPortada ? 'ProfilePage' : 'WebPage',
+  '@id': `${urlCanonica}#pagina`,
+  url: urlCanonica,
+  name: titulo,
+  description: descripcion,
+  inLanguage: 'es-ES',
+  isPartOf: { '@id': ID_SITIO },
+  ...(esPortada ? { mainEntity: { '@id': ID_PERSONA } } : { about: { '@id': ID_PERSONA } }),
+};
+
+const datosEstructurados = {
+  '@context': 'https://schema.org',
+  '@graph': [persona, sitio, pagina, ...esquemaExtra],
 };
 ---
 
@@ -52,10 +100,10 @@ const datosEstructurados = {
     <meta name="description" content={descripcion} />
     <meta name="author" content={p.nombre} />
     <link rel="canonical" href={urlCanonica} />
-    <link rel="alternate" type="application/rss+xml" title="Blog de Florín Todor" href={new URL('rss.xml', Astro.site).href} />
+    <link rel="alternate" type="application/rss+xml" title="Blog de Florin Todor" href={new URL('rss.xml', Astro.site).href} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
 
-    <meta property="og:site_name" content="Florín Todor" />
+    <meta property="og:site_name" content="Florin Emanuel Todor Gliga" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descripcion} />
@@ -64,11 +112,13 @@ const datosEstructurados = {
     <meta property="og:image" content={imagenSocial} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Florin Emanuel Todor Gliga — sistemas Linux, ciberseguridad e IA aplicada" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={titulo} />
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenSocial} />
+    <meta name="twitter:image:alt" content="Florin Emanuel Todor Gliga — sistemas Linux, ciberseguridad e IA aplicada" />
 
     <script type="application/ld+json" set:html={JSON.stringify(datosEstructurados)} />
     <meta name="theme-color" content="#02162b" />
@@ -83,7 +133,7 @@ const datosEstructurados = {
 
     <header class="cabecera">
       <div class="cabecera-caja">
-        <a class="marca" href={base}>Florín <span>Todor</span></a>
+        <a class="marca" href={base}>Florin <span>Todor</span></a>
         <nav id="menu">
           <a href={`${base}#sobre-mi`}>Sobre mí</a>
           <a href={`${base}#proyectos`}>Proyectos</a>
@@ -98,7 +148,7 @@ const datosEstructurados = {
             <path d="M4 7h16M4 12h16M4 17h16" />
           </svg>
         </button>
-        <a class="boton" href={`${base}CV_Florin_Todor.pdf`} download>
+        <a class="boton" href={`${base}${p.cv}`} download>
           Descargar CV
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
             <path d="M12 3v13m0 0l-5-5m5 5l5-5M4 21h16" stroke-linecap="round" stroke-linejoin="round"/>
@@ -110,8 +160,8 @@ const datosEstructurados = {
     <div class={`disposicion${conLateral ? '' : ' sin-lateral'}`}>
       {conLateral && (
         <aside class="lateral">
-          <img class="retrato" src={`${base}img/florin.jpg`} alt={p.nombre} width="172" height="172" />
-          <div class="nombre">Florín E. Todor Gliga</div>
+          <img class="retrato" src={`${base}img/florin-emanuel-todor-gliga.jpg`} alt={`Retrato de ${p.nombre}`} width="172" height="172" />
+          <div class="nombre">Florin Emanuel<br />Todor Gliga</div>
           <div class="rol">{p.rol}</div>
 
           <hr class="punteado" />
@@ -154,7 +204,7 @@ const datosEstructurados = {
     <footer class="pie-pagina">
       <div class="envoltorio">
         <p>
-          © 2026 Florín Emanuel Todor Gliga · {p.ciudad} ·
+          © 2026 Florin Emanuel Todor Gliga · {p.ciudad} ·
           <a href={`mailto:${p.email}`}>{p.email}</a>
         </p>
         <p>Hecho con Astro y publicado en GitHub Pages.</p>

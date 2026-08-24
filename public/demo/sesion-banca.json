@@ -1,6 +1,6 @@
 {
   "_nota": "Guion de demostración. Las cifras, el esquema SQL, las categorías y los nombres de herramienta son los reales del proyecto (la base ficticia se genera con semilla fija, random.Random(42), así que estos importes son exactamente los que produce). La redacción de las respuestas es un guion de ejemplo: sustitúyelo por transcripciones reales con scripts/grabar-sesion.py.",
-  "cuenta": { "titular": "Florín E. Todor", "iban": "ES21 1465 0100 72 2030876293" },
+  "cuenta": { "titular": "Florin E. Todor", "iban": "ES21 1465 0100 72 2030876293" },
   "turnos": [
     {
       "usuario": "¿Cuánto me he gastado este año en el supermercado?",

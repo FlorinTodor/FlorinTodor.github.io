@@ -127,7 +127,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   filter: grayscale(100%); transition: filter .3s;
 }
 .lateral .retrato:hover { filter: grayscale(0%); }
-.lateral .nombre { font-size: 1.15rem; font-weight: 700; }
+.lateral .nombre { font-size: 1.08rem; font-weight: 700; line-height: 1.3; }
 .lateral .rol { color: var(--texto-tenue); font-size: .85rem; margin-top: .3rem; }
 
 .punteado { border: 0; border-top: 1px dotted var(--borde); margin: 1.3rem 0; }
@@ -185,11 +185,13 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   background: radial-gradient(600px 300px at 85% 15%, rgba(61,220,132,.10), transparent 70%);
   pointer-events: none;
 }
-.portada .etiqueta-seccion {
-  color: var(--verde); font-family: var(--mono); font-size: .82rem;
+.portada h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+/* El nombre completo encabeza el h1: es lo que buscan quienes me buscan a mí. */
+.portada h1 .nombre-completo {
+  display: block; color: var(--verde); font-family: var(--mono);
+  font-size: .82rem; font-weight: 600; line-height: 1.4;
   text-transform: uppercase; letter-spacing: .12em; margin-bottom: 1rem;
 }
-.portada h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
 .portada h1 em { color: var(--verde); font-style: normal; }
 .portada .entradilla { color: var(--texto-suave); font-size: 1.05rem; max-width: 58ch; margin-top: 1.2rem; }
 .acciones { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
