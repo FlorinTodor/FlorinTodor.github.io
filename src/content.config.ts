@@ -5,6 +5,9 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     titulo: z.string(),
+    // Para el <title>: el titular del artículo puede pasar de los 60
+    // caracteres que enseña Google sin que se corte.
+    tituloSeo: z.string().optional(),
     descripcion: z.string(),
     fecha: z.coerce.date(),
     etiquetas: z.array(z.string()).default([]),

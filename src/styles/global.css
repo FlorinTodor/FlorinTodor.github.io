@@ -63,6 +63,10 @@ h1, h2, h3, h4 { margin: 0; line-height: 1.15; font-weight: 800; letter-spacing:
 p { margin: 0 0 1em; }
 a { color: var(--verde); text-decoration: none; }
 a:hover { color: var(--verde-hover); }
+/* Un enlace metido en una frase no puede distinguirse sólo por el color (WCAG
+   1.4.1): quien no separa el verde del gris no lo ve. Los que van sueltos en su
+   propia línea sí se reconocen sin subrayado. */
+p a:not(.boton):not(.enlace-suelto) { text-decoration: underline; text-underline-offset: 2px; }
 img { max-width: 100%; display: block; }
 code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto); padding: .12em .4em; border-radius: 5px; }
 
@@ -338,7 +342,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 
 .panel-lateral { background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.2rem; }
 .panel-lateral + .panel-lateral { margin-top: 1rem; }
-.panel-lateral h4 {
+.panel-lateral h3 {
   font-size: .74rem; text-transform: uppercase; letter-spacing: .08em;
   color: var(--texto-tenue); margin-bottom: .8rem; font-weight: 700;
 }
@@ -541,7 +545,8 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .doc-mini .titulo-mini { font-size: .74rem; line-height: 1.32; }
 .doc-mini .tipo-mini {
   font-family: var(--mono); font-size: .64rem; letter-spacing: .09em;
-  color: var(--texto-tenue); margin-top: auto;
+  /* Sobre el panel alto, --texto-tenue se queda en 4,02:1 y no llega a AA. */
+  color: var(--texto-suave); margin-top: auto;
 }
 .doc-mini:hover .tipo-mini, .doc-mini:focus-visible .tipo-mini { color: var(--verde); }
 

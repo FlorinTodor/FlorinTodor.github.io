@@ -1,5 +1,6 @@
 ---
 titulo: "«FROM ubuntu:latest» te va a romper el proyecto (y no será hoy)"
+tituloSeo: "«FROM ubuntu:latest» te va a romper el proyecto"
 descripcion: "Una granja web que funcionaba en 2025 devolvía 502 en la mitad de las peticiones un año después, sin haber tocado el código. Cómo lo diagnostiqué y cómo se evita."
 fecha: 2026-08-18
 etiquetas: ["Docker", "Nginx", "PHP", "Reproducibilidad", "DevOps"]
