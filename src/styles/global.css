@@ -8,7 +8,7 @@
   --borde: #16456f;
   --texto: #e8f1f8;
   --texto-suave: #9fb8cc;
-  --texto-tenue: #6d8ba5;
+  --texto-tenue: #7391ab;   /* 4.60:1 sobre el panel: por debajo de #7391ab no llega a WCAG AA */
   --verde: #3ddc84;
   --verde-hover: #5fe89b;
   --verde-tenue: rgba(61, 220, 132, .12);
@@ -513,3 +513,10 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 @media (max-width: 620px) {
   .doc-mini { width: calc(50% - .3rem); }
 }
+
+/* ---------- 404 ---------- */
+.rejilla-404 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.destino-404 { display: block; text-decoration: none; color: inherit; margin: 0 !important; transition: border-color .18s, transform .18s; }
+.destino-404:hover { border-color: var(--verde); transform: translateY(-3px); color: inherit; }
+.destino-404 h2 { font-size: 1.02rem; margin-bottom: .45rem; }
+.destino-404 p { color: var(--texto-suave); font-size: .89rem; margin: 0; }

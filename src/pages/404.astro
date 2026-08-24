@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL;
+
+// Hay URLs antiguas circulando por ahí (el CV se renombró, el repo cambió de
+// nombre). Que quien las siga aterrice en algo con salida y no en el 404 en
+// inglés de GitHub Pages.
+const destinos = [
+  { url: `${base}#proyectos`, titulo: 'Proyectos', texto: 'Doce trabajos con su demo en vídeo y la explicación de qué resuelven.' },
+  { url: `${base}certificaciones/`, titulo: 'Certificaciones', texto: 'Los títulos, con el documento original de cada uno.' },
+  { url: `${base}blog/`, titulo: 'Blog', texto: 'Fallos de infraestructura y seguridad: qué pasó y cómo se evita.' },
+  { url: `${base}#cv`, titulo: 'Currículum', texto: 'El CV en PDF, para leerlo o descargarlo.' },
+  { url: `${base}#contacto`, titulo: 'Contacto', texto: 'Correo, teléfono, GitHub y LinkedIn.' },
+];
+---
+
+<Base
+  titulo="Página no encontrada — Florin Emanuel Todor Gliga"
+  descripcion="Esta dirección no existe en florintodor.dev."
+  conLateral={false}
+  sinIndexar
+>
+  <div style="max-width:820px;margin:0 auto">
+    <header class="cabecera-proyecto">
+      <div style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">
+        Error 404
+      </div>
+      <h1>Esta dirección no existe</h1>
+      <p class="resumen">
+        O el enlace que has seguido está roto, o la página se movió. Nada grave:
+        aquí abajo tienes todo lo que hay en el sitio.
+      </p>
+    </header>
+
+    <div class="rejilla-404">
+      {destinos.map((d) => (
+        <a class="tarjeta destino-404" href={d.url}>
+          <h2>{d.titulo}</h2>
+          <p>{d.texto}</p>
+        </a>
+      ))}
+    </div>
+
+    <p style="margin-top:2rem">
+      <a href={base}>← Volver a la portada</a>
+    </p>
+  </div>
+</Base>

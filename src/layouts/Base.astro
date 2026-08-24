@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import datos from '../../proyectos.json';
 
-const { titulo, descripcion, conLateral = true, esquemaExtra = [] } = Astro.props;
+const { titulo, descripcion, conLateral = true, esquemaExtra = [], sinIndexar = false } = Astro.props;
 const p = datos.perfil;
 const base = import.meta.env.BASE_URL;
 
@@ -101,7 +101,7 @@ const datosEstructurados = {
     <meta name="author" content={p.nombre} />
     <link rel="canonical" href={urlCanonica} />
     <link rel="alternate" type="application/rss+xml" title="Blog de Florin Todor" href={new URL('rss.xml', Astro.site).href} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={sinIndexar ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 
     <meta property="og:site_name" content="Florin Emanuel Todor Gliga" />
     <meta property="og:locale" content="es_ES" />
