@@ -9,8 +9,8 @@
     "sube al principio). Si el PDF o la imagen se llaman de otra forma,",
     "indícalos en `archivo` e `imagen`.",
     "OJO: este repo es público. Antes de meter un PDF en public/certificaciones/,",
-    "comprueba que no lleve DNI, NIE ni códigos de verificación. Los que sí los",
-    "llevan están guardados fuera del sitio, en originales/."
+    "comprueba que no lleve DNI, NIE ni códigos de verificación. Si lo lleva, pásalo",
+    "por scripts/tapar-datos-personales.py y explica en `nota` qué se ha tapado."
   ],
   "certificaciones": [
     {
@@ -59,8 +59,9 @@
       "entidad": "British Council",
       "fecha": "2026-05",
       "categoria": "Idiomas",
-      "detalle": "Nivel B1 del MCER en las cuatro destrezas, evaluado por el British Council. Documento disponible a petición.",
-      "credencial": ""
+      "detalle": "Nivel B1 del MCER en las cuatro destrezas, evaluado por el British Council.",
+      "credencial": "",
+      "nota": "En el PDF se han tapado el número de documento y el QR de verificación."
     },
     {
       "id": "t-systems-experience-ugr",
@@ -87,7 +88,8 @@
       "fecha": "2022-04",
       "categoria": "IA y datos",
       "detalle": "100 horas y 4 créditos. Aprendizaje automático aplicado a datos biomédicos y tratamiento de grandes volúmenes de datos.",
-      "credencial": ""
+      "credencial": "",
+      "nota": "En el PDF se han tapado el NIE y el código de verificación de la sede de la UGR."
     },
     {
       "id": "mooc-ugr-software-libre",
@@ -96,7 +98,8 @@
       "fecha": "2022-03",
       "categoria": "Sistemas",
       "detalle": "50 horas y 2 créditos. Licencias libres, trabajo colaborativo y publicación abierta de código y datos.",
-      "credencial": ""
+      "credencial": "",
+      "nota": "En el PDF se han tapado el NIE y el código de verificación de la sede de la UGR."
     }
   ]
 }

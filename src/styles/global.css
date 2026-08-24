@@ -476,3 +476,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .tarjeta-cert .pie { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin-top: auto; }
 .tarjeta-cert .verificar { position: relative; z-index: 1; font-size: .82rem; margin-left: auto; }
 .vacio-cert { color: var(--texto-suave); text-align: center; padding: 2.5rem 0; }
+.tarjeta-cert .nota-cert {
+  font-size: .78rem; color: var(--texto-tenue); font-style: italic;
+  flex: 0; margin-bottom: .8rem;
+}

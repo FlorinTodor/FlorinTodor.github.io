@@ -39,6 +39,26 @@ const esquema = [{
   author: { '@id': 'https://florintodor.dev/#persona' },
 }];
 
+// La memoria es una obra en sí misma: declararla como Thesis hace que Google
+// la trate como documento académico y no como un PDF suelto del sitio.
+if (p.memoria) {
+  esquema.push({
+    '@type': 'Thesis',
+    '@id': `${url}#memoria`,
+    name: p.titulo,
+    description: p.resumen,
+    inLanguage: 'es-ES',
+    learningResourceType: 'Trabajo de Fin de Grado',
+    ...(p.anio ? { datePublished: String(p.anio) } : {}),
+    ...(p.memoriaPaginas ? { numberOfPages: p.memoriaPaginas } : {}),
+    url: new URL(p.memoria, Astro.site).href,
+    encodingFormat: 'application/pdf',
+    author: { '@id': 'https://florintodor.dev/#persona' },
+    publisher: { '@type': 'CollegeOrUniversity', name: 'Universidad de Granada' },
+    about: { '@id': `${url}#proyecto` },
+  });
+}
+
 // Sin VideoObject, Google no sabe que la demo existe: no la indexa ni la
 // enseña como resultado de vídeo, aunque el <video> esté en la página.
 if (video) {
@@ -163,6 +183,20 @@ if (video) {
             </p>
           )}
         </div>
+
+        {p.memoria && (
+          <div class="panel-lateral">
+            <h4>Memoria</h4>
+            <p style="margin:0 0 .8rem;font-size:.89rem;color:var(--texto-suave)">
+              El documento completo{p.memoriaPaginas ? `, ${p.memoriaPaginas} páginas` : ''}:
+              planteamiento, diseño del grafo, evaluación y resultados.
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+              <a class="boton" href={`${base}${p.memoria}`} target="_blank" rel="noopener">Leer en PDF</a>
+              <a class="boton fantasma" href={`${base}${p.memoria}`} download>Descargar</a>
+            </div>
+          </div>
+        )}
 
         <div class="panel-lateral">
           <h4>Más</h4>
