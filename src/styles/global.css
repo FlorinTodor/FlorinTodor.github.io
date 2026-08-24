@@ -132,9 +132,14 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 
 .punteado { border: 0; border-top: 1px dotted var(--borde); margin: 1.3rem 0; }
 
-.sociales { display: flex; justify-content: center; gap: 1.1rem; }
-.sociales a { color: var(--texto-suave); display: grid; place-items: center; }
-.sociales a:hover { color: var(--verde); }
+.sociales { display: flex; justify-content: center; gap: .25rem; }
+/* El icono sigue midiendo 21 px, pero el enlace ocupa 44: con el dedo, 21 px
+   se falla. */
+.sociales a {
+  color: var(--texto-suave); display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 10px;
+}
+.sociales a:hover { color: var(--verde); background: var(--panel-alto); }
 .sociales svg { width: 21px; height: 21px; fill: currentColor; }
 
 .datos { font-size: .82rem; }
@@ -161,6 +166,15 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .subtitulo::before, .subtitulo::after { content: ""; flex: 1; border-top: 1px dotted var(--borde); }
 
 .nota-proyectos { color: var(--texto-suave); font-size: .95rem; max-width: 72ch; margin: -.6rem 0 0; }
+
+/* Enlaces de texto que van solos, no dentro de una frase: de alto miden lo que
+   la línea (17-20 px) y con el dedo se fallan. El relleno vertical en un
+   elemento en línea agranda la zona pulsable sin mover la maquetación. */
+@media (pointer: coarse) {
+  .enlace-suelto, .contacto-item .valor a, .verificar, .tarjeta-cert h2 a, .volver {
+    padding-block: .55rem;
+  }
+}
 
 /* ============================================================
    Tarjetas
@@ -209,7 +223,9 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .etiqueta.ambar { background: rgba(240,180,95,.12); color: var(--ambar); border-color: transparent; }
 
 /* Proyectos */
-.rejilla-proyectos { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.1rem; }
+/* El min() evita que la columna mínima (320 px) sea más ancha que la pantalla:
+   por debajo de 360 px la rejilla desbordaba a lo ancho. */
+.rejilla-proyectos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 1.1rem; }
 
 .tarjeta-proyecto {
   display: flex; flex-direction: column; background: var(--panel);
@@ -265,7 +281,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 }
 
 /* Contacto */
-.rejilla-contacto { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+.rejilla-contacto { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 1rem; }
 .contacto-item { background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.2rem; }
 .contacto-item .clave { color: var(--texto-tenue); font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; }
 .contacto-item .valor { font-weight: 600; margin-top: .3rem; word-break: break-word; }
@@ -434,7 +450,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .filtro.activo { background: var(--verde-tenue); border-color: var(--verde); color: var(--verde); }
 .filtro.activo span { color: inherit; opacity: .75; }
 
-.rejilla-cert { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.1rem; }
+.rejilla-cert { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr)); gap: 1.1rem; }
 .tarjeta-cert {
   position: relative; display: flex; flex-direction: column; overflow: hidden;
   background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio);
