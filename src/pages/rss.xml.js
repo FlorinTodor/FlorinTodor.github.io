@@ -6,7 +6,7 @@ export async function GET(context) {
     .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 
   return rss({
-    title: 'Florin Emanuel Todor Gliga — Blog',
+    title: 'Florin Emanuel Todor Gliga - Blog',
     description: 'Infraestructura, ciberseguridad e IA aplicada: fallos reales y cómo se diagnostican.',
     site: context.site,
     language: 'es',

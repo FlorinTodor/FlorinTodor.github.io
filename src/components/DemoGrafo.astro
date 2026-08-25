@@ -10,8 +10,8 @@ const base = import.meta.env.BASE_URL;
     <label class="dg-campo">
       <span class="dg-etq">Marco de origen</span>
       <select id="dg-marco">
-        <option value="NIS2">NIS2 — Directiva de seguridad de redes</option>
-        <option value="DORA">DORA — Resiliencia operativa digital</option>
+        <option value="NIS2">NIS2 - Directiva de seguridad de redes</option>
+        <option value="DORA">DORA - Resiliencia operativa digital</option>
       </select>
     </label>
     <label class="dg-campo dg-crece">
@@ -23,8 +23,8 @@ const base = import.meta.env.BASE_URL;
   <div class="dg-cuerpo">
     <div class="dg-origen">
       <span class="dg-chapa" id="dg-chapa">NIS2</span>
-      <h3 id="dg-titulo">—</h3>
-      <p id="dg-desc">—</p>
+      <h3 id="dg-titulo">-</h3>
+      <p id="dg-desc">-</p>
     </div>
 
     <div class="dg-flecha" aria-hidden="true">
@@ -41,7 +41,7 @@ const base = import.meta.env.BASE_URL;
   </div>
 
   <p class="dg-pie">
-    Datos reales del grafo del TFG: <strong id="dg-stats">—</strong>.
+    Datos reales del grafo del TFG: <strong id="dg-stats">-</strong>.
     El motor resuelve además el <em>Principio de Máximos</em>, que aquí no se
     representa: para cada control elige la exigencia más restrictiva entre los tres marcos.
   </p>
@@ -142,7 +142,7 @@ const base = import.meta.env.BASE_URL;
           for (const a of arts) {
             const o = document.createElement('option');
             o.value = a.id;
-            o.textContent = tipo === 'NIS2' ? `${a.id.replace('NIS2 ', '')} — ${a.titulo}` : `${a.titulo} (${a.id})`;
+            o.textContent = tipo === 'NIS2' ? `${a.id.replace('NIS2 ', '')} - ${a.titulo}` : `${a.titulo} (${a.id})`;
             selArt.appendChild(o);
           }
           pintarDetalle();
