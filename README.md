@@ -84,6 +84,7 @@ originales/                 ← material en bruto, fuera de git: vídeos y PDF s
                               procesar, la memoria del TFG y los certificados
                               que muestran DNI o NIE
 src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compilar
+scripts/comprobar-traducciones.mjs  ← avisa de lo que falta por traducir
 scripts/generar-og.py       ← redibuja las tarjetas de og, en los dos idiomas
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
@@ -123,7 +124,15 @@ Dónde está cada cosa:
 | Sesión de la demo bancaria | `public/demo/sesion-banca.en.json`. |
 
 **Lo que falte se sirve en español**, no desaparece: un proyecto nuevo aparece en
-`/en/` con su texto original hasta que se traduzca. Al añadir una entrada a
+`/en/` con su texto original hasta que se traduzca. Eso es cómodo, pero también
+hace que un olvido no dé la cara, así que hay un comprobador:
+
+```bash
+node scripts/comprobar-traducciones.mjs
+```
+
+Devuelve 1 y lista lo que falta (claves de `textos.js`, proyectos, certificaciones,
+artículos sin gemelo). No juzga la calidad de la traducción, sólo si existe. Al añadir una entrada a
 `formacion` o `competencias` hay que tocar los dos idiomas, porque esas dos listas
 son casi todo texto y viven enteras en `textos.js`.
 
