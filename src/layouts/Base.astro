@@ -1,23 +1,37 @@
 ---
 import '../styles/global.css';
-import datos from '../../proyectos.json';
+import { perfil } from '../idiomas/contenido.js';
+import { t, LOCALE, OG_LOCALE, IDIOMAS } from '../idiomas/textos.js';
+import { enlace, recurso, equivalente, OTRO } from '../idiomas/rutas.js';
 
 // `imagenOg` deja que cada página ponga su propia tarjeta al compartirse: sin
 // esto, un proyecto compartido en LinkedIn enseñaba la tarjeta genérica del
 // sitio. Se generan con scripts/generar-og.py.
+//
+// `conAlternativas` en false para las páginas que no existen en el otro idioma
+// (el 404, o un artículo sin traducir): anunciar un hreflang que devuelve otro
+// 404 es peor que no anunciar ninguno. En ese caso el selector lleva a
+// `alternoFallback` (la portada si no se dice otra cosa) en vez de a una página
+// que no existe.
 const {
-  titulo, descripcion, conLateral = true, esquemaExtra = [], sinIndexar = false,
-  imagenOg = 'img/og.jpg',
-  altOg = 'Florin Emanuel Todor Gliga - sistemas Linux, ciberseguridad e IA aplicada',
+  titulo, descripcion, idioma = 'es', conLateral = true, esquemaExtra = [],
+  sinIndexar = false, conAlternativas = true, alternoFallback = '',
+  imagenOg, altOg,
 } = Astro.props;
-const p = datos.perfil;
-const base = import.meta.env.BASE_URL;
+
+const T = t(idioma);
+const p = perfil(idioma);
+
+// La tarjeta genérica del sitio también está traducida.
+const tarjeta = imagenOg || (idioma === 'en' ? 'img/og-en.jpg' : 'img/og.jpg');
 
 // Las redes sociales y los buscadores exigen URLs absolutas.
 const urlCanonica = new URL(Astro.url.pathname, Astro.site).href;
-const imagenSocial = new URL(imagenOg, Astro.site).href;
+const imagenSocial = new URL(tarjeta, Astro.site).href;
 const retrato = new URL('img/florin-emanuel-todor-gliga.jpg', Astro.site).href;
-const esPortada = Astro.url.pathname === '/';
+const esPortada = Astro.url.pathname === enlace(idioma);
+const urlOtro = new URL(equivalente(idioma, Astro.url.pathname), Astro.site).href;
+const alternativas = { [idioma]: urlCanonica, [OTRO[idioma]]: urlOtro };
 
 const ID_PERSONA = 'https://florintodor.dev/#persona';
 const ID_SITIO = 'https://florintodor.dev/#sitio';
@@ -27,6 +41,8 @@ const ID_SITIO = 'https://florintodor.dev/#sitio';
 // El nombre oficial va sin tilde (como en el DNI, LinkedIn y GitHub); la grafía
 // castellanizada "Florín" y los nombres cortos se declaran como alternativos
 // para que todas las formas lleven a la misma persona en vez de repartirse.
+// La entidad Person es la misma en los dos idiomas (mismo @id): lo que cambia
+// es el idioma de la página que la describe.
 const persona = {
   '@type': 'Person',
   '@id': ID_PERSONA,
@@ -46,9 +62,8 @@ const persona = {
   mainEntityOfPage: { '@id': ID_SITIO },
   image: retrato,
   email: `mailto:${p.email}`,
-  jobTitle: 'Ingeniero Informático',
-  description:
-    'Ingeniero informático especializado en administración de sistemas Linux, ciberseguridad e inteligencia artificial aplicada.',
+  jobTitle: T.profesion,
+  description: T.descripcionPersona,
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Motril',
@@ -57,15 +72,11 @@ const persona = {
   },
   alumniOf: {
     '@type': 'CollegeOrUniversity',
-    name: 'Universidad de Granada',
+    name: T.universidad,
     sameAs: 'https://www.ugr.es/',
   },
   knowsLanguage: ['es', 'en'],
-  knowsAbout: [
-    'Linux', 'Docker', 'Ciberseguridad', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
-    'Inteligencia artificial generativa', 'Neo4j', 'Grafos de conocimiento',
-    'ENS', 'NIS2', 'DORA', 'Python', 'C++',
-  ],
+  knowsAbout: T.conocimientos,
   sameAs: [p.github, p.linkedin],
 };
 
@@ -75,7 +86,7 @@ const sitio = {
   url: 'https://florintodor.dev',
   name: 'Florin Emanuel Todor Gliga',
   alternateName: 'Florin Todor',
-  inLanguage: 'es-ES',
+  inLanguage: ['es-ES', 'en-GB'],
   publisher: { '@id': ID_PERSONA },
 };
 
@@ -87,7 +98,7 @@ const pagina = {
   url: urlCanonica,
   name: titulo,
   description: descripcion,
-  inLanguage: 'es-ES',
+  inLanguage: LOCALE[idioma],
   isPartOf: { '@id': ID_SITIO },
   ...(esPortada ? { mainEntity: { '@id': ID_PERSONA } } : { about: { '@id': ID_PERSONA } }),
 };
@@ -96,10 +107,15 @@ const datosEstructurados = {
   '@context': 'https://schema.org',
   '@graph': [persona, sitio, pagina, ...esquemaExtra],
 };
+
+const banderas = {
+  es: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#c60b1e"/><rect y="4" width="24" height="8" fill="#ffc400"/></svg>',
+  en: '<svg viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/><path d="M0 0 60 40M60 0 0 40" stroke="#c8102e" stroke-width="4"/><path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="14"/><path d="M30 0V40M0 20H60" stroke="#c8102e" stroke-width="8"/></svg>',
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={idioma}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -107,11 +123,21 @@ const datosEstructurados = {
     <meta name="description" content={descripcion} />
     <meta name="author" content={p.nombre} />
     <link rel="canonical" href={urlCanonica} />
-    <link rel="alternate" type="application/rss+xml" title="Blog de Florin Todor" href={new URL('rss.xml', Astro.site).href} />
+
+    {/* hreflang: le dice a Google que las dos páginas son la misma en distinto
+        idioma, para que enseñe la que corresponda y no las tome por duplicados.
+        x-default apunta al español, que es el original. */}
+    {conAlternativas && IDIOMAS.map((l) => (
+      <link rel="alternate" hreflang={l} href={alternativas[l]} />
+    ))}
+    {conAlternativas && <link rel="alternate" hreflang="x-default" href={alternativas.es} />}
+
+    <link rel="alternate" type="application/rss+xml" title={T.tituloRss} href={new URL(enlace(idioma, 'rss.xml'), Astro.site).href} />
     <meta name="robots" content={sinIndexar ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 
     <meta property="og:site_name" content="Florin Emanuel Todor Gliga" />
-    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale" content={OG_LOCALE[idioma]} />
+    <meta property="og:locale:alternate" content={OG_LOCALE[OTRO[idioma]]} />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descripcion} />
     <meta property="og:type" content="website" />
@@ -119,50 +145,74 @@ const datosEstructurados = {
     <meta property="og:image" content={imagenSocial} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={altOg} />
+    <meta property="og:image:alt" content={altOg || T.altOg} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={titulo} />
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenSocial} />
-    <meta name="twitter:image:alt" content={altOg} />
+    <meta name="twitter:image:alt" content={altOg || T.altOg} />
 
     <script type="application/ld+json" set:html={JSON.stringify(datosEstructurados)} />
     <meta name="theme-color" content="#02162b" />
     <!-- Google no puede usar un favicon en data:, tiene que ser un fichero que
          pueda rastrear; por eso salía el icono genérico en los resultados. -->
-    <link rel="icon" href={`${base}favicon.ico`} sizes="32x32" />
-    <link rel="icon" href={`${base}icon/favicon.svg`} type="image/svg+xml" />
-    <link rel="apple-touch-icon" href={`${base}icon/apple-touch.png`} />
-    <link rel="manifest" href={`${base}icon/site.webmanifest`} />
+    <link rel="icon" href={recurso('favicon.ico')} sizes="32x32" />
+    <link rel="icon" href={recurso('icon/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={recurso('icon/apple-touch.png')} />
+    <link rel="manifest" href={recurso('icon/site.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
 
   <body>
-    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <a class="saltar" href="#contenido">{T.saltar}</a>
 
     <header class="cabecera">
       <div class="cabecera-caja">
-        <a class="marca" href={base}>Florin <span>Todor</span></a>
+        <a class="marca" href={enlace(idioma)}>Florin <span>Todor</span></a>
         <nav id="menu">
-          <a href={`${base}#sobre-mi`}>Sobre mí</a>
-          <a href={`${base}#proyectos`}>Proyectos</a>
-          <a href={`${base}blog/`}>Blog</a>
-          <a href={`${base}#competencias`}>Competencias</a>
-          <a href={`${base}#formacion`}>Formación</a>
-          <a href={`${base}certificaciones/`}>Certificaciones</a>
-          <a href={`${base}#cv`}>CV</a>
-          <a href={`${base}#contacto`}>Contacto</a>
+          <a href={`${enlace(idioma)}#sobre-mi`}>{T.nav.sobreMi}</a>
+          <a href={`${enlace(idioma)}#proyectos`}>{T.nav.proyectos}</a>
+          <a href={enlace(idioma, 'blog/')}>{T.nav.blog}</a>
+          <a href={`${enlace(idioma)}#competencias`}>{T.nav.competencias}</a>
+          <a href={`${enlace(idioma)}#formacion`}>{T.nav.formacion}</a>
+          <a href={enlace(idioma, 'certificaciones/')}>{T.nav.certificaciones}</a>
+          <a href={`${enlace(idioma)}#cv`}>{T.nav.cv}</a>
+          <a href={`${enlace(idioma)}#contacto`}>{T.nav.contacto}</a>
         </nav>
-        <button class="menu-movil" id="abrir-menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+
+        {/* El idioma activo no es un enlace: llevaría a la página en la que ya
+            estás. Las banderas van con aria-label porque una bandera sola no
+            dice nada a quien navega con lector de pantalla. */}
+        <div class="idiomas" role="group" aria-label={T.selector.titulo}>
+          {IDIOMAS.map((l) => (
+            l === idioma
+              ? <span class="bandera activa" aria-current="true" title={T.selector[l]}>
+                  <Fragment set:html={banderas[l]} />
+                  <span class="visualmente-oculto">{T.selector[l]}</span>
+                </span>
+              : <a
+                  class="bandera"
+                  href={conAlternativas ? equivalente(idioma, Astro.url.pathname) : enlace(l, alternoFallback)}
+                  hreflang={l}
+                  lang={l}
+                  aria-label={T.selector[l]}
+                  title={T.selector[l]}
+                >
+                  <Fragment set:html={banderas[l]} />
+                </a>
+          ))}
+        </div>
+
+        <button class="menu-movil" id="abrir-menu" aria-label={T.nav.abrirMenu} aria-expanded="false" aria-controls="menu">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
             <path d="M4 7h16M4 12h16M4 17h16" />
           </svg>
         </button>
-        <a class="boton" href={`${base}${p.cv}`} download>
-          Descargar CV
+        <a class="boton" href={recurso(p.cv)} download>
+          {T.cabecera.descargarCv}
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
             <path d="M12 3v13m0 0l-5-5m5 5l5-5M4 21h16" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -173,20 +223,20 @@ const datosEstructurados = {
     <div class={`disposicion${conLateral ? '' : ' sin-lateral'}`}>
       {conLateral && (
         <aside class="lateral">
-          <img class="retrato" src={`${base}img/florin-emanuel-todor-gliga.jpg`} alt={`Retrato de ${p.nombre}`} width="172" height="172" />
+          <img class="retrato" src={recurso('img/florin-emanuel-todor-gliga.jpg')} alt={T.lateral.retrato(p.nombre)} width="172" height="172" />
           <div class="nombre">Florin Emanuel<br />Todor Gliga</div>
           <div class="rol">{p.rol}</div>
 
           <hr class="punteado" />
 
           <div class="sociales">
-            <a href={p.github} target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+            <a href={p.github} target="_blank" rel="noopener" aria-label={T.lateral.github} title={T.lateral.github}>
               <svg viewBox="0 0 24 24"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.8 2.7 1.3 3.4 1 .1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0C17.6 4.8 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
             </a>
-            <a href={p.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+            <a href={p.linkedin} target="_blank" rel="noopener" aria-label={T.lateral.linkedin} title={T.lateral.linkedin}>
               <svg viewBox="0 0 24 24"><path d="M20.4 20.4h-3.6v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.3V9h3.4v1.6h.1a3.8 3.8 0 0 1 3.4-1.9c3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.4H3.5V9h3.6v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7c0-.9-.8-1.7-1.8-1.7z"/></svg>
             </a>
-            <a href={`mailto:${p.email}`} aria-label="Correo" title="Correo">
+            <a href={`mailto:${p.email}`} aria-label={T.lateral.correo} title={T.lateral.correo}>
               <svg viewBox="0 0 24 24"><path d="M22 4H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm-.5 2L12 12.3 2.5 6h19zM2 18V7.4l9.5 6.3a1 1 0 0 0 1 0L22 7.4V18H2z"/></svg>
             </a>
           </div>
@@ -194,16 +244,16 @@ const datosEstructurados = {
           <hr class="punteado" />
 
           <dl class="datos">
-            <div><dt>Residencia</dt><dd>España</dd></div>
-            <div><dt>Ciudad</dt><dd>{p.ciudad}</dd></div>
-            <div><dt>Titulación</dt><dd>Doble Grado<br />Informática + ADE</dd></div>
-            <div><dt>Idiomas</dt><dd>Español · Inglés</dd></div>
+            <div><dt>{T.lateral.residencia}</dt><dd>{T.lateral.pais}</dd></div>
+            <div><dt>{T.lateral.ciudad}</dt><dd>{p.ciudad}</dd></div>
+            <div><dt>{T.lateral.titulacion}</dt><dd>{T.lateral.titulacionValor[0]}<br />{T.lateral.titulacionValor[1]}</dd></div>
+            <div><dt>{T.lateral.idiomas}</dt><dd>{T.lateral.idiomasValor}</dd></div>
           </dl>
 
           <hr class="punteado" />
 
           <a class="boton" style="width:100%;justify-content:center" href={`mailto:${p.email}`}>
-            Contactar
+            {T.lateral.contactar}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 4H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm-.5 2L12 12.3 2.5 6h19zM2 18V7.4l9.5 6.3a1 1 0 0 0 1 0L22 7.4V18H2z"/></svg>
           </a>
         </aside>
@@ -220,7 +270,7 @@ const datosEstructurados = {
           © 2026 Florin Emanuel Todor Gliga · {p.ciudad} ·
           <a href={`mailto:${p.email}`}>{p.email}</a>
         </p>
-        <p>Hecho con Astro y publicado en GitHub Pages.</p>
+        <p>{T.pie.hecho}</p>
       </div>
     </footer>
     <script is:inline>

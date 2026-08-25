@@ -1,21 +1,35 @@
 ---
 // Explorador del grafo normativo: NIS2 / DORA -> controles ENS.
 // Datos reales derivados del grafo de conocimiento del TFG. Los textos
-// normativos (BOE, DOUE) son de dominio público.
-const base = import.meta.env.BASE_URL;
+// normativos (BOE, DOUE) son de dominio público y no se traducen: el grafo
+// sirve la redacción original en las dos versiones del sitio.
+import { t } from '../idiomas/textos.js';
+import { recurso } from '../idiomas/rutas.js';
+
+const { idioma = 'es' } = Astro.props;
+const G = t(idioma).grafo;
+
+// El script corre en el navegador y no puede importar este módulo: las cadenas
+// que necesita viajan en un data-atributo.
+const textosScript = JSON.stringify({
+  conteoUno: G.conteoUno,
+  conteoVarios: G.conteoVarios,
+  stats: G.stats,
+  error: G.error,
+});
 ---
 
-<div class="demo-grafo" data-origen={`${base}demo/grafo-normativo.json`}>
+<div class="demo-grafo" data-origen={recurso('demo/grafo-normativo.json')} data-textos={textosScript}>
   <div class="dg-barra">
     <label class="dg-campo">
-      <span class="dg-etq">Marco de origen</span>
+      <span class="dg-etq">{G.marco}</span>
       <select id="dg-marco">
-        <option value="NIS2">NIS2 - Directiva de seguridad de redes</option>
-        <option value="DORA">DORA - Resiliencia operativa digital</option>
+        <option value="NIS2">{G.nis2}</option>
+        <option value="DORA">{G.dora}</option>
       </select>
     </label>
     <label class="dg-campo dg-crece">
-      <span class="dg-etq">Artículo</span>
+      <span class="dg-etq">{G.articulo}</span>
       <select id="dg-articulo"></select>
     </label>
   </div>
@@ -28,22 +42,20 @@ const base = import.meta.env.BASE_URL;
     </div>
 
     <div class="dg-flecha" aria-hidden="true">
-      <span>exige</span>
+      <span>{G.exige}</span>
       <svg viewBox="0 0 40 12" width="40" height="12">
         <path d="M0 6 H32 M27 1.5 L33 6 L27 10.5" fill="none" stroke="currentColor" stroke-width="1.5" />
       </svg>
     </div>
 
     <div class="dg-destino">
-      <span class="dg-etq" id="dg-conteo">Controles ENS</span>
+      <span class="dg-etq" id="dg-conteo">{G.controles}</span>
       <ul class="dg-controles" id="dg-controles"></ul>
     </div>
   </div>
 
   <p class="dg-pie">
-    Datos reales del grafo del TFG: <strong id="dg-stats">-</strong>.
-    El motor resuelve además el <em>Principio de Máximos</em>, que aquí no se
-    representa: para cada control elige la exigencia más restrictiva entre los tres marcos.
+    {G.pie[0]}<strong id="dg-stats">-</strong>{G.pie[1]}<em>{G.pie[2]}</em>{G.pie[3]}
   </p>
 </div>
 
@@ -109,6 +121,10 @@ const base = import.meta.env.BASE_URL;
 <script>
   const raiz = document.querySelector('.demo-grafo');
   if (raiz) {
+    const TX = JSON.parse(raiz.dataset.textos);
+    const rellenar = (plantilla, valores) =>
+      plantilla.replace(/\{(\w+)\}/g, (_, clave) => valores[clave]);
+
     const selMarco = document.getElementById('dg-marco');
     const selArt = document.getElementById('dg-articulo');
     const chapa = document.getElementById('dg-chapa');
@@ -130,8 +146,9 @@ const base = import.meta.env.BASE_URL;
         const nNis2 = datos.nodos.filter((n) => n.tipo === 'NIS2').length;
         const nDora = datos.nodos.filter((n) => n.tipo === 'DORA').length;
         const nEns = datos.nodos.filter((n) => n.tipo === 'ENS').length;
-        document.getElementById('dg-stats').textContent =
-          `${nNis2} artículos NIS2 y ${nDora} de DORA enlazados con ${nEns} controles ENS (${datos.enlaces.length} relaciones)`;
+        document.getElementById('dg-stats').textContent = rellenar(TX.stats, {
+          nis2: nNis2, dora: nDora, ens: nEns, rel: datos.enlaces.length,
+        });
 
         function pintarArticulos() {
           const tipo = selMarco.value;
@@ -157,7 +174,7 @@ const base = import.meta.env.BASE_URL;
           desc.textContent = nodo.descripcion || '';
 
           const ids = salidas.get(nodo.id) || [];
-          conteo.textContent = `${ids.length} control${ids.length === 1 ? '' : 'es'} ENS`;
+          conteo.textContent = rellenar(ids.length === 1 ? TX.conteoUno : TX.conteoVarios, { n: ids.length });
           lista.innerHTML = '';
           for (const cid of ids) {
             const c = porId.get(cid);
@@ -176,7 +193,9 @@ const base = import.meta.env.BASE_URL;
         pintarArticulos();
       })
       .catch(() => {
-        raiz.innerHTML = '<p style="padding:1.2rem;color:var(--texto-tenue)">No se pudo cargar el grafo.</p>';
+        raiz.textContent = TX.error;
+        raiz.style.padding = '1.2rem';
+        raiz.style.color = 'var(--texto-tenue)';
       });
   }
 </script>

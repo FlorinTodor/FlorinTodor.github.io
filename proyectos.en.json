@@ -1,0 +1,193 @@
+{
+  "_comentario": [
+    "Traducción al inglés de proyectos.json. El español es el original: aquí sólo",
+    "van los campos de texto, indexados por el `id` del proyecto. Lo que no esté",
+    "traducido se sirve en español (ver src/idiomas/contenido.js), así que un",
+    "proyecto nuevo aparece en /en/ aunque su traducción llegue después.",
+    "`stack` y `categorias` sólo se repiten cuando alguna etiqueta cambia."
+  ],
+  "perfil": {
+    "rol": "Linux systems · Cybersecurity · Applied AI",
+    "titulo": "Double Degree in Computer Engineering and Business Administration - University of Granada",
+    "ubicacion": "Motril, Granada (Spain)"
+  },
+  "proyectos": {
+    "ciber-asesoria": {
+      "titulo": "Ciber-AsesorIA/ST - Regulatory compliance assessment engine",
+      "tituloSeo": "Ciber-AsesorIA: ENS, NIS2 and DORA compliance",
+      "resumen": "Bachelor's thesis: an engine that, given a company profile and a legislative control, deterministically infers which technical requirements ENS, NIS2 and DORA impose on it, and runs a conversational audit that issues a traceable, scored verdict.",
+      "descripcionSeo": "Bachelor's thesis: an engine that deterministically infers what ENS, NIS2 and DORA require of a company and runs an audit with a traceable verdict.",
+      "categorias": ["AI", "Cybersecurity", "Knowledge graphs", "Regulatory compliance"],
+      "destacados": [
+        "Principle of Maxima resolved in Cypher over Neo4j: for each control it selects the strictest requirement across the three frameworks, combining floors, reinforcements and exclusions",
+        "Deterministic inference by graph query, kept apart from the LLM stages: the verdict can be reconstructed and explained",
+        "Anti-false-positive LLM judge that filters the candidates coming out of the semantic search, degrading in a controlled way to the top 3 by similarity if the model fails",
+        "Conversational agent that turns each requirement into business language and audits it one requirement at a time",
+        "Deterministic 1–10 score, verdict cache shared between controls and a per-session audit trail",
+        "CITAD module to classify the organisation's ENS category",
+        "Validation by invariants derived from the regulatory specifications, not from the engine's own output: 346 checks (33 unit tests, 142 from the NIS2 PCE, 135 from DORA, 36 on dimensional weighting) plus 1,572 cross-mode comparisons, all satisfied",
+        "The test batteries uncovered real defects in the scope of the NIS2 exclusions and in the ENS–DORA crosswalk, and made it possible to fix them",
+        "Analysis of how it fits the AI Act (Regulation (EU) 2024/1689): transparency-obligation tier, with determinism, traceability and a human in the loop",
+        "All 9 specific objectives met"
+      ],
+      "contexto": "Bachelor's thesis - Double Degree in Computer Engineering and Business Administration, University of Granada. Supervisor: Dr. Pedro García Teodoro",
+      "autoria": "Ciber-AsesorIA is a joint project made of two subsystems. My thesis is the ST module (inference engine, assessment agent, CITAD and the integration with the Coordinator), plus the CITAD and Autopilot pieces of the frontend. The SN module and the rest of the frontend are the work of my project partner, Laura."
+    },
+    "habla-con-tu-dinero": {
+      "titulo": "Habla con tu dinero - Conversational banking assistant",
+      "tituloSeo": "Habla con tu dinero: AI banking assistant",
+      "resumen": "An assistant that lets you handle your finances by voice or in writing: check your balance, send a Bizum (the Spanish instant transfer system), analyse transactions in plain language and produce charts that the model itself designs.",
+      "descripcionSeo": "Banking assistant by voice or in writing: check your balance, send a Bizum transfer, analyse transactions in plain language and produce charts with AI.",
+      "categorias": ["AI", "LLM agents", "Accessibility", "Backend"],
+      "destacados": [
+        "LLM agent with tool calling: four tools orchestrated by the model over a simulated banking API",
+        "NL → SQL with server-side validation: read-only, a single statement and a keyword blacklist",
+        "Charts without templates: the LLM decides the visualisation and emits the full Chart.js configuration",
+        "Two-way voice: Whisper large-v3-turbo for input and Piper (a local neural voice) as the output fallback",
+        "Three-provider fallback chain that switches over mid-message on a 429, at around 3 s per turn",
+        "History compaction that cuts roughly 90% of the tokens per request",
+        "Token-by-token SSE streaming",
+        "Accessible by design: it works entirely in writing"
+      ],
+      "contexto": "Unicaja Challenge - University of Granada"
+    },
+    "museo-ar": {
+      "titulo": "Museo AR - Augmented reality museum guide",
+      "resumen": "An AR application that detects ArUco markers through a webcam and overlays 3D models of historical pieces, with face recognition of the visitor, spoken queries and photo souvenirs sent by email.",
+      "categorias": ["Computer vision", "Augmented reality", "AI"],
+      "stack": ["Python", "OpenCV", "ArUco", "pyrender", "OSMesa", "glTF", "Face recognition", "SMTP", "Telegram Bot API"],
+      "destacados": [
+        "Detection of ArUco DICT_5X5_50 markers and rendering of glTF models aligned with the real world",
+        "Face recognition for persistent visitor registration across sessions",
+        "Voice interaction: spoken questions about the pieces on display",
+        "Automatic generation and delivery of photo souvenirs over SMTP",
+        "Context awareness: themed zones identified by image or marker"
+      ],
+      "contexto": "Ubiquitous Computing and Ambient Intelligence - University of Granada"
+    },
+    "tienda-online": {
+      "titulo": "Full-stack online shop",
+      "resumen": "A complete e-commerce site with an Express + MongoDB backend, an authenticated REST API, a React frontend and a containerised deployment with Caddy as the reverse proxy.",
+      "categorias": ["Web development", "Full-stack"],
+      "destacados": [
+        "REST API with separate routes for the shop, the users and the public API",
+        "Authentication and user session management",
+        "Type-ahead search (autocomplete) and shopping cart",
+        "React + Vite + Tailwind frontend with reusable components",
+        "Deployment with Docker Compose and a separate production configuration",
+        "Centralised logging and a reproducible database seed"
+      ],
+      "contexto": "Internet Application Development - University of Granada"
+    },
+    "waf-modsecurity": {
+      "titulo": "WAF with ModSecurity and the OWASP CRS on Docker",
+      "resumen": "A Web Application Firewall sitting between the client and a farm of web servers, with OWASP CRS rules and a measurement of what it costs in performance.",
+      "categorias": ["Cybersecurity", "DevOps"],
+      "destacados": [
+        "Nginx + ModSecurity v3 + OWASP Core Rule Set in a dedicated container",
+        "Mitigation of SQLi, XSS and LFI/RFI verified through functional tests",
+        "A 1 WAF + 2 Apache backends architecture on an internal Docker network",
+        "Custom rule exclusions for WebSocket/Socket.IO traffic",
+        "Cost measured with Apache Benchmark: 2,586 → 1,663 req/s and +2.1 ms per request, without a single failed request",
+        "CRS rules that fire: 942100/942110 (SQLi through libinjection), 941100/941110/941160/941320 (XSS), 930100/930120 (path traversal), 932160 (remote execution)"
+      ],
+      "contexto": "High Performance Web Servers - University of Granada"
+    },
+    "granja-web": {
+      "titulo": "High performance web farm",
+      "resumen": "Design, deployment and evaluation of a scalable web farm: load balancing compared across five technologies, TLS, firewalling and benchmarking.",
+      "categorias": ["DevOps", "Infrastructure"],
+      "destacados": [
+        "Empirical comparison of Nginx, HAProxy, Traefik, Envoy and GoBetween as load balancers",
+        "HTTPS with certificates generated and managed through OpenSSL",
+        "Perimeter security with iptables at container level",
+        "Benchmarking under load with Apache Benchmark and Locust",
+        "Reproducible scenarios, deployable with a single command"
+      ],
+      "contexto": "High Performance Web Servers - University of Granada"
+    },
+    "agente-ia": {
+      "titulo": "Intelligent agent for a competitive game",
+      "resumen": "A turn-based agent that picks its moves with Minimax and Alpha-Beta pruning, and evaluation heuristics refined over several iterations.",
+      "categorias": ["AI", "Algorithms"],
+      "stack": ["C++", "SFML", "Minimax", "Alpha-Beta pruning"],
+      "destacados": [
+        "Minimax with Alpha-Beta pruning: the same decision as full Minimax at a far lower cost",
+        "Greater search depth within the available time limit",
+        "Three generations of heuristic: simple counting → positional value → combined with items",
+        "Validated in competition against other agents"
+      ],
+      "contexto": "Artificial Intelligence - University of Granada (Parcheesi engine with SFML)"
+    },
+    "motor-grafico": {
+      "titulo": "Interactive 3D graphics engine in OpenGL",
+      "resumen": "A 3D graphics application built incrementally: scene graph, cameras, hierarchical animation, lighting and object picking.",
+      "categorias": ["Computer graphics"],
+      "destacados": [
+        "Scene graph with per-node local transformations",
+        "Articulated animations driven from the keyboard",
+        "Phong lighting with ambient/diffuse/specular materials and textures",
+        "Colour picking for interactive selection of sub-parts",
+        "Several switchable cameras with orthographic and perspective projection"
+      ],
+      "contexto": "Computer Graphics - University of Granada"
+    },
+    "ecommerce-oracle": {
+      "titulo": "E-commerce platform on Oracle",
+      "resumen": "A desktop system connecting buyers and sellers that handles users, products, cart, orders, payments and reviews on top of an Oracle database.",
+      "categorias": ["Databases", "Backend"],
+      "destacados": [
+        "Five subsystems: users, products, cart, orders and reviews",
+        "Automatic transactional stock control when an order is confirmed or cancelled",
+        "Sign-up with unique-email validation and password recovery by token",
+        "Soft deletion of products and permanent disabling of accounts",
+        "Receipt confirmation, either manual or automatic after 3 days"
+      ],
+      "contexto": "Information Systems Design and Development - University of Granada"
+    },
+    "irrgarten": {
+      "titulo": "Irrgarten - the same game in Java and Ruby",
+      "resumen": "A turn-based maze game implemented in full in two languages, comparing how each one solves the same object-oriented design.",
+      "categorias": ["Object-oriented programming"],
+      "stack": ["Java", "Ruby", "OOP"],
+      "destacados": [
+        "Complete domain model: Player, Monster, Labyrinth, Game, Weapon, Shield, Dice",
+        "Randomness encapsulated in a single Dice class",
+        "Design driven by high cohesion and low coupling",
+        "Parallel implementation in Java and Ruby from the same class diagram"
+      ],
+      "contexto": "Object-Oriented Programming and Design - University of Granada"
+    },
+    "agenda-digital": {
+      "titulo": "Agenda Digital - cross-platform app for academic events",
+      "tituloSeo": "Agenda Digital: Flutter app with a Rails backend",
+      "resumen": "A Flutter application with a Ruby on Rails backend for managing academic events organised in a hierarchical tree of months, weeks, days and events.",
+      "categorias": ["Mobile development", "Full-stack"],
+      "stack": ["Dart", "Flutter", "Ruby on Rails", "SQLite", "REST", "Design patterns"],
+      "destacados": [
+        "Cross-platform Flutter client (iOS, Android, Web) with Material Design 3",
+        "REST API backend in Ruby on Rails 8.1 with ActiveRecord and SQLite",
+        "Composite pattern for the Month → Week → Day → Event hierarchy",
+        "Factory Method to instantiate the three event types (exam, office hours, other)",
+        "Urgent events flagged with a display of their own"
+      ],
+      "contexto": "Software Development - University of Granada (group work)"
+    },
+    "clasificador-idiomas": {
+      "titulo": "Automatic language classifier based on bigrams",
+      "tituloSeo": "Bigram-based language classifier in C++",
+      "resumen": "A C++ system that models each language by the frequency of its character pairs and classifies an unknown text by measuring its distance to the known models.",
+      "categorias": ["Algorithms", "Language processing"],
+      "stack": ["C++", "Text processing", "Dynamic memory"],
+      "destacados": [
+        "A language model as a bigram profile, serialised to its own .bgr format",
+        "Classification by distance between models: it gets Spanish, English, French and German right on real literary texts",
+        "Clean separation: the right language lands at about 0.08 distance and the rest above 0.21",
+        "Manual dynamic memory management, with no STL containers",
+        "A BigramCounter class with matrix counting for efficient tallying",
+        "Incremental development over six iterations (Language0 → Language5)"
+      ],
+      "contexto": "Programming Methodology - University of Granada"
+    }
+  }
+}

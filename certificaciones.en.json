@@ -1,0 +1,59 @@
+{
+  "_comentario": [
+    "Traducción al inglés de certificaciones.json, indexada por `id`. Igual que",
+    "en proyectos.en.json, lo que falte se sirve en español. `categoria` se",
+    "traduce entera porque además de etiqueta es la clave del filtro: basta con",
+    "que sea coherente dentro de la misma página."
+  ],
+  "certificaciones": {
+    "hack4u-introduccion-linux": {
+      "titulo": "Introduction to Linux",
+      "categoria": "Systems",
+      "detalle": "Working the system from the terminal: file system, permissions, processes, redirections and basic administration."
+    },
+    "cisco-python-essentials-1": {
+      "categoria": "Programming",
+      "detalle": "Fundamentals of the language: types, control flow, functions and the standard library. Taught together with the OpenEDG Python Institute."
+    },
+    "cisco-pcap-programming-essentials-python": {
+      "categoria": "Programming",
+      "detalle": "The full Python course: modules, files, exceptions and object-oriented programming."
+    },
+    "cisco-introduction-to-cybersecurity": {
+      "categoria": "Cybersecurity",
+      "detalle": "Threats and vulnerabilities, malware, detection and defence, and data privacy. Passed with the Networking Academy final exam."
+    },
+    "british-council-aptis-b1": {
+      "titulo": "Aptis ESOL International Certificate - level B1",
+      "categoria": "Languages",
+      "detalle": "CEFR level B1 in the four skills, assessed by the British Council.",
+      "nota": "The document number and the verification QR code have been blanked out in the PDF."
+    },
+    "t-systems-experience-ugr": {
+      "titulo": "T-Systems Experience programme",
+      "entidad": "Chair of Innovation in Digital Sustainability · University of Granada and T-Systems Iberia",
+      "categoria": "Events",
+      "detalle": "Experiential learning track at the T-Systems offices in the Granada Health Technology Park."
+    },
+    "hackathon-innovacion-puleva-ugr": {
+      "titulo": "3rd Innovation Hackathon",
+      "entidad": "Chair of Intrapreneurship and Innovation · Lactalis Puleva and University of Granada",
+      "categoria": "Events",
+      "detalle": "Teams solving real business challenges set by the company's own managers."
+    },
+    "mooc-ugr-ml-bioinformatica": {
+      "titulo": "MOOC on Machine Learning and Big Data for Bioinformatics",
+      "entidad": "University of Granada",
+      "categoria": "AI and data",
+      "detalle": "100 hours and 4 credits. Machine learning applied to biomedical data and handling of large data volumes.",
+      "nota": "The NIE number and the University of Granada verification code have been blanked out in the PDF."
+    },
+    "mooc-ugr-software-libre": {
+      "titulo": "MOOC on Open Knowledge and Free Software",
+      "entidad": "University of Granada",
+      "categoria": "Systems",
+      "detalle": "50 hours and 2 credits. Free licences, collaborative work and open publishing of code and data.",
+      "nota": "The NIE number and the University of Granada verification code have been blanked out in the PDF."
+    }
+  }
+}

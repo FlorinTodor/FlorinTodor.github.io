@@ -1,16 +1,24 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { getCollection, render } from 'astro:content';
+/**
+ * Un artículo del blog. Ver src/paginas/Portada.astro.
+ */
+import Base from '../layouts/Base.astro';
+import { render } from 'astro:content';
+import { perfil } from '../idiomas/contenido.js';
+import { t, LOCALE } from '../idiomas/textos.js';
+import { enlace } from '../idiomas/rutas.js';
+import { articulos, slugDe } from '../idiomas/blog.js';
+import { OTRO } from '../idiomas/rutas.js';
 
-export async function getStaticPaths() {
-  const articulos = await getCollection('blog', ({ data }) => !data.borrador);
-  return articulos.map((a) => ({ params: { slug: a.id }, props: { a } }));
-}
+const { a, idioma = 'es' } = Astro.props;
 
-const { a } = Astro.props;
+// Un artículo puede estar sólo en un idioma. Si no hay gemelo, ni hreflang ni
+// enlace roto en el selector: la bandera lleva al índice del otro blog.
+const gemelo = (await articulos(OTRO[idioma])).some((x) => slugDe(x) === slugDe(a));
+const T = t(idioma);
+const B = T.blog;
 const { Content } = await render(a);
-const base = import.meta.env.BASE_URL;
-const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+const fmt = (d) => d.toLocaleDateString(LOCALE[idioma], { day: 'numeric', month: 'long', year: 'numeric' });
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
 // Firmar el artículo con la misma entidad Person del sitio: cada texto publicado
@@ -21,7 +29,7 @@ const esquema = [{
   headline: a.data.titulo,
   description: a.data.descripcion,
   datePublished: a.data.fecha.toISOString(),
-  inLanguage: 'es-ES',
+  inLanguage: LOCALE[idioma],
   keywords: a.data.etiquetas,
   mainEntityOfPage: { '@id': `${url}#pagina` },
   author: { '@id': 'https://florintodor.dev/#persona' },
@@ -30,19 +38,22 @@ const esquema = [{
 ---
 
 <Base
+  idioma={idioma}
   titulo={`${a.data.tituloSeo || a.data.titulo} - Florin Todor`}
   descripcion={a.data.descripcion}
   conLateral={false}
   esquemaExtra={esquema}
+  conAlternativas={gemelo}
+  alternoFallback="blog/"
 >
   <article style="max-width:760px;margin:0 auto">
-    <a class="volver" href={`${base}blog/`}>← Todos los artículos</a>
+    <a class="volver" href={enlace(idioma, 'blog/')}>{B.volver}</a>
 
     <header class="cabecera-proyecto">
       <h1>{a.data.titulo}</h1>
       <div class="meta">
         <span class="etiqueta verde">{fmt(a.data.fecha)}</span>
-        {a.data.minutos && <span class="etiqueta">{a.data.minutos} min</span>}
+        {a.data.minutos && <span class="etiqueta">{B.minutos(a.data.minutos)}</span>}
         {a.data.etiquetas.map((e) => <span class="etiqueta">{e}</span>)}
       </div>
       <p class="resumen">{a.data.descripcion}</p>
@@ -54,8 +65,7 @@ const esquema = [{
 
     <hr class="punteado" style="margin:2.5rem 0" />
     <p style="color:var(--texto-suave);font-size:.92rem">
-      Escrito por <strong>Florin Emanuel Todor Gliga</strong>. Si te ha servido o quieres comentar algo,
-      <a href="mailto:florintodorgliga@gmail.com">escríbeme</a>.
+      {B.firma[0]}<strong>Florin Emanuel Todor Gliga</strong>{B.firma[1]}<a href={`mailto:${perfil(idioma).email}`}>{B.firma[2]}</a>{B.firma[3]}
     </p>
   </article>
 </Base>

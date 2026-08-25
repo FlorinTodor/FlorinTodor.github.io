@@ -1,4 +1,4 @@
-# Portafolio — Florin Emanuel Todor Gliga
+# Portafolio - Florin Emanuel Todor Gliga
 
 Sitio estático hecho con [Astro](https://astro.build), publicado en GitHub Pages.
 
@@ -17,7 +17,7 @@ npm run preview  # sirve dist/ para comprobarlo antes de publicar
 4. Cada `push` a `main` despliega solo (`.github/workflows/deploy.yml`).
 
 El repo del portafolio es público, pero **no contiene el código de los proyectos
-privados** — sólo sus resúmenes, capturas y vídeos.
+privados** - sólo sus resúmenes, capturas y vídeos.
 
 ## Dominio
 
@@ -41,12 +41,26 @@ cuando GitHub reemita el certificado.
 ```
 proyectos.json              ← única fuente de datos: perfil y proyectos
 certificaciones.json        ← datos de las certificaciones
+proyectos.en.json           ← traducción al inglés de los proyectos
+certificaciones.en.json     ← traducción al inglés de las certificaciones
 src/
+  idiomas/
+    textos.js               ← toda la copia del sitio, en los dos idiomas
+    contenido.js            ← mezcla los JSON con su traducción
+    rutas.js                ← / para el español, /en/ para el inglés
+    blog.js, rss.js         ← artículos y feed por idioma
   layouts/Base.astro        ← cabecera flotante + barra lateral fija + pie
-  pages/
-    index.astro             ← portada de una sola página con secciones numeradas
-    proyectos/[id].astro    ← una página por proyecto
-    certificaciones/        ← rejilla de certificaciones con filtro por área
+  paginas/                  ← el cuerpo de cada página, con `idioma` como prop
+    Portada.astro           ← portada de una sola página con secciones numeradas
+    FichaProyecto.astro     ← una página por proyecto
+    Certificaciones.astro   ← rejilla de certificaciones con filtro por área
+    BlogIndice.astro, BlogArticulo.astro
+  pages/                    ← sólo rutas: dos ficheros de tres líneas por página
+    index.astro, proyectos/[id].astro, blog/, certificaciones/, rss.xml.js
+    en/                     ← las mismas, con idioma="en"
+    404.astro               ← bilingüe: Pages lo sirve para cualquier ruta rota
+  content/blog/             ← artículos en español
+  content/blog/en/          ← los mismos, traducidos
   components/
     DemoGrafo.astro         ← explorador del grafo normativo (TFG)
     DemoBanca.astro         ← reproductor de sesión del asistente bancario
@@ -56,7 +70,8 @@ public/
   img/florin-emanuel-todor-gliga.jpg  ← retrato
   img/cv-preview-1.png      ← primera página del CV
   CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
-  img/og.jpg                ← tarjeta que se ve al compartir (la genera el script)
+  img/og.jpg, og-en.jpg     ← tarjeta que se ve al compartir (la genera el script)
+  img/og/<id>.jpg           ← una por proyecto (y og/en/<id>.jpg en inglés)
   favicon.ico               ← se queda en la raíz: Google y los navegadores
                               piden /favicon.ico sin preguntar
   icon/                     ← el resto de iconos y el manifiesto, que sí van
@@ -69,7 +84,7 @@ originales/                 ← material en bruto, fuera de git: vídeos y PDF s
                               procesar, la memoria del TFG y los certificados
                               que muestran DNI o NIE
 src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compilar
-scripts/generar-og.py       ← redibuja public/img/og.jpg
+scripts/generar-og.py       ← redibuja las tarjetas de og, en los dos idiomas
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
 scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
@@ -77,7 +92,7 @@ scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
 
 Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
 `poster/<id>.jpg`. La duración y el tamaño del `VideoObject` se leen del fichero
-al compilar, y la fecha de publicación sale del commit que lo tocó — por eso el
+al compilar, y la fecha de publicación sale del commit que lo tocó - por eso el
 workflow hace `checkout` con `fetch-depth: 0`, para tener historial.
 
 ## El nombre
@@ -89,6 +104,39 @@ Todor») van declaradas como `alternateName` en el `Person` de `Base.astro` y en
 la descripción de la portada, para que los buscadores las traten como la misma
 persona en vez de repartir señales entre dos nombres. Si cambias el nombre en
 algún sitio, cámbialo en todos.
+
+## Dos idiomas
+
+El español es el original y vive en la raíz; el inglés cuelga de `/en/`. Se montó
+así para no mover ninguna URL ya indexada: `/proyectos/granja-web/` sigue donde
+estaba y su gemela es `/en/proyectos/granja-web/`. Las dos jerarquías son
+idénticas salvo el prefijo, y de ahí sale solo todo lo demás: el selector de
+banderas de la cabecera, los `hreflang` del `<head>` y los del sitemap.
+
+Dónde está cada cosa:
+
+| Qué | Dónde |
+|---|---|
+| Textos de la interfaz | `src/idiomas/textos.js`, un objeto por idioma. |
+| Proyectos y certificaciones | `proyectos.en.json` y `certificaciones.en.json`, indexados por `id`. |
+| Artículos del blog | `src/content/blog/en/<mismo-nombre>.md`. El slug tiene que ser el mismo que el del original. |
+| Sesión de la demo bancaria | `public/demo/sesion-banca.en.json`. |
+
+**Lo que falte se sirve en español**, no desaparece: un proyecto nuevo aparece en
+`/en/` con su texto original hasta que se traduzca. Al añadir una entrada a
+`formacion` o `competencias` hay que tocar los dos idiomas, porque esas dos listas
+son casi todo texto y viven enteras en `textos.js`.
+
+Dos cosas que **no** se traducen, a propósito:
+
+- **El grafo normativo** (`public/demo/grafo-normativo.json`). Son artículos del
+  ENS, NIS2 y DORA en su redacción oficial; traducirlos a mano sería inventarse
+  terminología legal. La demo lo dice en su pie.
+- **El CV y la memoria del TFG.** Están en español y sólo hay el PDF, sin fuente
+  para regenerarlo, así que el botón inglés avisa: «Download CV (Spanish)».
+
+Los vídeos de las demos también están grabados en español; la nota de la portada
+lo advierte en la versión inglesa.
 
 ## Añadir o editar un proyecto
 
@@ -154,7 +202,7 @@ python3 scripts/tapar-datos-personales.py
 ```
 
 **Un recuadro negro encima de un PDF no tapa nada**: el texto sigue debajo y sale
-con `pdftotext` o seleccionándolo. El script lo hace bien — localiza el dato por
+con `pdftotext` o seleccionándolo. El script lo hace bien - localiza el dato por
 sus coordenadas, rasteriza la página, pinta sobre los píxeles y vuelve a montar
 el PDF, que ya no tiene capa de texto. Tapa también los códigos de verificación
 y los **QR**, porque llevan al original en la sede electrónica, donde el dato
@@ -196,7 +244,8 @@ normativos provienen del BOE y el DOUE, de dominio público.
 **Asistente bancario** (`habla-con-tu-dinero`). Reproduce una conversación grabada,
 porque Pages no puede ejecutar el backend. El esquema SQL, las herramientas y las
 cifras son reales (la base ficticia se genera con semilla fija). Para sustituirlo
-por transcripciones reales, edita `public/demo/sesion-banca.json`.
+por transcripciones reales, edita `public/demo/sesion-banca.json` (y su gemela
+`sesion-banca.en.json`).
 
 ## Nunca metas claves aquí
 

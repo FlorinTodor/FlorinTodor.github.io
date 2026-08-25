@@ -109,6 +109,28 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 }
 .menu-movil:hover { background: var(--panel-alto); }
 
+/* Selector de idioma. Sólo la bandera: el nombre del idioma va en aria-label,
+   que es lo que necesita un lector de pantalla; una bandera sola no lo dice. */
+.idiomas { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+.bandera {
+  display: block; width: 26px; height: 18px; line-height: 0;
+  border: 1px solid var(--borde-fuerte); border-radius: 3px; overflow: hidden;
+  /* Sólo se baja la opacidad: desaturar dejaba la bandera española en un
+     verde oliva que no se reconocía. */
+  opacity: .5;
+  transition: opacity .15s, transform .15s;
+}
+.bandera svg { display: block; width: 100%; height: 100%; }
+.bandera:hover { opacity: 1; transform: translateY(-1px); }
+.bandera.activa { opacity: 1; border-color: var(--verde); }
+.bandera:focus-visible { outline: 2px solid var(--verde); outline-offset: 3px; }
+
+/* Texto que sólo leen los lectores de pantalla. */
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
 /* ============================================================
    Estructura: lateral fijo + contenido
    ============================================================ */
@@ -360,7 +382,8 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   .lateral .retrato { width: 130px; height: 130px; }
 
   .cabecera-caja { gap: .8rem; padding: .7rem 1rem; flex-wrap: wrap; }
-  .menu-movil { display: grid; margin-left: auto; }
+  .idiomas { margin-left: auto; }
+  .menu-movil { display: grid; }
 
   /* El nav pasa a ser un panel desplegable dentro de la propia cabecera. */
   .cabecera nav {

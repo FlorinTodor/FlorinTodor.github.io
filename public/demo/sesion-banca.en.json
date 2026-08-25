@@ -1,0 +1,110 @@
+{
+  "_nota": "English version of sesion-banca.json. Only the conversation is translated: the SQL, the tool names and the category values stay exactly as the real project emits them (the fake database is generated with a fixed seed, random.Random(42), so these amounts are the ones it actually produces).",
+  "cuenta": {
+    "titular": "Florin E. Todor",
+    "iban": "ES21 1465 0100 72 2030876293"
+  },
+  "turnos": [
+    {
+      "usuario": "How much have I spent on groceries this year?",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT SUM(-importe) AS total FROM movimientos WHERE categoria = 'Supermercado' AND importe < 0 AND fecha >= date('now','-12 months')"
+          },
+          "resultado": "total = 3720.30"
+        }
+      ],
+      "respuesta": "Over the last twelve months you have spent **€3,720.30** on groceries, across 141 purchases. That is about €310 a month on average, 20.6% of everything you spend.",
+      "grafico": null
+    },
+    {
+      "usuario": "Show me it by month",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT strftime('%Y-%m', fecha) AS mes, SUM(-importe) AS total FROM movimientos WHERE categoria = 'Supermercado' AND importe < 0 GROUP BY mes ORDER BY mes"
+          },
+          "resultado": "13 rows"
+        },
+        {
+          "nombre": "generar_grafico",
+          "args": {
+            "titulo": "Monthly grocery spending",
+            "tipo": "bar"
+          },
+          "resultado": "Chart.js spec sent to the frontend"
+        }
+      ],
+      "respuesta": "Here you go. There is quite a bit of variation: November (€402), March (€400) and above all June (€427) and July (€420) run well above your average, while August 2025 (€173) and February (€177) were the most restrained.",
+      "grafico": {
+        "type": "bar",
+        "data": {
+          "labels": ["Aug 25", "Sep 25", "Oct 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26"],
+          "datasets": [
+            {
+              "label": "Groceries (€)",
+              "data": [173.08, 312.53, 188.59, 402.75, 220.25, 199.4, 177.68, 400.82, 264.7, 264.84, 427.6, 420.23, 267.83]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "usuario": "And where does most of my money go overall?",
+      "herramientas": [
+        {
+          "nombre": "consultar_movimientos",
+          "args": {
+            "sql": "SELECT categoria, SUM(-importe) AS total FROM movimientos WHERE importe < 0 GROUP BY categoria ORDER BY total DESC"
+          },
+          "resultado": "11 rows"
+        },
+        {
+          "nombre": "generar_grafico",
+          "args": {
+            "titulo": "Spending by category",
+            "tipo": "doughnut"
+          },
+          "resultado": "Chart.js spec sent to the frontend"
+        }
+      ],
+      "respuesta": "Of the €18,068 you have spent this year, almost half goes on **housing** (€8,632, or 47.8%) between rent, electricity and water. Then come groceries (€3,720) and restaurants (€1,688). Everything else put together does not reach 20%.",
+      "grafico": {
+        "type": "doughnut",
+        "data": {
+          "labels": ["Housing", "Groceries", "Restaurants", "Transport", "Subscriptions", "Online shopping", "Clothing", "Sport", "Health", "Bizum", "Leisure"],
+          "datasets": [
+            {
+              "label": "€ spent",
+              "data": [8632.88, 3720.3, 1688.43, 1173.61, 695.57, 456.42, 414.7, 358.8, 340.44, 329.13, 258.46]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "usuario": "Send Lucía 20 euros for dinner",
+      "herramientas": [
+        {
+          "nombre": "listar_contactos_bizum",
+          "args": {},
+          "resultado": "4 contacts"
+        },
+        {
+          "nombre": "transferencia_bizum",
+          "args": {
+            "destinatario": "Lucía Fernández",
+            "importe": 20.0,
+            "concepto": "Dinner"
+          },
+          "resultado": "ok · new balance €4,312.47"
+        }
+      ],
+      "respuesta": "Done: I have sent **€20.00** to Lucía Fernández with the reference \"Dinner\". You have €4,312.47 left in the account.",
+      "grafico": null
+    }
+  ]
+}
