@@ -2,7 +2,7 @@
   "perfil": {
     "nombre": "Florin Emanuel Todor Gliga",
     "rol": "Sistemas Linux · Ciberseguridad · IA aplicada",
-    "titulo": "Doble Grado en Ingeniería Informática y ADE — Universidad de Granada",
+    "titulo": "Doble Grado en Ingeniería Informática y ADE - Universidad de Granada",
     "ubicacion": "Motril, Granada (España)",
     "ciudad": "Motril, Granada",
     "github": "https://github.com/FlorinTodor",
@@ -16,7 +16,7 @@
       "id": "ciber-asesoria",
       "destacado": true,
       "privado": true,
-      "titulo": "Ciber-AsesorIA/ST — Motor de evaluación de cumplimiento normativo",
+      "titulo": "Ciber-AsesorIA/ST - Motor de evaluación de cumplimiento normativo",
       "tituloSeo": "Ciber-AsesorIA: cumplimiento ENS, NIS2 y DORA",
       "resumen": "Trabajo de Fin de Grado: motor que, dado el perfil de una empresa y un control legislativo, infiere de forma determinista qué requisitos técnicos le exigen ENS, NIS2 y DORA, y conduce una auditoría conversacional que emite un veredicto trazable con puntuación.",
       "descripcionSeo": "TFG: motor que infiere de forma determinista qué le exigen ENS, NIS2 y DORA a una empresa y conduce una auditoría con veredicto trazable.",
@@ -53,7 +53,7 @@
       "memoria": "docs/memoria-tfg-ciber-asesoria.pdf",
       "memoriaPaginas": 145,
       "anio": 2026,
-      "contexto": "Trabajo de Fin de Grado — Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
+      "contexto": "Trabajo de Fin de Grado - Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
       "autoria": "Ciber-AsesorIA es un proyecto conjunto de dos subsistemas. Mi TFG es el módulo ST (motor de inferencia, agente de evaluación, CITAD y la integración con el Coordinador), más las piezas CITAD y Autopiloto del frontend. El módulo SN y el resto del frontend son obra de mi compañera de proyecto, Laura.",
       "pendiente": [
         "CRÍTICO: rotar la contraseña de Neo4j Aura hardcodeada en ST/trace/st_trace_all.py:9 y st_trace_individual.py:8",
@@ -66,7 +66,7 @@
       "id": "habla-con-tu-dinero",
       "destacado": true,
       "privado": true,
-      "titulo": "Habla con tu dinero — Asistente bancario conversacional",
+      "titulo": "Habla con tu dinero - Asistente bancario conversacional",
       "tituloSeo": "Habla con tu dinero: asistente bancario con IA",
       "resumen": "Asistente que permite gestionar tus finanzas por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos que el propio modelo diseña.",
       "descripcionSeo": "Asistente bancario por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos con IA.",
@@ -100,7 +100,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/Reto_Unicaja",
       "anio": 2026,
-      "contexto": "Reto Unicaja — UGR",
+      "contexto": "Reto Unicaja - UGR",
       "pendiente": [
         "Revisar las bases del reto antes de publicar",
         "Grabar demo en vídeo: la interacción por voz necesita verse"
@@ -111,7 +111,7 @@
       "destacado": true,
       "oculto": true,
       "motivoOculto": "Oculto hasta grabar la demo: necesita webcam y marcadores ArUco impresos.",
-      "titulo": "Museo AR — Guía de museo en realidad aumentada",
+      "titulo": "Museo AR - Guía de museo en realidad aumentada",
       "resumen": "Aplicación de RA que detecta marcadores ArUco por webcam y superpone modelos 3D de piezas históricas, con reconocimiento facial del visitante, consultas por voz y souvenirs fotográficos enviados por email.",
       "destacados": [
         "Detección de marcadores ArUco DICT_5X5_50 y renderizado de modelos glTF alineados con el mundo real",
@@ -138,7 +138,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/Computacion-Ubicua-e-Inteligencia-Ambiental-CUIA",
       "anio": 2025,
-      "contexto": "Computación Ubicua e Inteligencia Ambiental — UGR",
+      "contexto": "Computación Ubicua e Inteligencia Ambiental - UGR",
       "pendiente": [
         "Añadir .gitignore y eliminar __pycache__",
         "Mover los .glb (831 MB) a releases o Git LFS",
@@ -174,7 +174,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/DAI_practicas/tree/main/Practica7_TodorGliga_FlorinEmanuel",
       "anio": 2026,
-      "contexto": "Desarrollo de Aplicaciones para Internet — UGR",
+      "contexto": "Desarrollo de Aplicaciones para Internet - UGR",
       "pendiente": [
         "Extraer a su propio repositorio con README y capturas"
       ]
@@ -207,7 +207,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/SWAP_Trabajo",
       "anio": 2025,
-      "contexto": "Servidores Web de Altas Prestaciones — UGR",
+      "contexto": "Servidores Web de Altas Prestaciones - UGR",
       "pendiente": [
         "Revisar y desversionar los logs commiteados"
       ]
@@ -242,7 +242,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/SERVIDORES-WEB-DE-ALTAS-PRESTACIONES-SWAP-",
       "anio": 2025,
-      "contexto": "Servidores Web de Altas Prestaciones — UGR"
+      "contexto": "Servidores Web de Altas Prestaciones - UGR"
     },
     {
       "id": "agente-ia",
@@ -267,7 +267,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/Practica3_IA_UGR",
       "anio": 2024,
-      "contexto": "Inteligencia Artificial — UGR (motor de Parchís con SFML)",
+      "contexto": "Inteligencia Artificial - UGR (motor de Parchís con SFML)",
       "pendiente": [
         "NO PUBLICAR TAL CUAL. Al compilarlo (2026-08-17) resultó que Poda_AlfaBeta, MiValoracion1 y MiValoracion2 se invocan en AIPlayer.cpp pero no están definidas en ningún fichero del repo",
         "think() solo llama a thinkAleatorio; las demás ramas están comentadas. El agente que se ejecutaría juega al azar",
@@ -299,7 +299,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/Informatica-Grafica-IG-UGR",
       "anio": 2025,
-      "contexto": "Informática Gráfica — UGR",
+      "contexto": "Informática Gráfica - UGR",
       "pendiente": [
         "NO PUBLICAR TAL CUAL. Al intentar compilarlo (2026-08-17) el repo resultó ser la plantilla del curso sin completar: 59 marcadores COMPLETAR, con el núcleo de la P3 (grafo-escena.cpp:111, visualización del nodo) y de la P4 (materiales y normales) sin implementar",
         "Además no compila: examen-ec-p45.h:35 declara cuandoClick(int) como override, pero la base Objeto3D define cuandoClick(const glm::vec3&)",
@@ -333,12 +333,12 @@
       ],
       "repo": "https://github.com/FlorinTodor/Disenio-y-Desarrollo-de-Sistemas-DDSI",
       "anio": 2025,
-      "contexto": "Diseño y Desarrollo de Sistemas de Información — UGR"
+      "contexto": "Diseño y Desarrollo de Sistemas de Información - UGR"
     },
     {
       "id": "irrgarten",
       "destacado": false,
-      "titulo": "Irrgarten — el mismo juego en Java y Ruby",
+      "titulo": "Irrgarten - el mismo juego en Java y Ruby",
       "resumen": "Videojuego de laberinto por turnos implementado íntegramente en dos lenguajes, comparando cómo cada uno resuelve el mismo diseño orientado a objetos.",
       "destacados": [
         "Modelo de dominio completo: Player, Monster, Labyrinth, Game, Weapon, Shield, Dice",
@@ -356,13 +356,13 @@
       ],
       "repo": "https://github.com/FlorinTodor/PDOO",
       "anio": 2024,
-      "contexto": "Programación y Diseño Orientado a Objetos — UGR"
+      "contexto": "Programación y Diseño Orientado a Objetos - UGR"
     },
     {
       "id": "agenda-digital",
       "destacado": false,
       "privado": true,
-      "titulo": "Agenda Digital — app multiplataforma de eventos académicos",
+      "titulo": "Agenda Digital - app multiplataforma de eventos académicos",
       "tituloSeo": "Agenda Digital: app Flutter con backend Rails",
       "resumen": "Aplicación Flutter con backend Ruby on Rails para gestionar eventos académicos organizados en un árbol jerárquico de meses, semanas, días y eventos.",
       "destacados": [
@@ -386,7 +386,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/DS",
       "anio": 2026,
-      "contexto": "Desarrollo de Software — UGR (trabajo en grupo)",
+      "contexto": "Desarrollo de Software - UGR (trabajo en grupo)",
       "pendiente": [
         "Aclarar que es trabajo en grupo y qué parte hiciste tú",
         "Sustituir el README por defecto de Flutter"
@@ -417,7 +417,7 @@
       ],
       "repo": "https://github.com/FlorinTodor/Programming_Methodology",
       "anio": 2023,
-      "contexto": "Metodología de la Programación — UGR",
+      "contexto": "Metodología de la Programación - UGR",
       "pendiente": [
         "El clasificador que funciona es Language4. En Language5 los main de classify.cpp y joinLanguages.cpp están vacíos, pese a que el README anuncia LEARN, JOIN y CLASSIFY",
         "El CMakeLists.txt de Language5 referencia src/main_prueba.cpp, que no existe: el proyecto no compila al clonarlo",

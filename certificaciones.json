@@ -16,7 +16,7 @@
     {
       "id": "hack4u-introduccion-linux",
       "titulo": "Introducción a Linux",
-      "entidad": "Hack4u — Marcelo Vázquez (S4vitar)",
+      "entidad": "Hack4u - Marcelo Vázquez (S4vitar)",
       "fecha": "2024-08",
       "categoria": "Sistemas",
       "destacada": true,
@@ -35,7 +35,7 @@
     },
     {
       "id": "cisco-pcap-programming-essentials-python",
-      "titulo": "PCAP — Programming Essentials in Python",
+      "titulo": "PCAP - Programming Essentials in Python",
       "entidad": "Cisco Networking Academy",
       "fecha": "2021-06",
       "categoria": "Programación",
@@ -55,7 +55,7 @@
     },
     {
       "id": "british-council-aptis-b1",
-      "titulo": "Aptis ESOL International Certificate — nivel B1",
+      "titulo": "Aptis ESOL International Certificate - nivel B1",
       "entidad": "British Council",
       "fecha": "2026-05",
       "categoria": "Idiomas",
