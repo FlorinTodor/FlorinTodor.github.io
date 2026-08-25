@@ -28,6 +28,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # Corta el despliegue si algo se ha quedado sin traducir. No necesita las
+      # dependencias, así que va antes del npm ci y falla en segundos.
+      #
+      # Para publicar igualmente (un arreglo urgente en español, sin tiempo de
+      # traducirlo): Actions -> Desplegar en GitHub Pages -> Run workflow. Al
+      # lanzarlo a mano no se comprueba. Es a propósito que haya que ir a
+      # buscarlo: si el salto fuera cómodo, dejaría de ser una regla.
+      - name: Comprobar que la versión inglesa está al día
+        if: github.event_name != 'workflow_dispatch'
+        run: npm run comprobar
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3

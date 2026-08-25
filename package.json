@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "comprobar": "node scripts/comprobar-traducciones.mjs",
     "astro": "astro"
   },
   "dependencies": {

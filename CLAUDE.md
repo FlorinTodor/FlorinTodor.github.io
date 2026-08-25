@@ -27,9 +27,13 @@ Dónde va cada cosa:
 Antes de dar por terminado un cambio:
 
 ```bash
-node scripts/comprobar-traducciones.mjs   # falla si falta algo
+npm run comprobar   # falla si falta algo
 npm run build
 ```
+
+`npm run comprobar` corre también en el despliegue: **si falla, el sitio no se
+publica**. La salida de emergencia es lanzar el workflow a mano desde Actions
+(ahí no se comprueba), y es deliberado que haya que ir a buscarla.
 
 ### Lo que no se traduce, a propósito
 

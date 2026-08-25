@@ -128,11 +128,16 @@ Dónde está cada cosa:
 hace que un olvido no dé la cara, así que hay un comprobador:
 
 ```bash
-node scripts/comprobar-traducciones.mjs
+npm run comprobar
 ```
 
 Devuelve 1 y lista lo que falta (claves de `textos.js`, proyectos, certificaciones,
-artículos sin gemelo). No juzga la calidad de la traducción, sólo si existe. Al añadir una entrada a
+artículos sin gemelo). No juzga la calidad de la traducción, sólo si existe.
+
+Corre también en el despliegue, antes de compilar: **si falla, el sitio no se
+publica**. Para saltárselo (un arreglo urgente en español que no da tiempo a
+traducir), lanza el workflow a mano desde **Actions → Desplegar en GitHub Pages →
+Run workflow**: en ese caso la comprobación no se ejecuta. Al añadir una entrada a
 `formacion` o `competencias` hay que tocar los dos idiomas, porque esas dos listas
 son casi todo texto y viven enteras en `textos.js`.
 
