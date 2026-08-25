@@ -1,0 +1,12 @@
+---
+import FichaProyecto from '../../../paginas/FichaProyecto.astro';
+import { publicables } from '../../../idiomas/contenido.js';
+
+export function getStaticPaths() {
+  return publicables('en').map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+---
+
+<FichaProyecto p={p} idioma="en" />

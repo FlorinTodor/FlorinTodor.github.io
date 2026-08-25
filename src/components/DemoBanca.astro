@@ -1,25 +1,29 @@
 ---
 // Reproductor de una sesión del asistente bancario.
 // Los gráficos se renderizan de verdad con Chart.js a partir de la misma
-// spec que el modelo emite en el proyecto real.
-const base = import.meta.env.BASE_URL;
+// spec que el modelo emite en el proyecto real. El guion de la conversación
+// está traducido: public/demo/sesion-banca.json y sesion-banca.en.json.
+import { t } from '../idiomas/textos.js';
+import { recurso } from '../idiomas/rutas.js';
+
+const { idioma = 'es' } = Astro.props;
+const B = t(idioma).banca;
+
+// El script corre en el navegador y no puede importar este módulo.
+const textosScript = JSON.stringify({ saludo: B.saludo, fin: B.fin, error: B.error });
+const origen = recurso(idioma === 'en' ? 'demo/sesion-banca.en.json' : 'demo/sesion-banca.json');
 ---
 
 <div class="aviso-demo">
   <span aria-hidden="true">ℹ</span>
-  <p>
-    Sesión grabada, no un modelo en vivo: GitHub Pages es estático y no puede
-    ejecutar el backend. Las cifras, el SQL y las herramientas son los reales del
-    proyecto; los gráficos se renderizan aquí mismo con Chart.js a partir de la
-    misma especificación que emite el modelo.
-  </p>
+  <p>{B.aviso}</p>
 </div>
 
-<div class="demo-banca" data-origen={`${base}demo/sesion-banca.json`}>
+<div class="demo-banca" data-origen={origen} data-textos={textosScript}>
   <div class="db-cabecera">
     <div class="db-punto"></div>
     <span id="db-titular">-</span>
-    <button class="db-reiniciar" id="db-reiniciar" type="button">Reiniciar</button>
+    <button class="db-reiniciar" id="db-reiniciar" type="button">{B.reiniciar}</button>
   </div>
 
   <div class="db-chat" id="db-chat" aria-live="polite"></div>
@@ -103,6 +107,7 @@ const base = import.meta.env.BASE_URL;
 
   const raiz = document.querySelector('.demo-banca');
   if (raiz) {
+    const TX = JSON.parse(raiz.dataset.textos);
     const chat = document.getElementById('db-chat');
     const sugerencias = document.getElementById('db-sugerencias');
     const PALETA = ['#4e79a7', '#f28e2b', '#59a14f', '#e15759', '#b07aa1',
@@ -214,7 +219,7 @@ const base = import.meta.env.BASE_URL;
       if (indice >= sesion.turnos.length) {
         const s = document.createElement('span');
         s.className = 'listo';
-        s.textContent = 'Fin de la sesión grabada.';
+        s.textContent = TX.fin;
         sugerencias.appendChild(s);
         return;
       }
@@ -229,7 +234,7 @@ const base = import.meta.env.BASE_URL;
     function reiniciar() {
       chat.innerHTML = '';
       indice = 0; ocupado = false;
-      burbuja(`Hola 👋 Soy tu asistente. Puedes preguntarme por tu saldo, tus gastos o pedirme que envíe un Bizum.`, 'bot');
+      burbuja(TX.saludo, 'bot');
       pintarSugerencias();
     }
 
@@ -243,7 +248,9 @@ const base = import.meta.env.BASE_URL;
         reiniciar();
       })
       .catch(() => {
-        raiz.innerHTML = '<p style="padding:1.2rem;color:var(--texto-tenue)">No se pudo cargar la sesión.</p>';
+        raiz.textContent = TX.error;
+        raiz.style.padding = '1.2rem';
+        raiz.style.color = 'var(--texto-tenue)';
       });
   }
 </script>

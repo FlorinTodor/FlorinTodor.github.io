@@ -30,7 +30,7 @@ MARGEN = 20
 FPS = 25
 TAM = 13
 INTERLINEADO = 15.5
-TITULO = 'ruby Main/main.rb — partida real de Irrgarten'
+TITULO = 'ruby Main/main.rb - partida real de Irrgarten'
 ORDEN = 'ruby Main/main.rb'
 PROMPT = 'florin@ugr:~/PDOO/Irrgarten_trabajo/ruby_original$ '
 

@@ -9,9 +9,11 @@
  * por encima de esa capa.
  */
 import { hayVideo, hayDemo } from '../utilidades/demos.js';
+import { t } from '../idiomas/textos.js';
+import { enlace, recurso } from '../idiomas/rutas.js';
 
-const { p, destacado = false, etiquetas = 3 } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const { p, idioma = 'es', destacado = false, etiquetas = 3 } = Astro.props;
+const T = t(idioma).tarjeta;
 const video = hayVideo(p.id);
 ---
 
@@ -19,29 +21,29 @@ const video = hayVideo(p.id);
   {video && (
     <div class="miniatura">
       <video
-        src={`${base}media/${p.id}.mp4`}
-        poster={`${base}media/poster/${p.id}.jpg`}
+        src={recurso(`media/${p.id}.mp4`)}
+        poster={recurso(`media/poster/${p.id}.jpg`)}
         muted loop playsinline preload="none"></video>
-      <span class="insignia-video">▶ demo</span>
+      <span class="insignia-video">{T.insignia}</span>
     </div>
   )}
   <div class="cuerpo">
     <h3>
-      <a class="enlace-tarjeta" href={`${base}proyectos/${p.id}/`}>{p.titulo}</a>
+      <a class="enlace-tarjeta" href={enlace(idioma, `proyectos/${p.id}/`)}>{p.titulo}</a>
     </h3>
     <p>{p.resumen}</p>
     <div class="pie">
-      {p.privado && <span class="etiqueta ambar">Código privado</span>}
-      {p.stack.slice(0, etiquetas).map((t) => <span class="etiqueta">{t}</span>)}
+      {p.privado && <span class="etiqueta ambar">{T.privado}</span>}
+      {p.stack.slice(0, etiquetas).map((x) => <span class="etiqueta">{x}</span>)}
     </div>
     <div class="enlaces-tarjeta">
       {/* Los privados ya llevan su etiqueta ámbar en el pie: repetir aquí un
           enlace a la propia tarjeta no aporta nada. */}
-      {!p.privado && <a href={p.repo} target="_blank" rel="noopener">Código ↗</a>}
+      {!p.privado && <a href={p.repo} target="_blank" rel="noopener">{T.codigo}</a>}
       {p.memoria && (
-        <a href={`${base}${p.memoria}`} target="_blank" rel="noopener">Memoria ↗</a>
+        <a href={recurso(p.memoria)} target="_blank" rel="noopener">{T.memoria}</a>
       )}
-      {hayDemo(p.id) && <a href={`${base}proyectos/${p.id}/#demo`}>Demo →</a>}
+      {hayDemo(p.id) && <a href={enlace(idioma, `proyectos/${p.id}/#demo`)}>{T.demo}</a>}
     </div>
   </div>
 </article>

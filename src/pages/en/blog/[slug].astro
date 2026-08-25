@@ -1,0 +1,12 @@
+---
+import BlogArticulo from '../../../paginas/BlogArticulo.astro';
+import { articulos, slugDe } from '../../../idiomas/blog.js';
+
+export async function getStaticPaths() {
+  return (await articulos('en')).map((a) => ({ params: { slug: slugDe(a) }, props: { a } }));
+}
+
+const { a } = Astro.props;
+---
+
+<BlogArticulo a={a} idioma="en" />

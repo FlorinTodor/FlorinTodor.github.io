@@ -1,0 +1,197 @@
+---
+/**
+ * La portada, en el idioma que se le pase.
+ *
+ * Vive aquí y no en src/pages/ porque la sirven dos rutas (/ y /en/) y
+ * duplicar 200 líneas de maquetación por idioma se desincroniza al primer
+ * cambio. Las rutas son dos ficheros de tres líneas que llaman a esto.
+ */
+import Base from '../layouts/Base.astro';
+import TarjetaProyecto from '../components/TarjetaProyecto.astro';
+import { perfil, publicables, certificaciones } from '../idiomas/contenido.js';
+import { t } from '../idiomas/textos.js';
+import { enlace, recurso } from '../idiomas/rutas.js';
+
+const { idioma = 'es' } = Astro.props;
+const T = t(idioma);
+const p = perfil(idioma);
+
+const proyectos = publicables(idioma);
+const destacados = proyectos.filter((x) => x.destacado);
+const resto = proyectos.filter((x) => !x.destacado);
+
+// Los certificados viven en public/certificaciones/ y se llaman como su `id`,
+// igual que en /certificaciones/: así cada entrada de formación puede enseñar
+// la miniatura del documento sin repetir rutas a mano.
+const ficherosCert = Object.keys({
+  ...import.meta.glob('/public/certificaciones/*.pdf'),
+  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
+}).map((f) => f.replace('/public/certificaciones/', ''));
+
+const buscarCert = (id, extensiones) =>
+  ficherosCert.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));
+
+const certPorId = Object.fromEntries(
+  certificaciones(idioma).map((c) => {
+    const archivo = c.archivo || buscarCert(c.id, ['pdf']);
+    const imagen = c.imagen || buscarCert(c.id, ['jpg', 'jpeg', 'png', 'webp']);
+    // El PDF manda; si no lo hay vale la verificación y, en último caso, la imagen.
+    const documento = archivo
+      ? recurso(`certificaciones/${archivo}`)
+      : c.credencial || (imagen ? recurso(`certificaciones/${imagen}`) : null);
+    return [c.id, { ...c, archivo, imagen, documento }];
+  })
+);
+---
+
+<Base idioma={idioma} titulo={T.portada.titulo} descripcion={T.portada.descripcion}>
+  {/* ---------------- Portada ---------------- */}
+  <section id="inicio" class="portada">
+    <h1>
+      <span class="nombre-completo">Florin Emanuel Todor Gliga</span>
+      {T.portada.titular[0]}<br />{T.portada.titular[1]}<em>{T.portada.titular[2]}</em>{T.portada.titular[3]}
+    </h1>
+    <p class="entradilla" set:html={T.portada.entradilla}></p>
+    <div class="acciones">
+      <a class="boton" href="#proyectos">{T.portada.verProyectos}</a>
+      <a class="boton fantasma" href={recurso(p.cv)} download>{T.cabecera.descargarCv}</a>
+      <a class="boton fantasma" href={`mailto:${p.email}`}>{T.portada.escribeme}</a>
+    </div>
+  </section>
+
+  {/* ---------------- 01 Sobre mí ---------------- */}
+  <section id="sobre-mi">
+    <div class="titulo-seccion"><h2>{T.sobreMi.titulo}</h2><div class="linea"></div><div class="num">01</div></div>
+    <div class="tarjeta">
+      {T.sobreMi.parrafos.map((texto, i) => (
+        <p style={i === T.sobreMi.parrafos.length - 1 ? 'margin-bottom:0' : undefined} set:html={texto}></p>
+      ))}
+    </div>
+  </section>
+
+  {/* ---------------- 02 Proyectos ---------------- */}
+  <section id="proyectos">
+    <div class="titulo-seccion"><h2>{T.proyectos.titulo}</h2><div class="linea"></div><div class="num">02</div></div>
+
+    <p class="nota-proyectos">{T.proyectos.nota}</p>
+
+    <div class="subtitulo">{T.proyectos.destacados}</div>
+    <div class="rejilla-proyectos">
+      {destacados.map((x, i) => (
+        <TarjetaProyecto p={x} idioma={idioma} destacado={i === 0} etiquetas={i === 0 ? 6 : 3} />
+      ))}
+    </div>
+
+    <div class="subtitulo">{T.proyectos.otros}</div>
+    <div class="rejilla-proyectos">
+      {resto.map((x) => <TarjetaProyecto p={x} idioma={idioma} />)}
+    </div>
+  </section>
+
+  {/* ---------------- 03 Competencias ---------------- */}
+  <section id="competencias">
+    <div class="titulo-seccion"><h2>{T.competencias.titulo}</h2><div class="linea"></div><div class="num">03</div></div>
+    {T.competencias.areas.map((c) => (
+      <div class="tarjeta">
+        <div style="color:var(--verde);font-weight:700;font-size:.9rem;margin-bottom:.7rem">{c.area}</div>
+        <div class="etiquetas">{c.items.map((i) => <span class="etiqueta">{i}</span>)}</div>
+      </div>
+    ))}
+  </section>
+
+  {/* ---------------- 04 Formación ---------------- */}
+  <section id="formacion">
+    <div class="titulo-seccion"><h2>{T.formacion.titulo}</h2><div class="linea"></div><div class="num">04</div></div>
+    {T.formacion.entradas.map((f) => (
+      <div class="tarjeta">
+        <span class="pastilla-fecha">{f.fecha}</span>
+        <div style="color:var(--texto-tenue);font-size:.84rem">{f.centro}</div>
+        <h3 style="font-size:1.02rem;margin:.4rem 0 .6rem">{f.titulo}</h3>
+        {f.detalle && <p style="color:var(--texto-suave);font-size:.9rem;margin:0">{f.detalle}</p>}
+        {f.enlace && (
+          <a href={f.enlace} target="_blank" rel="noopener" style="font-size:.9rem">
+            {f.enlaceTexto} ↗
+          </a>
+        )}
+        {(f.certificados || []).map((id) => certPorId[id]).filter((c) => c && c.documento).length > 0 && (
+          <div class="docs-formacion">
+            {(f.certificados || [])
+              .map((id) => certPorId[id])
+              .filter((c) => c && c.documento)
+              .map((c) => (
+                <a
+                  class="doc-mini"
+                  href={c.documento}
+                  target="_blank"
+                  rel="noopener"
+                  title={`${c.titulo} - ${c.entidad}`}
+                >
+                  <span class="lamina-mini">
+                    {c.imagen
+                      ? <img src={recurso(`certificaciones/${c.imagen}`)} alt={T.formacion.certificadoAlt(c.titulo)} loading="lazy" />
+                      : <span class="sello-mini">{c.entidad.slice(0, 2).toUpperCase()}</span>}
+                  </span>
+                  <span class="titulo-mini">{c.titulo}</span>
+                  <span class="tipo-mini">{c.archivo ? T.formacion.pdf : T.formacion.ver}</span>
+                </a>
+              ))}
+          </div>
+        )}
+      </div>
+    ))}
+    <p style="margin-top:1rem;font-size:.92rem">
+      <a class="enlace-suelto" href={enlace(idioma, 'certificaciones/')}>{T.formacion.verCertificaciones}</a>
+    </p>
+  </section>
+
+  {/* ---------------- 05 CV ---------------- */}
+  <section id="cv">
+    <div class="titulo-seccion"><h2>{T.cv.titulo}</h2><div class="linea"></div><div class="num">05</div></div>
+    <div class="tarjeta bloque-cv">
+      <a class="vista" href={recurso(p.cv)} target="_blank" rel="noopener" aria-label={T.cv.abrirAria}>
+        <img src={recurso('img/cv-preview-1.jpg')} alt={T.cv.portadaAlt} loading="lazy" />
+      </a>
+      <div class="acciones">
+        <a class="boton" href={recurso(p.cv)} download>{T.cv.descargar}</a>
+        <a class="boton fantasma" href={recurso(p.cv)} target="_blank" rel="noopener">{T.cv.abrir}</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------------- 06 Contacto ---------------- */}
+  <section id="contacto">
+    <div class="titulo-seccion"><h2>{T.contacto.titulo}</h2><div class="linea"></div><div class="num">06</div></div>
+    <div class="rejilla-contacto">
+      <div class="contacto-item">
+        <div class="clave">{T.contacto.correo}</div>
+        <div class="valor"><a href={`mailto:${p.email}`}>{p.email}</a></div>
+      </div>
+      <div class="contacto-item">
+        <div class="clave">{T.contacto.telefono}</div>
+        <div class="valor">{p.telefono}</div>
+      </div>
+      <div class="contacto-item">
+        <div class="clave">{T.contacto.github}</div>
+        <div class="valor"><a href={p.github} target="_blank" rel="noopener">FlorinTodor</a></div>
+      </div>
+      <div class="contacto-item">
+        <div class="clave">{T.contacto.linkedin}</div>
+        <div class="valor"><a href={p.linkedin} target="_blank" rel="noopener">florin-emanuel-todor-gliga</a></div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    // Las miniaturas son imágenes; el vídeo (preload="none") sólo se descarga
+    // al pasar el ratón. En móvil no se reproduce solo: cargaría megas de datos
+    // a quien únicamente está bajando por la página.
+    if (matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('.tarjeta-proyecto').forEach((t) => {
+        const v = t.querySelector('video');
+        if (!v) return;
+        t.addEventListener('mouseenter', () => v.play().catch(() => {}));
+        t.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
+      });
+    }
+  </script>
+</Base>

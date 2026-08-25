@@ -1,0 +1,165 @@
+---
+/**
+ * /certificaciones/ y /en/certificaciones/. Ver src/paginas/Portada.astro.
+ */
+import Base from '../layouts/Base.astro';
+import { perfil, certificaciones as listado } from '../idiomas/contenido.js';
+import { t } from '../idiomas/textos.js';
+import { enlace, recurso } from '../idiomas/rutas.js';
+
+const { idioma = 'es' } = Astro.props;
+const T = t(idioma);
+const C = T.certificaciones;
+const p = perfil(idioma);
+
+// Los ficheros viven en public/certificaciones/. Como el poster de los vídeos,
+// se detectan solos: basta con que se llamen igual que el `id`.
+const ficheros = Object.keys({
+  ...import.meta.glob('/public/certificaciones/*.pdf'),
+  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
+}).map((f) => f.replace('/public/certificaciones/', ''));
+
+const buscar = (id, extensiones) =>
+  ficheros.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));
+
+// "2021-06" → "junio de 2021" / "June 2021"; "2021" → "2021".
+const fechaTexto = (f) => {
+  const [anio, mes] = String(f).split('-');
+  return mes ? C.fecha(C.meses[Number(mes) - 1], anio) : anio;
+};
+
+const certificaciones = listado(idioma)
+  .map((c) => ({
+    ...c,
+    archivo: c.archivo || buscar(c.id, ['pdf']),
+    imagen: c.imagen || buscar(c.id, ['jpg', 'jpeg', 'png', 'webp']),
+  }))
+  // Las más recientes primero; las destacadas por delante de todo.
+  .sort((a, b) => (b.destacada ? 1 : 0) - (a.destacada ? 1 : 0) || String(b.fecha).localeCompare(String(a.fecha)));
+
+const categorias = [...new Set(certificaciones.map((c) => c.categoria).filter(Boolean))];
+const conPdf = certificaciones.filter((c) => c.archivo).length;
+const conCredly = certificaciones.filter((c) => c.credencial).length;
+
+const invitacion = conPdf > 0 ? C.conPdf : conCredly > 0 ? C.conCredly : C.sinNada;
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+const esquema = [{
+  '@type': 'ItemList',
+  '@id': `${url}#certificaciones`,
+  name: C.listaNombre,
+  numberOfItems: certificaciones.length,
+  itemListElement: certificaciones.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'EducationalOccupationalCredential',
+      name: c.titulo,
+      credentialCategory: 'certificate',
+      ...(c.categoria ? { about: c.categoria } : {}),
+      ...(c.detalle ? { description: c.detalle } : {}),
+      dateCreated: String(c.fecha),
+      recognizedBy: { '@type': 'Organization', name: c.entidad },
+      ...(c.credencial ? { url: c.credencial } : c.archivo ? { url: `${new URL(`certificaciones/${c.archivo}`, Astro.site).href}` } : {}),
+    },
+  })),
+}];
+---
+
+<Base
+  idioma={idioma}
+  titulo={C.titulo}
+  descripcion={C.descripcion}
+  conLateral={false}
+  esquemaExtra={esquema}
+>
+  <div style="max-width:1100px;margin:0 auto">
+    <header class="cabecera-proyecto">
+      <div style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">
+        {C.antetitulo}
+      </div>
+      <h1>{C.encabezado}</h1>
+      <p class="resumen">{C.resumen} {invitacion}</p>
+    </header>
+
+    {categorias.length > 1 && (
+      <div class="filtros-cert" role="group" aria-label={C.filtrar}>
+        <button class="filtro activo" data-cat="*">{C.todas} <span>{certificaciones.length}</span></button>
+        {categorias.map((cat) => (
+          <button class="filtro" data-cat={cat}>
+            {cat} <span>{certificaciones.filter((c) => c.categoria === cat).length}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class="rejilla-cert" id="rejilla-cert">
+      {certificaciones.map((c) => {
+        // El PDF manda. Si no lo hay, vale el enlace de verificación; y si el
+        // propio certificado es una imagen (no una miniatura), se abre esa.
+        const documento = c.archivo
+          ? recurso(`certificaciones/${c.archivo}`)
+          : c.credencial || (c.imagen ? recurso(`certificaciones/${c.imagen}`) : null);
+        return (
+          <article class="tarjeta-cert" data-cat={c.categoria || ''}>
+            <div class="lamina">
+              {c.imagen ? (
+                <img src={recurso(`certificaciones/${c.imagen}`)} alt={C.certificadoAlt(c.titulo)} loading="lazy" />
+              ) : (
+                <div class="sin-lamina">
+                  <span class="sello">{c.entidad.slice(0, 2).toUpperCase()}</span>
+                  <span class="pendiente">{documento ? C.verDocumento : C.pendiente}</span>
+                </div>
+              )}
+              {c.archivo && <span class="insignia-pdf">PDF</span>}
+            </div>
+            <div class="cuerpo">
+              <div class="entidad">{c.entidad}</div>
+              <h2>
+                {documento
+                  ? <a href={documento} target="_blank" rel="noopener">{c.titulo}</a>
+                  : c.titulo}
+              </h2>
+              {c.detalle && <p>{c.detalle}</p>}
+              {c.nota && <p class="nota-cert">{c.nota}</p>}
+              <div class="pie">
+                <span class="pastilla-fecha" style="margin:0">{fechaTexto(c.fecha)}</span>
+                {c.categoria && <span class="etiqueta">{c.categoria}</span>}
+                {/* Si el enlace de la tarjeta ya es el PDF, la verificación va aparte. */}
+                {c.credencial && c.archivo && (
+                  <a class="verificar" href={c.credencial} target="_blank" rel="noopener">{C.verificar}</a>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <p class="vacio-cert" id="vacio-cert" hidden>{C.vacio}</p>
+
+    <p style="margin-top:2.4rem;color:var(--texto-tenue);font-size:.9rem">
+      {C.cierre[0]}<a href={`${enlace(idioma)}#formacion`}>{C.cierre[1]}</a>{C.cierre[2]}<a href={recurso(p.cv)} download>{C.cierre[3]}</a>{C.cierre[4]}
+    </p>
+  </div>
+
+  <script is:inline>
+    // Filtro por área. Sin JS se ven todas, que es lo que importa.
+    const rejilla = document.getElementById('rejilla-cert');
+    const vacio = document.getElementById('vacio-cert');
+    document.querySelectorAll('.filtro').forEach((boton) => {
+      boton.addEventListener('click', () => {
+        const cat = boton.dataset.cat;
+        document.querySelectorAll('.filtro').forEach((b) => b.classList.toggle('activo', b === boton));
+        let visibles = 0;
+        rejilla.querySelectorAll('.tarjeta-cert').forEach((t) => {
+          const mostrar = cat === '*' || t.dataset.cat === cat;
+          t.hidden = !mostrar;
+          if (mostrar) visibles++;
+        });
+        vacio.hidden = visibles > 0;
+      });
+    });
+  </script>
+</Base>

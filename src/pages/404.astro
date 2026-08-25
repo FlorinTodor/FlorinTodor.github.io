@@ -1,49 +1,51 @@
 ---
+/**
+ * GitHub Pages sirve este mismo fichero para cualquier ruta que no exista,
+ * también las de /en/, así que no puede estar en un solo idioma: quien siga un
+ * enlace roto en inglés no debería aterrizar en una página en español. Por eso
+ * lleva los dos y no anuncia hreflang (`conAlternativas`): no hay dos páginas,
+ * hay una.
+ */
 import Base from '../layouts/Base.astro';
+import { t, IDIOMAS } from '../idiomas/textos.js';
+import { enlace } from '../idiomas/rutas.js';
 
-const base = import.meta.env.BASE_URL;
-
-// Hay URLs antiguas circulando por ahí (el CV se renombró, el repo cambió de
-// nombre). Que quien las siga aterrice en algo con salida y no en el 404 en
-// inglés de GitHub Pages.
-const destinos = [
-  { url: `${base}#proyectos`, titulo: 'Proyectos', texto: 'Ocho trabajos, casi todos con su demo en vídeo y la explicación de qué resuelven.' },
-  { url: `${base}certificaciones/`, titulo: 'Certificaciones', texto: 'Los títulos, con el documento original de cada uno.' },
-  { url: `${base}blog/`, titulo: 'Blog', texto: 'Fallos de infraestructura y seguridad: qué pasó y cómo se evita.' },
-  { url: `${base}#cv`, titulo: 'Currículum', texto: 'El CV en PDF, para leerlo o descargarlo.' },
-  { url: `${base}#contacto`, titulo: 'Contacto', texto: 'Correo, teléfono, GitHub y LinkedIn.' },
-];
+const bloques = IDIOMAS.map((idioma) => ({ idioma, E: t(idioma).error404 }));
+const es = t('es').error404;
 ---
 
 <Base
-  titulo="Página no encontrada - Florin Emanuel Todor Gliga"
-  descripcion="Esta dirección no existe en florintodor.dev."
+  titulo={es.titulo}
+  descripcion={es.descripcion}
   conLateral={false}
+  conAlternativas={false}
   sinIndexar
 >
   <div style="max-width:820px;margin:0 auto">
-    <header class="cabecera-proyecto">
-      <div style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">
-        Error 404
-      </div>
-      <h1>Esta dirección no existe</h1>
-      <p class="resumen">
-        O el enlace que has seguido está roto, o la página se movió. Nada grave:
-        aquí abajo tienes todo lo que hay en el sitio.
-      </p>
-    </header>
+    {bloques.map(({ idioma, E }, i) => (
+      <section lang={idioma} style={i > 0 ? 'margin-top:3.5rem' : undefined}>
+        {i > 0 && <hr class="punteado" style="margin:0 0 2.5rem" />}
+        <header class="cabecera-proyecto">
+          <div style="color:var(--verde);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem">
+            Error 404
+          </div>
+          <h1 style={i > 0 ? 'font-size:1.6rem' : undefined}>{E.encabezado}</h1>
+          <p class="resumen">{E.resumen}</p>
+        </header>
 
-    <div class="rejilla-404">
-      {destinos.map((d) => (
-        <a class="tarjeta destino-404" href={d.url}>
-          <h2>{d.titulo}</h2>
-          <p>{d.texto}</p>
-        </a>
-      ))}
-    </div>
+        <div class="rejilla-404">
+          {E.destinos.map((d) => (
+            <a class="tarjeta destino-404" href={d.camino.startsWith('#') ? `${enlace(idioma)}${d.camino}` : enlace(idioma, d.camino)}>
+              <h2>{d.titulo}</h2>
+              <p>{d.texto}</p>
+            </a>
+          ))}
+        </div>
 
-    <p style="margin-top:2rem">
-      <a class="enlace-suelto" href={base}>← Volver a la portada</a>
-    </p>
+        <p style="margin-top:2rem">
+          <a class="enlace-suelto" href={enlace(idioma)}>{E.volver}</a>
+        </p>
+      </section>
+    ))}
   </div>
 </Base>

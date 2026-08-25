@@ -1,0 +1,212 @@
+---
+/**
+ * Página de un proyecto, en el idioma que se le pase. Ver src/paginas/Portada.astro
+ * para el porqué de tener el cuerpo aquí y una ruta por idioma.
+ */
+import Base from '../layouts/Base.astro';
+import DemoGrafo from '../components/DemoGrafo.astro';
+import DemoBanca from '../components/DemoBanca.astro';
+import { perfil } from '../idiomas/contenido.js';
+import { t, LOCALE } from '../idiomas/textos.js';
+import { enlace, recurso } from '../idiomas/rutas.js';
+import { datosVideo, duracionIso } from '../utilidades/videos.js';
+import { hayVideo as tieneVideo, buscarGif, DEMOS_INTERACTIVAS } from '../utilidades/demos.js';
+
+const { p, idioma = 'es' } = Astro.props;
+const T = t(idioma);
+const F = T.ficha;
+
+const hayVideo = tieneVideo(p.id);
+const gif = buscarGif(p.id);
+
+const conDemo = DEMOS_INTERACTIVAS.includes(p.id);
+const hayDemo = hayVideo || !!gif || conDemo;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+// Enlaces de la cabecera, de más a menos fuerte: el primero se pinta en verde.
+// En los proyectos con el repositorio privado manda la memoria, y si tampoco la
+// hay, la demo; el correo queda siempre el último.
+const acciones = [
+  ...(!p.privado ? [{ href: p.repo, texto: F.verCodigo, externo: true }] : []),
+  ...(p.memoria ? [{ href: recurso(p.memoria), texto: F.verMemoria, externo: true }] : []),
+  ...(hayDemo ? [{ href: '#demo', texto: F.verDemo }] : []),
+  ...(p.privado ? [{ href: `mailto:${perfil(idioma).email}`, texto: F.privadoEscribeme }] : []),
+];
+
+// Duración, tamaño y fecha salen del propio MP4 al compilar: no hay nada que
+// regenerar a mano cuando se cambia un vídeo.
+const video = hayVideo ? datosVideo(p.id) : null;
+
+// Cada proyecto es una obra con autor: refuerza la autoría a nombre completo.
+// `inLanguage` es el de la página, no el del código ni el de la memoria.
+const esquema = [{
+  '@type': 'SoftwareSourceCode',
+  '@id': `${url}#proyecto`,
+  name: p.titulo,
+  description: p.resumen,
+  inLanguage: LOCALE[idioma],
+  ...(p.anio ? { dateCreated: String(p.anio) } : {}),
+  ...(p.stack?.length ? { programmingLanguage: p.stack } : {}),
+  ...(p.repo && !p.privado ? { codeRepository: p.repo } : {}),
+  author: { '@id': 'https://florintodor.dev/#persona' },
+}];
+
+// La memoria es una obra en sí misma: declararla como Thesis hace que Google
+// la trate como documento académico y no como un PDF suelto del sitio. Está
+// escrita en español aunque la ficha se lea en inglés.
+if (p.memoria) {
+  esquema.push({
+    '@type': 'Thesis',
+    '@id': `${url}#memoria`,
+    name: p.titulo,
+    description: p.resumen,
+    inLanguage: 'es-ES',
+    learningResourceType: F.tfg,
+    ...(p.anio ? { datePublished: String(p.anio) } : {}),
+    ...(p.memoriaPaginas ? { numberOfPages: p.memoriaPaginas } : {}),
+    url: new URL(p.memoria, Astro.site).href,
+    encodingFormat: 'application/pdf',
+    author: { '@id': 'https://florintodor.dev/#persona' },
+    publisher: { '@type': 'CollegeOrUniversity', name: T.universidad },
+    about: { '@id': `${url}#proyecto` },
+  });
+}
+
+// Sin VideoObject, Google no sabe que la demo existe: no la indexa ni la
+// enseña como resultado de vídeo, aunque el <video> esté en la página. El
+// vídeo está grabado en español las dos veces: es la misma grabación.
+if (video) {
+  esquema.push({
+    '@type': 'VideoObject',
+    '@id': `${url}#video`,
+    name: F.demostracionAlt(p.titulo),
+    description: p.resumen,
+    thumbnailUrl: new URL(`media/poster/${p.id}.jpg`, Astro.site).href,
+    contentUrl: new URL(`media/${p.id}.mp4`, Astro.site).href,
+    uploadDate: video.fecha,
+    duration: duracionIso(video.segundos),
+    width: video.ancho,
+    height: video.alto,
+    inLanguage: 'es-ES',
+    isFamilyFriendly: true,
+    creator: { '@id': 'https://florintodor.dev/#persona' },
+  });
+}
+---
+
+<Base
+  idioma={idioma}
+  titulo={`${p.tituloSeo || p.titulo} - Florin Todor`}
+  descripcion={p.descripcionSeo || p.resumen}
+  imagenOg={idioma === 'en' ? `img/og/en/${p.id}.jpg` : `img/og/${p.id}.jpg`}
+  altOg={F.altOg(p.titulo)}
+  conLateral={false}
+  esquemaExtra={esquema}
+>
+  <div style="max-width:1080px;margin:0 auto">
+    <a class="volver" href={`${enlace(idioma)}#proyectos`}>{F.volver}</a>
+
+    <header class="cabecera-proyecto">
+      <h1>{p.titulo}</h1>
+      <div class="meta">
+        <span class="etiqueta verde">{p.anio}</span>
+        {p.categorias.map((c) => <span class="etiqueta">{c}</span>)}
+        {p.privado && <span class="etiqueta ambar">{F.privado}</span>}
+      </div>
+      <p class="resumen">{p.resumen}</p>
+
+      {/* Los enlaces van arriba: quien entra busca el código y la demo, no
+          quiere bajar a un panel lateral para encontrarlos. */}
+      <div class="acciones-proyecto">
+        {acciones.map((a, i) => (
+          <a
+            class={i === 0 ? 'boton' : 'boton fantasma'}
+            href={a.href}
+            {...(a.externo ? { target: '_blank', rel: 'noopener' } : {})}
+          >{a.texto}</a>
+        ))}
+      </div>
+    </header>
+
+    <div class="columnas-proyecto">
+      <div>
+        {/* ---------- vídeo ---------- */}
+        {(hayVideo || gif) && (
+          <section id="demo">
+            <div class="titulo-seccion"><h2>{F.demostracion}</h2><div class="linea"></div></div>
+            <div class="marco-media">
+              {hayVideo ? (
+                <video
+                  src={recurso(`media/${p.id}.mp4`)}
+                  poster={recurso(`media/poster/${p.id}.jpg`)}
+                  controls muted loop playsinline preload="none"></video>
+              ) : (
+                <img src={recurso(gif.replace('/public/', ''))} alt={F.demostracionAlt(p.titulo)} loading="lazy" />
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* ---------- demos interactivas ---------- */}
+        {p.id === 'ciber-asesoria' && (
+          <section id={hayVideo || gif ? undefined : 'demo'}>
+            <div class="titulo-seccion"><h2>{F.tituloGrafo}</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">{F.introGrafo}</p>
+            <DemoGrafo idioma={idioma} />
+          </section>
+        )}
+
+        {p.id === 'habla-con-tu-dinero' && (
+          <section id={hayVideo || gif ? undefined : 'demo'}>
+            <div class="titulo-seccion"><h2>{F.tituloBanca}</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">{F.introBanca}</p>
+            <DemoBanca idioma={idioma} />
+          </section>
+        )}
+
+        {/* ---------- detalle ---------- */}
+        <section>
+          <div class="titulo-seccion"><h2>{F.queHace}</h2><div class="linea"></div></div>
+          <ul class="lista">
+            {p.destacados.map((d) => <li>{d}</li>)}
+          </ul>
+        </section>
+
+        {p.autoria && (
+          <section>
+            <div class="titulo-seccion"><h2>{F.autoria}</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">{p.autoria}</p>
+          </section>
+        )}
+      </div>
+
+      {/* ---------- lateral ---------- */}
+      <aside>
+        <div class="panel-lateral">
+          <h3>{F.stack}</h3>
+          <div class="etiquetas">{p.stack.map((x) => <span class="etiqueta">{x}</span>)}</div>
+        </div>
+
+        <div class="panel-lateral">
+          <h3>{F.contexto}</h3>
+          <p style="margin:0;font-size:.89rem;color:var(--texto-suave)">{p.contexto}</p>
+        </div>
+
+        {p.memoria && (
+          <div class="panel-lateral">
+            <h3>{F.memoria}</h3>
+            <p style="margin:0 0 .8rem;font-size:.89rem;color:var(--texto-suave)">
+              {F.memoriaTexto(p.memoriaPaginas)}
+            </p>
+            <a class="boton fantasma" href={recurso(p.memoria)} download>{F.descargarMemoria}</a>
+          </div>
+        )}
+
+        <div class="panel-lateral">
+          <h3>{F.mas}</h3>
+          <p style="margin:0;font-size:.89rem"><a class="enlace-suelto" href={`${enlace(idioma)}#proyectos`}>{F.otrosProyectos}</a></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
