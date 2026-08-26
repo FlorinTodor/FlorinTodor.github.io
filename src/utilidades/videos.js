@@ -63,16 +63,24 @@ function leeMp4(ruta) {
   return { segundos, ancho, alto };
 }
 
-/** Fecha del último commit que tocó el fichero; si no hay git, su mtime. */
+/**
+ * Fecha del último commit que tocó el fichero; si no hay git, su mtime.
+ *
+ * Devuelve ISO 8601 completo **con zona horaria** (2026-08-18T13:47:58+02:00).
+ * El `uploadDate` de un VideoObject sin zona horaria lo rechaza Google: lo marca
+ * en Search Console como valor de fecha y hora no válido. De ahí `%cI` (ISO
+ * estricto) en vez de `%cs`, que sólo daba el día.
+ */
 function fecha(rutaRelativa) {
   try {
-    const salida = execFileSync('git', ['log', '-1', '--format=%cs', '--', rutaRelativa],
+    const salida = execFileSync('git', ['log', '-1', '--format=%cI', '--', rutaRelativa],
       { cwd: RAIZ, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     if (salida) return salida;
   } catch {
     // Sin git (o sin historial): se usa la fecha del fichero.
   }
-  return fs.statSync(path.join(RAIZ, rutaRelativa)).mtime.toISOString().slice(0, 10);
+  // toISOString() ya termina en Z, que también es zona horaria válida.
+  return fs.statSync(path.join(RAIZ, rutaRelativa)).mtime.toISOString();
 }
 
 /** Duración, tamaño y fecha de public/media/<id>.mp4, o null si no existe. */
