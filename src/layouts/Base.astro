@@ -57,6 +57,8 @@ const persona = {
     'Florin Todor',
     'Florín Todor',
     'Florin Emanuel Todor',
+    'Florin Emanuel Gliga',
+    'Florin Gliga',
   ],
   url: 'https://florintodor.dev',
   mainEntityOfPage: { '@id': ID_SITIO },
@@ -77,7 +79,10 @@ const persona = {
   },
   knowsLanguage: ['es', 'en'],
   knowsAbout: T.conocimientos,
-  sameAs: [p.github, p.linkedin],
+  // Los perfiles que confirman que es la misma persona, para que Google no la
+  // reparta entre varios Florin. Instagram entra aquí pero no se enlaza en la
+  // página: cuenta personal, y el sitio es para enseñar proyectos.
+  sameAs: [p.github, p.linkedin, p.instagram],
 };
 
 const sitio = {
@@ -156,8 +161,13 @@ const banderas = {
     <script type="application/ld+json" set:html={JSON.stringify(datosEstructurados)} />
     <meta name="theme-color" content="#02162b" />
     <!-- Google no puede usar un favicon en data:, tiene que ser un fichero que
-         pueda rastrear; por eso salía el icono genérico en los resultados. -->
-    <link rel="icon" href={recurso('favicon.ico')} sizes="32x32" />
+         pueda rastrear; por eso salía el icono genérico en los resultados.
+         Y lo descarta si no es un cuadrado múltiplo de 48 px, que es por lo que
+         seguía saliendo el globo con sólo el .ico de 32: de ahí el 96 y el 192.
+         Se regeneran con scripts/generar-iconos.py. -->
+    <link rel="icon" href={recurso('favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={recurso('icon/96.png')} type="image/png" sizes="96x96" />
+    <link rel="icon" href={recurso('icon/192.png')} type="image/png" sizes="192x192" />
     <link rel="icon" href={recurso('icon/favicon.svg')} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={recurso('icon/apple-touch.png')} />
     <link rel="manifest" href={recurso('icon/site.webmanifest')} />
