@@ -1,0 +1,148 @@
+---
+// Lo que produce la canalizacion, con datos INVENTADOS.
+//
+// El dashboard de verdad es privado y lleva el historial de una persona, asi
+// que aqui se sirve una serie generada con una tendencia y ruido. El aviso va
+// dentro del propio JSON y se pinta en la demo: si alguien la mira sin leer el
+// texto de alrededor, tiene que quedarle claro igual.
+import { t } from '../idiomas/textos.js';
+import { recurso } from '../idiomas/rutas.js';
+
+const { idioma = 'es' } = Astro.props;
+const R = t(idioma).ficha.rutina;
+
+// el aviso de "datos inventados" va dentro del JSON, asi que hay uno por
+// idioma, igual que en la demo bancaria
+const origen = recurso(idioma === 'en' ? 'demo/rutina-export.en.json' : 'demo/rutina-export.json');
+
+const textosScript = JSON.stringify({
+  pasos: R.pasos, sueno: R.sueno, kcal: R.kcal, volumen: R.volumen,
+  peso: R.peso, grasa: R.grasa, pecho: R.pecho, abdomen: R.abdomen,
+  entrenos: R.entrenos, sinDato: R.sinDato, error: R.error,
+});
+---
+
+<div class="demo-rutina" data-origen={origen} data-textos={textosScript}>
+  <p class="dr-aviso" id="dr-aviso"></p>
+
+  <div class="dr-pestanas" role="tablist">
+    <button class="dr-tab dr-activa" data-m="st">{R.pasos}</button>
+    <button class="dr-tab" data-m="sl">{R.sueno}</button>
+    <button class="dr-tab" data-m="kc">{R.kcal}</button>
+    <button class="dr-tab" data-m="v">{R.volumen}</button>
+    <button class="dr-tab" data-m="kg">{R.peso}</button>
+    <button class="dr-tab" data-m="tab">{R.abdomen}</button>
+  </div>
+
+  <div class="dr-tarjetas" id="dr-tarjetas"></div>
+  <div class="dr-grafica" id="dr-grafica"></div>
+</div>
+
+<style>
+  .demo-rutina { border:1px solid var(--borde); border-radius:14px; padding:18px; }
+  .dr-aviso { font-size:.82rem; color:var(--texto-suave); margin:0 0 14px;
+              border-left:3px solid var(--borde); padding-left:10px; }
+  .dr-pestanas { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .dr-tab { border:1px solid var(--borde); background:none; color:var(--texto-suave);
+            border-radius:999px; padding:5px 13px; font:inherit; font-size:.85rem;
+            cursor:pointer; }
+  .dr-tab:hover { color:var(--texto); }
+  .dr-tab.dr-activa { background:var(--acento); border-color:var(--acento);
+                      color:var(--fondo); }
+  .dr-tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+                 gap:10px; margin-bottom:16px; }
+  .dr-caja { border:1px solid var(--borde); border-radius:10px; padding:10px 12px; }
+  .dr-num { display:block; font-size:1.35rem; font-variant-numeric:tabular-nums; }
+  .dr-etq { display:block; font-size:.75rem; color:var(--texto-suave); margin-top:2px; }
+  .dr-grafica svg { width:100%; height:auto; display:block; }
+  .dr-punto { fill:var(--acento); }
+</style>
+
+<script>
+  document.querySelectorAll('.demo-rutina').forEach((raiz) => {
+    const T = JSON.parse(raiz.dataset.textos);
+    const tarjetas = raiz.querySelector('#dr-tarjetas');
+    const lienzo = raiz.querySelector('#dr-grafica');
+    let dias = [];
+
+    // clave -> etiqueta, unidad, decimales
+    const M = {
+      st:  [T.pasos,   '',     0],
+      sl:  [T.sueno,   ' h',   1],
+      kc:  [T.kcal,    ' kcal', 0],
+      v:   [T.volumen, ' kg',  0],
+      kg:  [T.peso,    ' kg',  1],
+      tab: [T.abdomen, ' cm',  1],
+    };
+
+    const num = (v, d) => v.toLocaleString(undefined,
+      { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    function pintar(clave) {
+      const [etq, uni, dec] = M[clave];
+      const pts = dias.filter((x) => x[clave] != null);
+      if (pts.length < 2) {
+        tarjetas.innerHTML = '';
+        lienzo.innerHTML = `<p class="dr-aviso">${T.sinDato}</p>`;
+        return;
+      }
+      const ys = pts.map((x) => x[clave]);
+      const ult = ys[ys.length - 1];
+      const media = ys.reduce((a, b) => a + b, 0) / ys.length;
+      const cambio = ult - ys[0];
+
+      tarjetas.innerHTML = `
+        <div class="dr-caja"><span class="dr-num">${num(ult, dec)}${uni}</span>
+          <span class="dr-etq">${etq}</span></div>
+        <div class="dr-caja"><span class="dr-num">${num(media, dec)}${uni}</span>
+          <span class="dr-etq">${T.media}</span></div>
+        <div class="dr-caja"><span class="dr-num">${cambio > 0 ? '+' : ''}${num(cambio, dec)}${uni}</span>
+          <span class="dr-etq">${T.cambio}</span></div>
+        <div class="dr-caja"><span class="dr-num">${pts.length}</span>
+          <span class="dr-etq">${T.registros}</span></div>`;
+
+      // grafica minima: sin libreria, que son doce lineas de SVG
+      const W = 720, H = 210, P = { t: 12, r: 10, b: 26, l: 46 };
+      const lo = Math.min(...ys), hi = Math.max(...ys);
+      const pad = (hi - lo || hi * 0.1) * 0.15;
+      const y0 = lo - pad, y1 = hi + pad;
+      const X = (i) => P.l + (i / (pts.length - 1)) * (W - P.l - P.r);
+      const Y = (v) => P.t + (1 - (v - y0) / (y1 - y0 || 1)) * (H - P.t - P.b);
+      const linea = pts.map((p, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(p[clave]).toFixed(1)}`).join('');
+      const puntos = pts.map((p, i) =>
+        `<circle class="dr-punto" cx="${X(i).toFixed(1)}" cy="${Y(p[clave]).toFixed(1)}" r="2.6">
+           <title>${p.d} · ${num(p[clave], dec)}${uni}</title></circle>`).join('');
+      const ejeY = [y0, (y0 + y1) / 2, y1].map((v) =>
+        `<text x="6" y="${(Y(v) + 4).toFixed(1)}" font-size="11" fill="var(--texto-suave)">${num(v, dec)}</text>
+         <line x1="${P.l}" x2="${W - P.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"
+               stroke="var(--borde)" stroke-width="1"/>`).join('');
+
+      lienzo.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${etq}">
+        ${ejeY}
+        <path d="${linea}" fill="none" stroke="var(--acento)" stroke-width="2"
+              stroke-linejoin="round"/>
+        ${puntos}
+        <text x="${P.l}" y="${H - 6}" font-size="11" fill="var(--texto-suave)">${pts[0].d}</text>
+        <text x="${W - P.r}" y="${H - 6}" font-size="11" fill="var(--texto-suave)"
+              text-anchor="end">${pts[pts.length - 1].d}</text>
+      </svg>`;
+    }
+
+    fetch(raiz.dataset.origen)
+      .then((r) => r.json())
+      .then((d) => {
+        dias = d.dias;
+        raiz.querySelector('#dr-aviso').textContent = d._aviso.join(' ');
+        pintar('st');
+      })
+      .catch(() => { lienzo.innerHTML = `<p class="dr-aviso">${T.error}</p>`; });
+
+    raiz.querySelectorAll('.dr-tab').forEach((b) => {
+      b.addEventListener('click', () => {
+        raiz.querySelectorAll('.dr-tab').forEach((x) => x.classList.remove('dr-activa'));
+        b.classList.add('dr-activa');
+        pintar(b.dataset.m);
+      });
+    });
+  });
+</script>
