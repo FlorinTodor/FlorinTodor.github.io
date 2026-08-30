@@ -14,6 +14,43 @@
   },
   "proyectos": [
     {
+      "id": "rutina-export",
+      "destacado": true,
+      "privado": false,
+      "titulo": "rutina-export - Tus datos de salud a Notion sin suscripciones",
+      "tituloSeo": "rutina-export: Health Connect y Hevy a Notion, gratis",
+      "resumen": "App Android y canalización que sacan pasos, sueño, composición corporal y entrenos de Health Connect, Samsung Health, FitDays y Hevy, y los llevan solos a Notion y a un dashboard web, sin pagar la suscripción que cobran las apps del ramo.",
+      "descripcionSeo": "Exporta Health Connect, Samsung Health, FitDays y Hevy a Notion y a un dashboard, automáticamente y sin suscripción. App Android propia instalada por ADB.",
+      "destacados": [
+        "El permiso READ_HEALTH_DATA_IN_BACKGROUND es gratis: lo que gatea la automatización es la revisión de Play Store para apps de salud, y una app instalada por ADB no pasa por ella",
+        "La app lee Health Connect con la pantalla bloqueada y sube a GitHub por su API, sin depender del ordenador ni del wifi de casa",
+        "FitDays solo publica 4 de sus 15 métricas en Health Connect: las otras se sacan manejando su interfaz con un servicio de accesibilidad limitado a esa app",
+        "El repositorio es la fuente de verdad: ninguna fuente guarda el histórico entero, así que se acumula en JSONL y un día medido a medias se corrige solo",
+        "Detección de datos falsos: hay días cuyo total de calorías es exactamente la basal, sin actividad, y se descartan de las medias en vez de hundirlas",
+        "Cinco bases de Notion relacionadas y un dashboard interactivo publicado en Pages",
+        "Un comando deja GitHub configurado: crea las bases, sube los ocho secretos y enciende Pages"
+      ],
+      "stack": [
+        "Kotlin",
+        "Android",
+        "Health Connect",
+        "WorkManager",
+        "Python",
+        "GitHub Actions",
+        "Notion API",
+        "ADB"
+      ],
+      "categorias": [
+        "Android",
+        "Automatización",
+        "Datos personales",
+        "Backend"
+      ],
+      "repo": "https://github.com/FlorinTodor/rutina-export",
+      "anio": 2026,
+      "contexto": "Proyecto personal"
+    },
+    {
       "id": "ciber-asesoria",
       "destacado": true,
       "privado": true,
