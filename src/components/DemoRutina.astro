@@ -11,7 +11,9 @@ import { recurso } from '../idiomas/rutas.js';
 
 const { idioma = 'es' } = Astro.props;
 const R = t(idioma).ficha.rutina;
-const origen = recurso('demo/rutina-export/');
+// una version por idioma: el dashboard es del proyecto rutina y su interfaz
+// esta en castellano, asi que para /en/ se sirve una copia traducida
+const origen = recurso(idioma === 'en' ? 'demo/rutina-export/en/' : 'demo/rutina-export/');
 ---
 
 <div class="demo-rutina">

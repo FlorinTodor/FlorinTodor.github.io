@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,13 +7,13 @@
 <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
 <meta name="bingbot" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="referrer" content="no-referrer">
-<title>Sala de Máquinas</title>
+<title>Machine Room</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 </head>
 <body>
 <div style="background:#3a2a00;color:#ffd479;padding:10px 16px;font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #5a4200">
-<b>Demo con datos inventados.</b> Ninguna cifra procede de un dispositivo ni de una persona real: se generan con una tendencia y ruido para ensenar que produce la canalizacion.
-<a href="https://github.com/FlorinTodor/rutina-export" style="color:#ffd479">Codigo en GitHub</a>
+<b>Demo with made-up data.</b> No figure comes from a real device or person: they are generated from a trend plus noise to show what the pipeline produces.
+<a href="https://github.com/FlorinTodor/rutina-export" style="color:#ffd479">Code on GitHub</a>
 </div>
 
 <style>
@@ -265,17 +265,17 @@ dialog.viewer::backdrop{background:rgba(8,10,14,.72);backdrop-filter:blur(2px)}
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>Sala de Máquinas</h1>
+      <h1>Machine Room</h1>
       <div class="sub" id="range"></div>
     </div>
     <div class="totals" id="totals"></div>
   </header>
 
   <nav class="tabs" id="tabs" role="tablist">
-    <button class="tab" data-t="resumen"  role="tab" aria-selected="true">Resumen</button>
-    <button class="tab" data-t="fuerza"   role="tab" aria-selected="false">Fuerza</button>
-    <button class="tab" data-t="actividad" role="tab" aria-selected="false">Actividad</button>
-    <button class="tab" data-t="cuerpo"   role="tab" aria-selected="false">Cuerpo</button>
+    <button class="tab" data-t="resumen"  role="tab" aria-selected="true">Overview</button>
+    <button class="tab" data-t="fuerza"   role="tab" aria-selected="false">Strength</button>
+    <button class="tab" data-t="actividad" role="tab" aria-selected="false">Activity</button>
+    <button class="tab" data-t="cuerpo"   role="tab" aria-selected="false">Body</button>
   </nav>
 
   <dialog class="viewer" id="viewer">
@@ -297,12 +297,12 @@ dialog.viewer::backdrop{background:rgba(8,10,14,.72);backdrop-filter:blur(2px)}
     <aside class="panel rail">
       <div class="railtop">
         <input type="search" id="q" placeholder="Buscar ejercicio…" aria-label="Buscar ejercicio">
-        <select id="sort" aria-label="Ordenar por">
-          <option value="recent">Más reciente primero</option>
-          <option value="volume">Más volumen</option>
-          <option value="trend">Mejor progresión</option>
-          <option value="stalled">Más estancado</option>
-          <option value="name">Alfabético</option>
+        <select id="sort" aria-label="Sort by">
+          <option value="recent">Most recent first</option>
+          <option value="volume">Most volume</option>
+          <option value="trend">Best progression</option>
+          <option value="stalled">Most stalled</option>
+          <option value="name">Alphabetical</option>
         </select>
         <div class="chips" id="chips"></div>
       </div>
@@ -314,7 +314,7 @@ dialog.viewer::backdrop{background:rgba(8,10,14,.72);backdrop-filter:blur(2px)}
 </div>
 
 <script>
-const DATA = {"desde":"","exercises":[{"name":"Lateral Raise (Dumbbell)","muscle":"shoulders","equip":"dumbbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/dumbbell-lateral-raise.gif","sessions":22,"vol":61168,"prW":108.4,"prR":8,"prE":148.68,"prDate":"2026-08-24","last":"2026-08-28","trend":12.6,"pts":[{"d":"2026-07-06","e":128.9,"v":2815,"w":96.7,"r":10,"s":3},{"d":"2026-07-08","e":130.2,"v":2335,"w":93.0,"r":12,"s":3},{"d":"2026-07-13","e":129.3,"v":2669,"w":94.6,"r":11,"s":3},{"d":"2026-07-15","e":128.4,"v":2148,"w":101.4,"r":8,"s":3},{"d":"2026-07-17","e":137.5,"v":2705,"w":98.2,"r":12,"s":3},{"d":"2026-07-20","e":141.4,"v":2488,"w":101.0,"r":12,"s":3},{"d":"2026-07-22","e":139.3,"v":2708,"w":101.9,"r":11,"s":3},{"d":"2026-07-24","e":134.8,"v":2859,"w":96.3,"r":12,"s":3},{"d":"2026-07-29","e":145.0,"v":3499,"w":103.6,"r":12,"s":3},{"d":"2026-07-31","e":134.9,"v":2701,"w":98.7,"r":11,"s":3},{"d":"2026-08-03","e":140.6,"v":2931,"w":102.9,"r":11,"s":3},{"d":"2026-08-05","e":138.6,"v":3181,"w":101.4,"r":11,"s":3},{"d":"2026-08-07","e":137.9,"v":2620,"w":98.5,"r":12,"s":3},{"d":"2026-08-10","e":129.0,"v":2221,"w":104.6,"r":7,"s":3},{"d":"2026-08-12","e":142.7,"v":3064,"w":101.9,"r":12,"s":3},{"d":"2026-08-14","e":148.1,"v":3195,"w":105.8,"r":12,"s":3},{"d":"2026-08-17","e":144.9,"v":2740,"w":103.5,"r":12,"s":3},{"d":"2026-08-19","e":136.9,"v":2395,"w":105.3,"r":9,"s":3},{"d":"2026-08-21","e":147.8,"v":3490,"w":105.6,"r":12,"s":3},{"d":"2026-08-24","e":148.7,"v":3156,"w":106.2,"r":12,"s":3},{"d":"2026-08-26","e":137.9,"v":2728,"w":103.4,"r":10,"s":3},{"d":"2026-08-28","e":139.6,"v":2521,"w":107.4,"r":9,"s":3}],"aliases":[]},{"name":"Squat (Barbell)","muscle":"quadriceps","equip":"barbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/quads/barbell-wide-squat.gif","sessions":22,"vol":50538,"prW":97.1,"prR":9,"prE":131.04,"prDate":"2026-08-07","last":"2026-08-28","trend":15.3,"pts":[{"d":"2026-07-06","e":112.9,"v":2489,"w":84.7,"r":10,"s":3},{"d":"2026-07-08","e":109.4,"v":2163,"w":86.4,"r":8,"s":3},{"d":"2026-07-13","e":112.2,"v":2012,"w":86.3,"r":9,"s":3},{"d":"2026-07-15","e":125.6,"v":2615,"w":89.7,"r":12,"s":3},{"d":"2026-07-17","e":112.5,"v":2141,"w":82.3,"r":11,"s":3},{"d":"2026-07-20","e":111.1,"v":1741,"w":90.1,"r":7,"s":3},{"d":"2026-07-22","e":109.0,"v":1652,"w":90.8,"r":6,"s":3},{"d":"2026-07-24","e":119.8,"v":2412,"w":85.6,"r":12,"s":3},{"d":"2026-07-29","e":123.5,"v":2951,"w":90.4,"r":11,"s":3},{"d":"2026-07-31","e":121.1,"v":2479,"w":90.8,"r":10,"s":3},{"d":"2026-08-03","e":119.3,"v":2103,"w":85.2,"r":12,"s":3},{"d":"2026-08-05","e":113.0,"v":2106,"w":86.9,"r":9,"s":3},{"d":"2026-08-07","e":131.0,"v":2750,"w":93.6,"r":12,"s":3},{"d":"2026-08-10","e":116.2,"v":2156,"w":89.4,"r":9,"s":3},{"d":"2026-08-12","e":113.4,"v":1809,"w":94.5,"r":6,"s":3},{"d":"2026-08-14","e":121.5,"v":2455,"w":93.5,"r":9,"s":3},{"d":"2026-08-17","e":127.6,"v":2328,"w":95.7,"r":10,"s":3},{"d":"2026-08-19","e":115.2,"v":1981,"w":93.4,"r":7,"s":3},{"d":"2026-08-21","e":129.4,"v":3066,"w":92.4,"r":12,"s":3},{"d":"2026-08-24","e":127.2,"v":2314,"w":95.4,"r":10,"s":3},{"d":"2026-08-26","e":126.2,"v":2212,"w":97.1,"r":9,"s":3},{"d":"2026-08-28","e":127.1,"v":2603,"w":90.8,"r":12,"s":3}],"aliases":[]},{"name":"Lat Pulldown (Cable)","muscle":"lats","equip":"machine","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/cable-pulldown.gif","sessions":22,"vol":43151,"prW":83.9,"prR":6,"prE":117.18,"prDate":"2026-08-24","last":"2026-08-28","trend":13.0,"pts":[{"d":"2026-07-06","e":94.6,"v":1605,"w":72.8,"r":9,"s":3},{"d":"2026-07-08","e":95.4,"v":1706,"w":75.3,"r":8,"s":3},{"d":"2026-07-13","e":102.7,"v":1955,"w":77.0,"r":10,"s":3},{"d":"2026-07-15","e":106.7,"v":2036,"w":76.2,"r":12,"s":3},{"d":"2026-07-17","e":100.1,"v":1876,"w":75.1,"r":10,"s":3},{"d":"2026-07-20","e":99.1,"v":1880,"w":76.2,"r":9,"s":3},{"d":"2026-07-22","e":110.5,"v":2135,"w":78.9,"r":12,"s":3},{"d":"2026-07-24","e":101.9,"v":2004,"w":76.4,"r":10,"s":3},{"d":"2026-07-29","e":106.0,"v":1922,"w":77.6,"r":11,"s":3},{"d":"2026-07-31","e":104.4,"v":2404,"w":74.6,"r":12,"s":3},{"d":"2026-08-03","e":102.7,"v":1860,"w":79.0,"r":9,"s":3},{"d":"2026-08-05","e":108.1,"v":2296,"w":77.2,"r":12,"s":3},{"d":"2026-08-07","e":100.2,"v":1966,"w":77.1,"r":9,"s":3},{"d":"2026-08-10","e":111.5,"v":1948,"w":81.6,"r":11,"s":3},{"d":"2026-08-12","e":103.4,"v":2021,"w":81.6,"r":8,"s":3},{"d":"2026-08-14","e":108.0,"v":1999,"w":81.0,"r":10,"s":3},{"d":"2026-08-17","e":98.5,"v":1798,"w":77.8,"r":8,"s":3},{"d":"2026-08-19","e":115.6,"v":2113,"w":82.6,"r":12,"s":3},{"d":"2026-08-21","e":101.6,"v":1635,"w":82.4,"r":7,"s":3},{"d":"2026-08-24","e":117.2,"v":2212,"w":83.7,"r":12,"s":3},{"d":"2026-08-26","e":107.6,"v":1776,"w":82.8,"r":9,"s":3},{"d":"2026-08-28","e":106.8,"v":2006,"w":80.1,"r":10,"s":3}],"aliases":[]},{"name":"Bench Press (Barbell)","muscle":"chest","equip":"barbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/barbell-bench-press.gif","sessions":22,"vol":37606,"prW":72.5,"prR":8,"prE":95.94,"prDate":"2026-08-10","last":"2026-08-28","trend":6.0,"pts":[{"d":"2026-07-06","e":87.2,"v":1850,"w":63.8,"r":11,"s":3},{"d":"2026-07-08","e":83.6,"v":1464,"w":62.7,"r":10,"s":3},{"d":"2026-07-13","e":79.7,"v":1355,"w":58.3,"r":11,"s":3},{"d":"2026-07-15","e":86.9,"v":2083,"w":62.1,"r":12,"s":3},{"d":"2026-07-17","e":77.2,"v":1336,"w":59.4,"r":9,"s":3},{"d":"2026-07-20","e":83.7,"v":1384,"w":62.8,"r":10,"s":3},{"d":"2026-07-22","e":84.2,"v":1645,"w":61.6,"r":11,"s":3},{"d":"2026-07-24","e":88.9,"v":1793,"w":66.7,"r":10,"s":3},{"d":"2026-07-29","e":85.4,"v":1806,"w":61.0,"r":12,"s":3},{"d":"2026-07-31","e":94.1,"v":2020,"w":67.2,"r":12,"s":3},{"d":"2026-08-03","e":93.3,"v":2045,"w":68.3,"r":11,"s":3},{"d":"2026-08-05","e":93.1,"v":1842,"w":68.1,"r":11,"s":3},{"d":"2026-08-07","e":87.9,"v":1766,"w":65.9,"r":10,"s":3},{"d":"2026-08-10","e":95.9,"v":1801,"w":70.2,"r":11,"s":3},{"d":"2026-08-12","e":83.6,"v":1375,"w":64.3,"r":9,"s":3},{"d":"2026-08-14","e":89.2,"v":1884,"w":65.3,"r":11,"s":3},{"d":"2026-08-17","e":95.2,"v":1904,"w":68.0,"r":12,"s":3},{"d":"2026-08-19","e":86.5,"v":1235,"w":72.1,"r":6,"s":3},{"d":"2026-08-21","e":94.2,"v":1805,"w":68.9,"r":11,"s":3},{"d":"2026-08-24","e":89.2,"v":1872,"w":68.6,"r":9,"s":3},{"d":"2026-08-26","e":91.8,"v":1781,"w":72.5,"r":8,"s":3},{"d":"2026-08-28","e":87.5,"v":1560,"w":69.1,"r":8,"s":3}],"aliases":[]}],"daily":[{"d":"2026-07-05","st":8329,"kc":2003.3,"sl":6.8,"sd":1.44,"sr":1.26,"sli":4.09,"sa":0.24,"hr":60,"kg":82.2,"fa":22.7,"mu":37.8,"br":1980},{"d":"2026-07-06","v":8758,"s":12,"m":73,"t":"Sesión de ejemplo","st":10387,"kc":2615.1,"sl":6.83,"sd":1.26,"sr":1.66,"sli":3.91,"sa":0.6,"hr":60},{"d":"2026-07-07","st":7073,"kc":2383.9,"sl":6.27,"sd":1.23,"sr":1.43,"sli":3.61,"sa":0.32,"hr":57},{"d":"2026-07-08","v":7668,"s":12,"m":75,"t":"Sesión de ejemplo","st":12321,"kc":2916.6,"sl":7.43,"sd":1.73,"sr":1.63,"sli":4.06,"sa":0.39,"hr":54},{"d":"2026-07-09","st":2290,"kc":1930.9,"sl":7.67,"sd":1.4,"sr":1.64,"sli":4.64,"sa":0.87,"hr":54},{"d":"2026-07-10","st":11889,"kc":2207.1,"sl":8.29,"sd":1.43,"sr":1.93,"sli":4.93,"sa":0.33,"hr":56},{"d":"2026-07-11","st":7069,"kc":2458.4,"sl":7.83,"sd":1.48,"sr":1.76,"sli":4.58,"sa":0.56,"hr":61},{"d":"2026-07-12","st":1932,"kc":2283.5,"sl":6.64,"sd":1.41,"sr":1.59,"sli":3.64,"sa":0.87,"hr":62,"kg":81.7,"fa":22.6,"mu":37.6,"br":1980},{"d":"2026-07-13","v":7990,"s":12,"m":66,"t":"Sesión de ejemplo","st":11534,"kc":2921.9,"sl":5.78,"sd":1.16,"sr":1.14,"sli":3.48,"sa":0.68,"hr":52},{"d":"2026-07-14","st":6292,"kc":2115.1,"sl":6.77,"sd":1.49,"sr":1.38,"sli":3.9,"sa":0.79,"hr":60},{"d":"2026-07-15","v":8882,"s":12,"m":50,"t":"Sesión de ejemplo","st":11486,"kc":2528.0,"sl":5.85,"sd":1.31,"sr":1.09,"sli":3.44,"sa":0.75,"hr":55},{"d":"2026-07-16","st":7569,"kc":2014.3,"sl":5.52,"sd":1.09,"sr":1.07,"sli":3.35,"sa":0.76,"hr":58},{"d":"2026-07-17","v":8057,"s":12,"m":53,"t":"Sesión de ejemplo","st":9698,"kc":2913.7,"sl":7.63,"sd":1.5,"sr":1.73,"sli":4.4,"sa":0.84,"hr":60},{"d":"2026-07-18","st":1731,"kc":2154.4,"sl":6.53,"sd":1.11,"sr":1.25,"sli":4.16,"sa":0.74,"hr":61},{"d":"2026-07-19","st":7115,"kc":2142.4,"sl":8.43,"sd":1.47,"sr":1.84,"sli":5.13,"sa":0.43,"hr":60,"kg":81.3,"fa":22.4,"mu":37.4,"br":1980},{"d":"2026-07-20","v":7493,"s":12,"m":73,"t":"Sesión de ejemplo","st":12792,"kc":2722.9,"sl":5.99,"sd":1.03,"sr":1.5,"sli":3.46,"sa":0.87,"hr":58},{"d":"2026-07-21","st":5974,"kc":2015.1,"sl":7.36,"sd":1.57,"sr":1.46,"sli":4.33,"sa":0.48,"hr":58},{"d":"2026-07-22","v":8141,"s":12,"m":53,"t":"Sesión de ejemplo","st":12628,"kc":2658.0,"sl":4.53,"sd":1.02,"sr":0.88,"sli":2.64,"sa":0.21,"hr":53},{"d":"2026-07-23","st":5969,"kc":2316.0,"sl":7.11,"sd":1.62,"sr":1.32,"sli":4.17,"sa":0.44,"hr":60},{"d":"2026-07-24","v":9067,"s":12,"m":82,"t":"Sesión de ejemplo","st":11221,"kc":2875.4,"sl":6.33,"sd":1.17,"sr":1.25,"sli":3.91,"sa":0.82,"hr":62},{"d":"2026-07-25","st":13034,"kc":2445.2,"sl":8.54,"sd":2.04,"sr":2.11,"sli":4.39,"sa":0.82,"hr":58},{"d":"2026-07-26","st":9852,"kc":1857.3,"sl":7.1,"sd":1.23,"sr":1.33,"sli":4.55,"sa":0.67,"hr":56,"kg":80.9,"fa":22.2,"mu":37.2,"br":1980},{"d":"2026-07-27","st":8890,"kc":1918.2,"sl":7.25,"sd":1.16,"sr":1.52,"sli":4.57,"sa":0.43,"hr":52},{"d":"2026-07-28","st":6925,"kc":2186.9,"sl":9.04,"sd":2.14,"sr":1.85,"sli":5.04,"sa":0.47,"hr":59},{"d":"2026-07-29","v":10178,"s":12,"m":55,"t":"Sesión de ejemplo","st":11270,"kc":2874.8,"sl":7.42,"sd":1.4,"sr":1.4,"sli":4.62,"sa":0.64,"hr":62},{"d":"2026-07-30","st":6751,"kc":2389.2,"sl":6.12,"sd":1.24,"sr":1.22,"sli":3.66,"sa":0.25,"hr":60},{"d":"2026-07-31","v":9604,"s":12,"m":56,"t":"Sesión de ejemplo","st":7352,"kc":2542.3,"sl":6.57,"sd":1.2,"sr":1.45,"sli":3.91,"sa":0.28,"hr":60},{"d":"2026-08-01","st":7449,"kc":2166.1,"sl":7.2,"sd":1.27,"sr":1.86,"sli":4.07,"sa":0.52,"hr":60},{"d":"2026-08-02","st":6434,"kc":2303.1,"sl":7.86,"sd":1.43,"sr":1.55,"sli":4.88,"sa":0.61,"hr":54,"kg":80.5,"fa":22.1,"mu":37.0,"br":1980},{"d":"2026-08-03","v":8939,"s":12,"m":73,"t":"Sesión de ejemplo","st":12285,"kc":2627.7,"sl":6.82,"sd":1.6,"sr":1.64,"sli":3.58,"sa":0.24,"hr":62},{"d":"2026-08-04","st":12937,"kc":2057.0,"sl":6.58,"sd":1.18,"sr":1.33,"sli":4.07,"sa":0.46,"hr":58},{"d":"2026-08-05","v":9425,"s":12,"m":85,"t":"Sesión de ejemplo","st":13842,"kc":2745.4,"sl":6.96,"sd":1.24,"sr":1.76,"sli":3.97,"sa":0.3,"hr":55},{"d":"2026-08-06","st":8610,"kc":1945.9,"sl":7.02,"sd":1.44,"sr":1.44,"sli":4.14,"sa":0.34,"hr":52},{"d":"2026-08-07","v":9101,"s":12,"m":79,"t":"Sesión de ejemplo","st":12347,"kc":2750.8,"sl":8.07,"sd":1.35,"sr":1.95,"sli":4.77,"sa":0.6,"hr":52},{"d":"2026-08-08","st":5247,"kc":1987.2,"sl":6.58,"sd":1.12,"sr":1.32,"sli":4.15,"sa":0.28,"hr":53},{"d":"2026-08-09","st":7724,"kc":2317.9,"sl":6.06,"sd":1.12,"sr":1.55,"sli":3.4,"sa":0.75,"hr":52,"kg":80.3,"fa":22.0,"mu":37.0,"br":1980},{"d":"2026-08-10","v":8125,"s":12,"m":79,"t":"Sesión de ejemplo","st":15325,"kc":2627.7,"sl":7.24,"sd":1.33,"sr":1.85,"sli":4.06,"sa":0.36,"hr":58},{"d":"2026-08-11","st":2139,"kc":1939.3,"sl":7.01,"sd":1.63,"sr":1.29,"sli":4.09,"sa":0.24,"hr":52},{"d":"2026-08-12","v":8270,"s":12,"m":73,"t":"Sesión de ejemplo","st":10270,"kc":2484.9,"sl":6.16,"sd":1.14,"sr":1.47,"sli":3.54,"sa":0.37,"hr":62},{"d":"2026-08-13","st":7912,"kc":2194.8,"sl":7.18,"sd":1.59,"sr":1.32,"sli":4.28,"sa":0.84,"hr":56},{"d":"2026-08-14","v":9533,"s":12,"m":79,"t":"Sesión de ejemplo","st":14463,"kc":2752.6,"sl":6.1,"sd":1.01,"sr":1.19,"sli":3.89,"sa":0.25,"hr":52},{"d":"2026-08-15","st":8459,"kc":2349.6,"sl":6.4,"sd":1.27,"sr":1.43,"sli":3.7,"sa":0.27,"hr":53},{"d":"2026-08-16","st":8084,"kc":2128.3,"sl":6.97,"sd":1.17,"sr":1.53,"sli":4.27,"sa":0.36,"hr":58,"kg":80.0,"fa":21.7,"mu":36.8,"br":1980},{"d":"2026-08-17","v":8770,"s":12,"m":68,"t":"Sesión de ejemplo","st":7062,"kc":2539.6,"sl":6.16,"sd":1.1,"sr":1.13,"sli":3.92,"sa":0.34,"hr":53},{"d":"2026-08-18","st":10750,"kc":2259.6,"sl":5.89,"sd":1.15,"sr":1.18,"sli":3.55,"sa":0.27,"hr":61},{"d":"2026-08-19","v":7724,"s":12,"m":72,"t":"Sesión de ejemplo","st":11489,"kc":2409.8,"sl":5.1,"sd":0.98,"sr":0.93,"sli":3.19,"sa":0.65,"hr":58},{"d":"2026-08-20","st":5261,"kc":1867.6,"sl":6.93,"sd":1.11,"sr":1.75,"sli":4.07,"sa":0.48,"hr":57},{"d":"2026-08-21","v":9996,"s":12,"m":75,"t":"Sesión de ejemplo","st":7691,"kc":2791.5,"sl":7.68,"sd":1.61,"sr":1.5,"sli":4.57,"sa":0.23,"hr":60},{"d":"2026-08-22","st":9041,"kc":2229.8,"sl":7.42,"sd":1.28,"sr":1.91,"sli":4.23,"sa":0.82,"hr":62},{"d":"2026-08-23","st":9598,"kc":2353.3,"sl":6.52,"sd":1.06,"sr":1.61,"sli":3.85,"sa":0.59,"hr":62,"kg":79.5,"fa":21.5,"mu":36.6,"br":1980},{"d":"2026-08-24","v":9554,"s":12,"m":51,"t":"Sesión de ejemplo","st":4223,"kc":2936.2,"sl":8.66,"sd":1.89,"sr":2.12,"sli":4.64,"sa":0.54,"hr":54},{"d":"2026-08-25","st":7887,"kc":2533.6,"sl":9.12,"sd":1.96,"sr":2.17,"sli":4.99,"sa":0.63,"hr":56},{"d":"2026-08-26","v":8497,"s":12,"m":73,"t":"Sesión de ejemplo","st":11936,"kc":2903.8,"sl":6.84,"sd":1.22,"sr":1.57,"sli":4.05,"sa":0.56,"hr":56},{"d":"2026-08-27","st":3706,"kc":2035.9,"sl":6.82,"sd":1.44,"sr":1.77,"sli":3.62,"sa":0.42,"hr":52},{"d":"2026-08-28","v":8691,"s":12,"m":53,"t":"Sesión de ejemplo","st":8359,"kc":2330.6,"sl":6.37,"sd":1.2,"sr":1.48,"sli":3.7,"sa":0.71,"hr":55},{"d":"2026-08-29","st":7544,"kc":2196.2,"sl":7.65,"sd":1.33,"sr":1.38,"sli":4.95,"sa":0.33,"hr":54}],"insights":{"semana":{"desde":"2026-08-23","hasta":"2026-08-29","sesiones":3,"volumen":26742,"series":36,"minutos":177,"pasos":7608,"sueno":7.43},"semana_previa":{"desde":"2026-08-16","hasta":"2026-08-22","sesiones":3,"volumen":26490,"series":36,"minutos":215,"pasos":8483,"sueno":6.59},"mes":{"desde":"2026-07-31","hasta":"2026-08-29","sesiones":13,"volumen":116228,"series":156,"minutos":916,"pasos":8848,"sueno":6.93},"mes_previo":{"desde":"2026-07-01","hasta":"2026-07-30","sesiones":9,"volumen":76234,"series":108,"minutos":580,"pasos":8539,"sueno":6.96},"rachas":{"actual":8,"mejor":8,"dias_desde":1},"musculos":[{"musculo":"shoulders","reciente":36943,"pct_reciente":31.8,"pct_historico":31.8,"desvio":0.0},{"musculo":"quadriceps","reciente":30362,"pct_reciente":26.1,"pct_historico":26.3,"desvio":-0.1},{"musculo":"lats","reciente":26034,"pct_reciente":22.4,"pct_historico":22.4,"desvio":-0.0},{"musculo":"chest","reciente":22890,"pct_reciente":19.7,"pct_historico":19.5,"desvio":0.2}],"ejercicios":[{"titulo":"Lateral Raise (Dumbbell)","musculo":"shoulders","dias":1,"sesiones":22,"tendencia":12.6,"estado":"progresa","pr":148.68},{"titulo":"Squat (Barbell)","musculo":"quadriceps","dias":1,"sesiones":22,"tendencia":15.3,"estado":"progresa","pr":131.04},{"titulo":"Lat Pulldown (Cable)","musculo":"lats","dias":1,"sesiones":22,"tendencia":13.0,"estado":"progresa","pr":117.18},{"titulo":"Bench Press (Barbell)","musculo":"chest","dias":1,"sesiones":22,"tendencia":6.0,"estado":"progresa","pr":95.94}],"cuerpo":{"fecha":"2026-08-23","pesajes":8,"peso":{"actual":79.5,"d7":-0.5,"d30":-1.8,"d90":null},"grasa_kg":{"actual":null,"d7":null,"d30":null,"d90":null},"musculo":{"actual":36.6,"d7":-0.2,"d30":-0.8,"d90":null},"grasa_pct":{"actual":21.5,"d7":-0.2,"d30":-0.9,"d90":null},"visceral":{"actual":null,"d7":null,"d30":null,"d90":null}}},"totals":{"sessions":22,"volume":192463,"exercises":4,"from":"2026-07-05","to":"2026-08-29","hasSteps":56,"hasSleep":56,"hasBody":8,"weight":79.5,"fat":21.5}};
+const DATA = {"desde":"","exercises":[{"name":"Lateral Raise (Dumbbell)","muscle":"shoulders","equip":"dumbbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/dumbbell-lateral-raise.gif","sessions":22,"vol":61168,"prW":108.4,"prR":8,"prE":148.68,"prDate":"2026-08-24","last":"2026-08-28","trend":12.6,"pts":[{"d":"2026-07-06","e":128.9,"v":2815,"w":96.7,"r":10,"s":3},{"d":"2026-07-08","e":130.2,"v":2335,"w":93.0,"r":12,"s":3},{"d":"2026-07-13","e":129.3,"v":2669,"w":94.6,"r":11,"s":3},{"d":"2026-07-15","e":128.4,"v":2148,"w":101.4,"r":8,"s":3},{"d":"2026-07-17","e":137.5,"v":2705,"w":98.2,"r":12,"s":3},{"d":"2026-07-20","e":141.4,"v":2488,"w":101.0,"r":12,"s":3},{"d":"2026-07-22","e":139.3,"v":2708,"w":101.9,"r":11,"s":3},{"d":"2026-07-24","e":134.8,"v":2859,"w":96.3,"r":12,"s":3},{"d":"2026-07-29","e":145.0,"v":3499,"w":103.6,"r":12,"s":3},{"d":"2026-07-31","e":134.9,"v":2701,"w":98.7,"r":11,"s":3},{"d":"2026-08-03","e":140.6,"v":2931,"w":102.9,"r":11,"s":3},{"d":"2026-08-05","e":138.6,"v":3181,"w":101.4,"r":11,"s":3},{"d":"2026-08-07","e":137.9,"v":2620,"w":98.5,"r":12,"s":3},{"d":"2026-08-10","e":129.0,"v":2221,"w":104.6,"r":7,"s":3},{"d":"2026-08-12","e":142.7,"v":3064,"w":101.9,"r":12,"s":3},{"d":"2026-08-14","e":148.1,"v":3195,"w":105.8,"r":12,"s":3},{"d":"2026-08-17","e":144.9,"v":2740,"w":103.5,"r":12,"s":3},{"d":"2026-08-19","e":136.9,"v":2395,"w":105.3,"r":9,"s":3},{"d":"2026-08-21","e":147.8,"v":3490,"w":105.6,"r":12,"s":3},{"d":"2026-08-24","e":148.7,"v":3156,"w":106.2,"r":12,"s":3},{"d":"2026-08-26","e":137.9,"v":2728,"w":103.4,"r":10,"s":3},{"d":"2026-08-28","e":139.6,"v":2521,"w":107.4,"r":9,"s":3}],"aliases":[]},{"name":"Squat (Barbell)","muscle":"quadriceps","equip":"barbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/quads/barbell-wide-squat.gif","sessions":22,"vol":50538,"prW":97.1,"prR":9,"prE":131.04,"prDate":"2026-08-07","last":"2026-08-28","trend":15.3,"pts":[{"d":"2026-07-06","e":112.9,"v":2489,"w":84.7,"r":10,"s":3},{"d":"2026-07-08","e":109.4,"v":2163,"w":86.4,"r":8,"s":3},{"d":"2026-07-13","e":112.2,"v":2012,"w":86.3,"r":9,"s":3},{"d":"2026-07-15","e":125.6,"v":2615,"w":89.7,"r":12,"s":3},{"d":"2026-07-17","e":112.5,"v":2141,"w":82.3,"r":11,"s":3},{"d":"2026-07-20","e":111.1,"v":1741,"w":90.1,"r":7,"s":3},{"d":"2026-07-22","e":109.0,"v":1652,"w":90.8,"r":6,"s":3},{"d":"2026-07-24","e":119.8,"v":2412,"w":85.6,"r":12,"s":3},{"d":"2026-07-29","e":123.5,"v":2951,"w":90.4,"r":11,"s":3},{"d":"2026-07-31","e":121.1,"v":2479,"w":90.8,"r":10,"s":3},{"d":"2026-08-03","e":119.3,"v":2103,"w":85.2,"r":12,"s":3},{"d":"2026-08-05","e":113.0,"v":2106,"w":86.9,"r":9,"s":3},{"d":"2026-08-07","e":131.0,"v":2750,"w":93.6,"r":12,"s":3},{"d":"2026-08-10","e":116.2,"v":2156,"w":89.4,"r":9,"s":3},{"d":"2026-08-12","e":113.4,"v":1809,"w":94.5,"r":6,"s":3},{"d":"2026-08-14","e":121.5,"v":2455,"w":93.5,"r":9,"s":3},{"d":"2026-08-17","e":127.6,"v":2328,"w":95.7,"r":10,"s":3},{"d":"2026-08-19","e":115.2,"v":1981,"w":93.4,"r":7,"s":3},{"d":"2026-08-21","e":129.4,"v":3066,"w":92.4,"r":12,"s":3},{"d":"2026-08-24","e":127.2,"v":2314,"w":95.4,"r":10,"s":3},{"d":"2026-08-26","e":126.2,"v":2212,"w":97.1,"r":9,"s":3},{"d":"2026-08-28","e":127.1,"v":2603,"w":90.8,"r":12,"s":3}],"aliases":[]},{"name":"Lat Pulldown (Cable)","muscle":"lats","equip":"machine","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/cable-pulldown.gif","sessions":22,"vol":43151,"prW":83.9,"prR":6,"prE":117.18,"prDate":"2026-08-24","last":"2026-08-28","trend":13.0,"pts":[{"d":"2026-07-06","e":94.6,"v":1605,"w":72.8,"r":9,"s":3},{"d":"2026-07-08","e":95.4,"v":1706,"w":75.3,"r":8,"s":3},{"d":"2026-07-13","e":102.7,"v":1955,"w":77.0,"r":10,"s":3},{"d":"2026-07-15","e":106.7,"v":2036,"w":76.2,"r":12,"s":3},{"d":"2026-07-17","e":100.1,"v":1876,"w":75.1,"r":10,"s":3},{"d":"2026-07-20","e":99.1,"v":1880,"w":76.2,"r":9,"s":3},{"d":"2026-07-22","e":110.5,"v":2135,"w":78.9,"r":12,"s":3},{"d":"2026-07-24","e":101.9,"v":2004,"w":76.4,"r":10,"s":3},{"d":"2026-07-29","e":106.0,"v":1922,"w":77.6,"r":11,"s":3},{"d":"2026-07-31","e":104.4,"v":2404,"w":74.6,"r":12,"s":3},{"d":"2026-08-03","e":102.7,"v":1860,"w":79.0,"r":9,"s":3},{"d":"2026-08-05","e":108.1,"v":2296,"w":77.2,"r":12,"s":3},{"d":"2026-08-07","e":100.2,"v":1966,"w":77.1,"r":9,"s":3},{"d":"2026-08-10","e":111.5,"v":1948,"w":81.6,"r":11,"s":3},{"d":"2026-08-12","e":103.4,"v":2021,"w":81.6,"r":8,"s":3},{"d":"2026-08-14","e":108.0,"v":1999,"w":81.0,"r":10,"s":3},{"d":"2026-08-17","e":98.5,"v":1798,"w":77.8,"r":8,"s":3},{"d":"2026-08-19","e":115.6,"v":2113,"w":82.6,"r":12,"s":3},{"d":"2026-08-21","e":101.6,"v":1635,"w":82.4,"r":7,"s":3},{"d":"2026-08-24","e":117.2,"v":2212,"w":83.7,"r":12,"s":3},{"d":"2026-08-26","e":107.6,"v":1776,"w":82.8,"r":9,"s":3},{"d":"2026-08-28","e":106.8,"v":2006,"w":80.1,"r":10,"s":3}],"aliases":[]},{"name":"Bench Press (Barbell)","muscle":"chest","equip":"barbell","anim":null,"propia":false,"gif":"https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/barbell-bench-press.gif","sessions":22,"vol":37606,"prW":72.5,"prR":8,"prE":95.94,"prDate":"2026-08-10","last":"2026-08-28","trend":6.0,"pts":[{"d":"2026-07-06","e":87.2,"v":1850,"w":63.8,"r":11,"s":3},{"d":"2026-07-08","e":83.6,"v":1464,"w":62.7,"r":10,"s":3},{"d":"2026-07-13","e":79.7,"v":1355,"w":58.3,"r":11,"s":3},{"d":"2026-07-15","e":86.9,"v":2083,"w":62.1,"r":12,"s":3},{"d":"2026-07-17","e":77.2,"v":1336,"w":59.4,"r":9,"s":3},{"d":"2026-07-20","e":83.7,"v":1384,"w":62.8,"r":10,"s":3},{"d":"2026-07-22","e":84.2,"v":1645,"w":61.6,"r":11,"s":3},{"d":"2026-07-24","e":88.9,"v":1793,"w":66.7,"r":10,"s":3},{"d":"2026-07-29","e":85.4,"v":1806,"w":61.0,"r":12,"s":3},{"d":"2026-07-31","e":94.1,"v":2020,"w":67.2,"r":12,"s":3},{"d":"2026-08-03","e":93.3,"v":2045,"w":68.3,"r":11,"s":3},{"d":"2026-08-05","e":93.1,"v":1842,"w":68.1,"r":11,"s":3},{"d":"2026-08-07","e":87.9,"v":1766,"w":65.9,"r":10,"s":3},{"d":"2026-08-10","e":95.9,"v":1801,"w":70.2,"r":11,"s":3},{"d":"2026-08-12","e":83.6,"v":1375,"w":64.3,"r":9,"s":3},{"d":"2026-08-14","e":89.2,"v":1884,"w":65.3,"r":11,"s":3},{"d":"2026-08-17","e":95.2,"v":1904,"w":68.0,"r":12,"s":3},{"d":"2026-08-19","e":86.5,"v":1235,"w":72.1,"r":6,"s":3},{"d":"2026-08-21","e":94.2,"v":1805,"w":68.9,"r":11,"s":3},{"d":"2026-08-24","e":89.2,"v":1872,"w":68.6,"r":9,"s":3},{"d":"2026-08-26","e":91.8,"v":1781,"w":72.5,"r":8,"s":3},{"d":"2026-08-28","e":87.5,"v":1560,"w":69.1,"r":8,"s":3}],"aliases":[]}],"daily":[{"d":"2026-07-05","st":8329,"kc":2003.3,"sl":6.8,"sd":1.44,"sr":1.26,"sli":4.09,"sa":0.24,"hr":60,"kg":82.2,"fa":22.7,"mu":37.8,"br":1980},{"d":"2026-07-06","v":8758,"s":12,"m":73,"t":"Sample session","st":10387,"kc":2615.1,"sl":6.83,"sd":1.26,"sr":1.66,"sli":3.91,"sa":0.6,"hr":60},{"d":"2026-07-07","st":7073,"kc":2383.9,"sl":6.27,"sd":1.23,"sr":1.43,"sli":3.61,"sa":0.32,"hr":57},{"d":"2026-07-08","v":7668,"s":12,"m":75,"t":"Sample session","st":12321,"kc":2916.6,"sl":7.43,"sd":1.73,"sr":1.63,"sli":4.06,"sa":0.39,"hr":54},{"d":"2026-07-09","st":2290,"kc":1930.9,"sl":7.67,"sd":1.4,"sr":1.64,"sli":4.64,"sa":0.87,"hr":54},{"d":"2026-07-10","st":11889,"kc":2207.1,"sl":8.29,"sd":1.43,"sr":1.93,"sli":4.93,"sa":0.33,"hr":56},{"d":"2026-07-11","st":7069,"kc":2458.4,"sl":7.83,"sd":1.48,"sr":1.76,"sli":4.58,"sa":0.56,"hr":61},{"d":"2026-07-12","st":1932,"kc":2283.5,"sl":6.64,"sd":1.41,"sr":1.59,"sli":3.64,"sa":0.87,"hr":62,"kg":81.7,"fa":22.6,"mu":37.6,"br":1980},{"d":"2026-07-13","v":7990,"s":12,"m":66,"t":"Sample session","st":11534,"kc":2921.9,"sl":5.78,"sd":1.16,"sr":1.14,"sli":3.48,"sa":0.68,"hr":52},{"d":"2026-07-14","st":6292,"kc":2115.1,"sl":6.77,"sd":1.49,"sr":1.38,"sli":3.9,"sa":0.79,"hr":60},{"d":"2026-07-15","v":8882,"s":12,"m":50,"t":"Sample session","st":11486,"kc":2528.0,"sl":5.85,"sd":1.31,"sr":1.09,"sli":3.44,"sa":0.75,"hr":55},{"d":"2026-07-16","st":7569,"kc":2014.3,"sl":5.52,"sd":1.09,"sr":1.07,"sli":3.35,"sa":0.76,"hr":58},{"d":"2026-07-17","v":8057,"s":12,"m":53,"t":"Sample session","st":9698,"kc":2913.7,"sl":7.63,"sd":1.5,"sr":1.73,"sli":4.4,"sa":0.84,"hr":60},{"d":"2026-07-18","st":1731,"kc":2154.4,"sl":6.53,"sd":1.11,"sr":1.25,"sli":4.16,"sa":0.74,"hr":61},{"d":"2026-07-19","st":7115,"kc":2142.4,"sl":8.43,"sd":1.47,"sr":1.84,"sli":5.13,"sa":0.43,"hr":60,"kg":81.3,"fa":22.4,"mu":37.4,"br":1980},{"d":"2026-07-20","v":7493,"s":12,"m":73,"t":"Sample session","st":12792,"kc":2722.9,"sl":5.99,"sd":1.03,"sr":1.5,"sli":3.46,"sa":0.87,"hr":58},{"d":"2026-07-21","st":5974,"kc":2015.1,"sl":7.36,"sd":1.57,"sr":1.46,"sli":4.33,"sa":0.48,"hr":58},{"d":"2026-07-22","v":8141,"s":12,"m":53,"t":"Sample session","st":12628,"kc":2658.0,"sl":4.53,"sd":1.02,"sr":0.88,"sli":2.64,"sa":0.21,"hr":53},{"d":"2026-07-23","st":5969,"kc":2316.0,"sl":7.11,"sd":1.62,"sr":1.32,"sli":4.17,"sa":0.44,"hr":60},{"d":"2026-07-24","v":9067,"s":12,"m":82,"t":"Sample session","st":11221,"kc":2875.4,"sl":6.33,"sd":1.17,"sr":1.25,"sli":3.91,"sa":0.82,"hr":62},{"d":"2026-07-25","st":13034,"kc":2445.2,"sl":8.54,"sd":2.04,"sr":2.11,"sli":4.39,"sa":0.82,"hr":58},{"d":"2026-07-26","st":9852,"kc":1857.3,"sl":7.1,"sd":1.23,"sr":1.33,"sli":4.55,"sa":0.67,"hr":56,"kg":80.9,"fa":22.2,"mu":37.2,"br":1980},{"d":"2026-07-27","st":8890,"kc":1918.2,"sl":7.25,"sd":1.16,"sr":1.52,"sli":4.57,"sa":0.43,"hr":52},{"d":"2026-07-28","st":6925,"kc":2186.9,"sl":9.04,"sd":2.14,"sr":1.85,"sli":5.04,"sa":0.47,"hr":59},{"d":"2026-07-29","v":10178,"s":12,"m":55,"t":"Sample session","st":11270,"kc":2874.8,"sl":7.42,"sd":1.4,"sr":1.4,"sli":4.62,"sa":0.64,"hr":62},{"d":"2026-07-30","st":6751,"kc":2389.2,"sl":6.12,"sd":1.24,"sr":1.22,"sli":3.66,"sa":0.25,"hr":60},{"d":"2026-07-31","v":9604,"s":12,"m":56,"t":"Sample session","st":7352,"kc":2542.3,"sl":6.57,"sd":1.2,"sr":1.45,"sli":3.91,"sa":0.28,"hr":60},{"d":"2026-08-01","st":7449,"kc":2166.1,"sl":7.2,"sd":1.27,"sr":1.86,"sli":4.07,"sa":0.52,"hr":60},{"d":"2026-08-02","st":6434,"kc":2303.1,"sl":7.86,"sd":1.43,"sr":1.55,"sli":4.88,"sa":0.61,"hr":54,"kg":80.5,"fa":22.1,"mu":37.0,"br":1980},{"d":"2026-08-03","v":8939,"s":12,"m":73,"t":"Sample session","st":12285,"kc":2627.7,"sl":6.82,"sd":1.6,"sr":1.64,"sli":3.58,"sa":0.24,"hr":62},{"d":"2026-08-04","st":12937,"kc":2057.0,"sl":6.58,"sd":1.18,"sr":1.33,"sli":4.07,"sa":0.46,"hr":58},{"d":"2026-08-05","v":9425,"s":12,"m":85,"t":"Sample session","st":13842,"kc":2745.4,"sl":6.96,"sd":1.24,"sr":1.76,"sli":3.97,"sa":0.3,"hr":55},{"d":"2026-08-06","st":8610,"kc":1945.9,"sl":7.02,"sd":1.44,"sr":1.44,"sli":4.14,"sa":0.34,"hr":52},{"d":"2026-08-07","v":9101,"s":12,"m":79,"t":"Sample session","st":12347,"kc":2750.8,"sl":8.07,"sd":1.35,"sr":1.95,"sli":4.77,"sa":0.6,"hr":52},{"d":"2026-08-08","st":5247,"kc":1987.2,"sl":6.58,"sd":1.12,"sr":1.32,"sli":4.15,"sa":0.28,"hr":53},{"d":"2026-08-09","st":7724,"kc":2317.9,"sl":6.06,"sd":1.12,"sr":1.55,"sli":3.4,"sa":0.75,"hr":52,"kg":80.3,"fa":22.0,"mu":37.0,"br":1980},{"d":"2026-08-10","v":8125,"s":12,"m":79,"t":"Sample session","st":15325,"kc":2627.7,"sl":7.24,"sd":1.33,"sr":1.85,"sli":4.06,"sa":0.36,"hr":58},{"d":"2026-08-11","st":2139,"kc":1939.3,"sl":7.01,"sd":1.63,"sr":1.29,"sli":4.09,"sa":0.24,"hr":52},{"d":"2026-08-12","v":8270,"s":12,"m":73,"t":"Sample session","st":10270,"kc":2484.9,"sl":6.16,"sd":1.14,"sr":1.47,"sli":3.54,"sa":0.37,"hr":62},{"d":"2026-08-13","st":7912,"kc":2194.8,"sl":7.18,"sd":1.59,"sr":1.32,"sli":4.28,"sa":0.84,"hr":56},{"d":"2026-08-14","v":9533,"s":12,"m":79,"t":"Sample session","st":14463,"kc":2752.6,"sl":6.1,"sd":1.01,"sr":1.19,"sli":3.89,"sa":0.25,"hr":52},{"d":"2026-08-15","st":8459,"kc":2349.6,"sl":6.4,"sd":1.27,"sr":1.43,"sli":3.7,"sa":0.27,"hr":53},{"d":"2026-08-16","st":8084,"kc":2128.3,"sl":6.97,"sd":1.17,"sr":1.53,"sli":4.27,"sa":0.36,"hr":58,"kg":80.0,"fa":21.7,"mu":36.8,"br":1980},{"d":"2026-08-17","v":8770,"s":12,"m":68,"t":"Sample session","st":7062,"kc":2539.6,"sl":6.16,"sd":1.1,"sr":1.13,"sli":3.92,"sa":0.34,"hr":53},{"d":"2026-08-18","st":10750,"kc":2259.6,"sl":5.89,"sd":1.15,"sr":1.18,"sli":3.55,"sa":0.27,"hr":61},{"d":"2026-08-19","v":7724,"s":12,"m":72,"t":"Sample session","st":11489,"kc":2409.8,"sl":5.1,"sd":0.98,"sr":0.93,"sli":3.19,"sa":0.65,"hr":58},{"d":"2026-08-20","st":5261,"kc":1867.6,"sl":6.93,"sd":1.11,"sr":1.75,"sli":4.07,"sa":0.48,"hr":57},{"d":"2026-08-21","v":9996,"s":12,"m":75,"t":"Sample session","st":7691,"kc":2791.5,"sl":7.68,"sd":1.61,"sr":1.5,"sli":4.57,"sa":0.23,"hr":60},{"d":"2026-08-22","st":9041,"kc":2229.8,"sl":7.42,"sd":1.28,"sr":1.91,"sli":4.23,"sa":0.82,"hr":62},{"d":"2026-08-23","st":9598,"kc":2353.3,"sl":6.52,"sd":1.06,"sr":1.61,"sli":3.85,"sa":0.59,"hr":62,"kg":79.5,"fa":21.5,"mu":36.6,"br":1980},{"d":"2026-08-24","v":9554,"s":12,"m":51,"t":"Sample session","st":4223,"kc":2936.2,"sl":8.66,"sd":1.89,"sr":2.12,"sli":4.64,"sa":0.54,"hr":54},{"d":"2026-08-25","st":7887,"kc":2533.6,"sl":9.12,"sd":1.96,"sr":2.17,"sli":4.99,"sa":0.63,"hr":56},{"d":"2026-08-26","v":8497,"s":12,"m":73,"t":"Sample session","st":11936,"kc":2903.8,"sl":6.84,"sd":1.22,"sr":1.57,"sli":4.05,"sa":0.56,"hr":56},{"d":"2026-08-27","st":3706,"kc":2035.9,"sl":6.82,"sd":1.44,"sr":1.77,"sli":3.62,"sa":0.42,"hr":52},{"d":"2026-08-28","v":8691,"s":12,"m":53,"t":"Sample session","st":8359,"kc":2330.6,"sl":6.37,"sd":1.2,"sr":1.48,"sli":3.7,"sa":0.71,"hr":55},{"d":"2026-08-29","st":7544,"kc":2196.2,"sl":7.65,"sd":1.33,"sr":1.38,"sli":4.95,"sa":0.33,"hr":54}],"insights":{"semana":{"desde":"2026-08-23","hasta":"2026-08-29","sesiones":3,"volumen":26742,"series":36,"minutos":177,"pasos":7608,"sueno":7.43},"semana_previa":{"desde":"2026-08-16","hasta":"2026-08-22","sesiones":3,"volumen":26490,"series":36,"minutos":215,"pasos":8483,"sueno":6.59},"mes":{"desde":"2026-07-31","hasta":"2026-08-29","sesiones":13,"volumen":116228,"series":156,"minutos":916,"pasos":8848,"sueno":6.93},"mes_previo":{"desde":"2026-07-01","hasta":"2026-07-30","sesiones":9,"volumen":76234,"series":108,"minutos":580,"pasos":8539,"sueno":6.96},"rachas":{"actual":8,"mejor":8,"dias_desde":1},"musculos":[{"musculo":"shoulders","reciente":36943,"pct_reciente":31.8,"pct_historico":31.8,"desvio":0.0},{"musculo":"quadriceps","reciente":30362,"pct_reciente":26.1,"pct_historico":26.3,"desvio":-0.1},{"musculo":"lats","reciente":26034,"pct_reciente":22.4,"pct_historico":22.4,"desvio":-0.0},{"musculo":"chest","reciente":22890,"pct_reciente":19.7,"pct_historico":19.5,"desvio":0.2}],"ejercicios":[{"titulo":"Lateral Raise (Dumbbell)","musculo":"shoulders","dias":1,"sesiones":22,"tendencia":12.6,"estado":"progresa","pr":148.68},{"titulo":"Squat (Barbell)","musculo":"quadriceps","dias":1,"sesiones":22,"tendencia":15.3,"estado":"progresa","pr":131.04},{"titulo":"Lat Pulldown (Cable)","musculo":"lats","dias":1,"sesiones":22,"tendencia":13.0,"estado":"progresa","pr":117.18},{"titulo":"Bench Press (Barbell)","musculo":"chest","dias":1,"sesiones":22,"tendencia":6.0,"estado":"progresa","pr":95.94}],"cuerpo":{"fecha":"2026-08-23","pesajes":8,"peso":{"actual":79.5,"d7":-0.5,"d30":-1.8,"d90":null},"grasa_kg":{"actual":null,"d7":null,"d30":null,"d90":null},"musculo":{"actual":36.6,"d7":-0.2,"d30":-0.8,"d90":null},"grasa_pct":{"actual":21.5,"d7":-0.2,"d30":-0.9,"d90":null},"visceral":{"actual":null,"d7":null,"d30":null,"d90":null}}},"totals":{"sessions":22,"volume":192463,"exercises":4,"from":"2026-07-05","to":"2026-08-29","hasSteps":56,"hasSleep":56,"hasBody":8,"weight":79.5,"fat":21.5}};
 const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString("es-ES");
 const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -381,7 +381,7 @@ function visible() {
 
 function render() {
   const items = visible();
-  if (!items.length) { $("#list").innerHTML = `<p class="empty">Nada coincide.</p>`; return; }
+  if (!items.length) { $("#list").innerHTML = `<p class="empty">Nothing matches.</p>`; return; }
   if (!state.sel || !items.some(e => e.name === state.sel)) state.sel = items[0].name;
 
   $("#list").innerHTML = items.map(e => {
@@ -413,7 +413,7 @@ let EXAXIS = null;   // ejes de la última gráfica de ejercicio, para el hover
 
 function chart(e) {
   const pts = e.pts.filter(p => p.e);
-  if (pts.length < 2) return `<p class="empty">Solo una sesión registrada: aún no hay curva.</p>`;
+  if (pts.length < 2) return `<p class="empty">Only one session recorded: no curve yet.</p>`;
   const W = 900, H = 300, P = { t: 16, r: 18, b: 30, l: 46 };
   const xs = pts.map(p => new Date(p.d + "T00:00").getTime());
   const ys = pts.map(p => p.e);
@@ -449,7 +449,7 @@ function chart(e) {
 
   return `<figure><div class="chartbox">
     <svg viewBox="0 0 ${W} ${H}" role="img"
-      aria-label="Progresión de 1RM estimado en ${e.name}">
+      aria-label="Estimated 1RM progression for ${e.name}">
       <defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
         <stop offset="0%" stop-color="var(--steel)" stop-opacity=".22"/>
         <stop offset="100%" stop-color="var(--steel)" stop-opacity="0"/>
@@ -466,7 +466,7 @@ function chart(e) {
     </svg>
     <div class="tip"></div>
   </div>
-  <figcaption>1RM estimado por sesión (Epley). El punto en latón es tu récord.</figcaption></figure>`;
+  <figcaption>Estimated 1RM per session (Epley). The brass dot is your record.</figcaption></figure>`;
 }
 
 function wireChartIn(raiz) {
@@ -502,29 +502,29 @@ function detail(e) {
   $("#detail").innerHTML = `
     <div class="dhead">
       ${e.anim ? `<video class="dgif" src="${e.anim}" autoplay loop muted
-          playsinline aria-label="Demostración de ${e.name}"></video>`
-        : e.gif ? `<img class="dgif" src="${e.gif}" alt="Demostración de ${e.name}">`
+          playsinline aria-label="Demonstration of ${e.name}"></video>`
+        : e.gif ? `<img class="dgif" src="${e.gif}" alt="Demonstration of ${e.name}">`
               : `<span class="dgif"></span>`}
       <div>
         <h2>${e.name}</h2>
         <div class="tags">
           <span class="tag">${e.muscle}</span>
           ${e.equip ? `<span class="tag">${e.equip}</span>` : ""}
-          ${e.prDate && daysAgo(e.prDate) < 30 ? `<span class="tag pr">PR reciente</span>` : ""}
+          ${e.prDate && daysAgo(e.prDate) < 30 ? `<span class="tag pr">Recent PR</span>` : ""}
         </div>
       </div>
     </div>
     <div class="tiles">
-      <div class="tile hl"><span class="v">${e.prE ?? "—"} kg</span><span class="l">Récord 1RM est.</span></div>
-      <div class="tile"><span class="v">${e.prW ?? "—"}×${e.prR ?? "—"}</span><span class="l">Mejor serie</span></div>
-      <div class="tile"><span class="v ${cls}">${t > 0 ? "+" : ""}${t} kg</span><span class="l">Tendencia</span></div>
-      <div class="tile"><span class="v">${e.sessions}</span><span class="l">Sesiones</span></div>
-      <div class="tile"><span class="v">${(e.vol/1000).toFixed(1)} t</span><span class="l">Volumen total</span></div>
-      <div class="tile"><span class="v">${daysAgo(e.last)} d</span><span class="l">Desde la última</span></div>
+      <div class="tile hl"><span class="v">${e.prE ?? "—"} kg</span><span class="l">Est. 1RM record</span></div>
+      <div class="tile"><span class="v">${e.prW ?? "—"}×${e.prR ?? "—"}</span><span class="l">Best set</span></div>
+      <div class="tile"><span class="v ${cls}">${t > 0 ? "+" : ""}${t} kg</span><span class="l">Trend</span></div>
+      <div class="tile"><span class="v">${e.sessions}</span><span class="l">Sessions</span></div>
+      <div class="tile"><span class="v">${(e.vol/1000).toFixed(1)} t</span><span class="l">Total volume</span></div>
+      <div class="tile"><span class="v">${daysAgo(e.last)} d</span><span class="l">Since the last one</span></div>
     </div>
     ${chart(e)}
     <div class="tblwrap"><table>
-      <thead><tr><th>Fecha</th><th>1RM est.</th><th>Mejor serie</th><th>Series</th><th>Volumen</th></tr></thead>
+      <thead><tr><th>Date</th><th>1RM est.</th><th>Best set</th><th>Sets</th><th>Volume</th></tr></thead>
       <tbody>${rows.map(p => `<tr>
         <td>${longd(p.d)}</td>
         <td class="${p.e === prE ? "isPr" : ""}">${p.e || "—"}</td>
@@ -537,7 +537,7 @@ function detail(e) {
   if (cb) {
     cb.parentElement.classList.add("zoomable");
     ampliable(cb.parentElement, {
-      titulo: e.name, nota: "1RM estimado por sesión (Epley)",
+      titulo: e.name, nota: "Estimated 1RM per session (Epley)",
       stats: resumen(e.pts.filter(p => p.e), "e", 1, "kg"),
       dibuja: c => { c.innerHTML = chart(e); wireChartIn(c); },
     });
@@ -577,7 +577,7 @@ function xLabels(pts, X, H, n = 6) {
 /* línea con media móvil opcional */
 function lineChart(box, pts, key, opts = {}) {
   const has = pts.filter(p => p[key] != null);
-  if (has.length < 2) { box.innerHTML = `<p class="blank">Aún no hay datos suficientes.</p>`; return; }
+  if (has.length < 2) { box.innerHTML = `<p class="blank">Not enough data yet.</p>`; return; }
   const W = 900, H = opts.h || 240, P = { t: 14, r: 16, b: 28, l: 46 };
   const ys = has.map(p => p[key]);
   let lo = Math.min(...ys), hi = Math.max(...ys);
@@ -623,8 +623,8 @@ function lineChart(box, pts, key, opts = {}) {
       <rect class="hit" x="${P.l}" y="${P.t}" width="${W - P.l - P.r}"
         height="${H - P.t - P.b}" fill="transparent"/>
     </svg><div class="tip"></div></div>
-    ${avg ? `<div class="legend"><span><i style="background:${color};opacity:.4"></i>diario</span>
-      <span><i style="background:${color}"></i>media ${win} días</span></div>` : ""}`;
+    ${avg ? `<div class="legend"><span><i style="background:${color};opacity:.4"></i>daily</span>
+      <span><i style="background:${color}"></i>${win}-day average</span></div>` : ""}`;
 
   hover(box, has, i => X(i), i => Y(has[i][key]), i =>
     `<b>${opts.unit ? has[i][key] + " " + opts.unit : has[i][key]}</b>
@@ -634,7 +634,7 @@ function lineChart(box, pts, key, opts = {}) {
 /* barras apiladas: usado para las fases del sueño */
 function stackChart(box, pts, keys, colors, names, opts = {}) {
   const has = pts.filter(p => keys.some(k => p[k] != null));
-  if (!has.length) { box.innerHTML = `<p class="blank">Aún no hay datos.</p>`; return; }
+  if (!has.length) { box.innerHTML = `<p class="blank">No data yet.</p>`; return; }
   const W = 900, H = opts.h || 240, P = { t: 14, r: 16, b: 28, l: 46 };
   const tot = has.map(p => keys.reduce((a, k) => a + (p[k] || 0), 0));
   const hi = Math.max(...tot) * 1.12;
@@ -708,7 +708,7 @@ function hover(box, pts, X, Y, html) {
 function heatmap(box, daily) {
   const vol = {}; daily.forEach(d => { if (d.v) vol[d.d] = d.v; });
   const days = Object.keys(vol);
-  if (!days.length) { box.innerHTML = `<p class="blank">Sin entrenos.</p>`; return; }
+  if (!days.length) { box.innerHTML = `<p class="blank">No workouts.</p>`; return; }
   const end = new Date(days[days.length - 1] + "T00:00");
   end.setDate(end.getDate() + (6 - ((end.getDay() + 6) % 7)));
   // Arranca en la semana del PRIMER entreno, no 44 semanas fijas hacia atrás.
@@ -743,9 +743,9 @@ function heatmap(box, daily) {
   }
   box.innerHTML = `<div class="chartbox"><svg class="hm"
     viewBox="0 0 ${cols * cw} ${7 * cw + 18}"
-    role="img" aria-label="Días entrenados">${cells}${months}</svg>
+    role="img" aria-label="Days trained">${cells}${months}</svg>
     <div class="tip"></div></div>
-    <div class="legend"><span>${days.length} días entrenados · el color es el volumen</span></div>`;
+    <div class="legend"><span>${days.length} days trained · colour is volume</span></div>`;
 
   // El <title> de SVG es el tooltip del navegador: tarda un segundo en salir y
   // no se puede dar estilo, asi que el mapa parecia muerto al pasar por encima.
@@ -756,7 +756,7 @@ function heatmap(box, daily) {
       const iso = rect.dataset.d, v = +rect.dataset.v;
       tip.innerHTML = v
         ? `<b>${fmt(v)} kg</b><span class="m">${longd(iso)}</span>`
-        : `<b>Descanso</b><span class="m">${longd(iso)}</span>`;
+        : `<b>Rest</b><span class="m">${longd(iso)}</span>`;
       tip.style.opacity = "1";
       const rb = rect.getBoundingClientRect(), bb = cb.getBoundingClientRect();
       const w = tip.offsetWidth;
@@ -805,11 +805,11 @@ function resumen(pts, key, dec = 1, unidad = "") {
   const d = v[v.length - 1] - v[0];
   return [
     ["Actual", v[v.length - 1].toFixed(dec) + u],
-    ["Mínimo", Math.min(...v).toFixed(dec) + u],
-    ["Máximo", Math.max(...v).toFixed(dec) + u],
-    ["Media", (v.reduce((a, b) => a + b, 0) / v.length).toFixed(dec) + u],
-    ["Cambio total", (d > 0 ? "+" : "") + d.toFixed(dec) + u],
-    ["Registros", v.length],
+    ["Min", Math.min(...v).toFixed(dec) + u],
+    ["Max", Math.max(...v).toFixed(dec) + u],
+    ["Average", (v.reduce((a, b) => a + b, 0) / v.length).toFixed(dec) + u],
+    ["Change total", (d > 0 ? "+" : "") + d.toFixed(dec) + u],
+    ["Records", v.length],
   ];
 }
 
@@ -838,7 +838,7 @@ function ampliable(caja, opciones) {
    exactamente su estimación de metabolismo basal, sin la parte de actividad,
    incluso en días con 10.000 pasos: se reconocen porque el número se repite
    idéntico (2048.0) en decenas de días, mientras que un día real siempre
-   trae decimales. No son "días que quemaste poco", son días SIN dato de
+   trae decimales. No son "days you burned little", son días SIN dato de
    actividad, y meterlos en las medias las hunde: con ellos, la diferencia
    entre entrenar y descansar salía +736 kcal; sin ellos, +426.
 
@@ -876,28 +876,28 @@ function tarjetaCalorias(d) {
     <span class="l">${lbl}</span></div>`;
 
   return `<div class="card" id="card-kc">
-    <h3>Calorías quemadas</h3>
+    <h3>Calories burned</h3>
     <p class="note">Total del día según Health Connect · el entreno de Hevy ya va
       incluido, porque Hevy escribe en Health Connect</p>
-    ${basal != null ? `<p class="note">La <b>basal</b> (${Math.round(basal)} kcal, que
+    ${basal != null ? `<p class="note">The <b>basal rate</b> (${Math.round(basal)} kcal, que
       estima la báscula según tu composición) es lo que gastarías tumbado todo el
       día sin moverte: respirar, el corazón, la temperatura, los órganos. Todo lo
-      que quede <b>por encima de la línea</b> es lo que has añadido moviéndote.</p>` : ""}
-    ${descartados ? `<p class="note">Quedan fuera <b>${descartados} días</b> en los que
+      que quede <b>above the line</b> is what you added by moving.</p>` : ""}
+    ${descartados ? `<p class="note">Left out <b>${descartados} días</b> en los que
       Samsung no registró actividad y apuntó solo la basal: no son días de quemar
       poco, son días sin dato. Por eso la línea tiene huecos.</p>` : ""}
     <div class="tiles wide">
       ${t(hoy.kc, longd(hoy.d))}
-      ${t(ult7, "Media 7 días")}
+      ${t(ult7, "7-day average")}
       ${t(ent, `Entrenando (${entD.length} días)`)}
       ${t(des, `Descansando (${desD.length} días)`)}
       ${comparable ? `<div class="tile">
         <span class="v up">+${Math.round(ent - des)}<em>kcal</em></span>
-        <span class="l">Lo que suma entrenar</span></div>` : ""}
+        <span class="l">What training adds</span></div>` : ""}
       ${sobreBasal != null ? `<div class="tile">
         <span class="v">${sobreBasal > 0 ? "+" : ""}${Math.round(sobreBasal)}<em>kcal</em></span>
         <span class="l">Sobre tu basal${hoy.d === new Date().toISOString().slice(0, 10)
-          ? " (día en curso)" : ""}</span></div>` : ""}
+          ? " (day in progress)" : ""}</span></div>` : ""}
     </div>
     ${!comparable && desD.length ? `<p class="note">Con ${desD.length} días de descanso
       con dato completo no se puede comparar todavía contra los ${entD.length} de
@@ -908,17 +908,17 @@ function tarjetaCalorias(d) {
 
 /* ================= secciones ================= */
 
-function sectionActividad() {
+function sectionActivity() {
   const el = $("#sec-actividad");
   const d = DATA.daily;
   el.innerHTML = `<div class="cards">
-    <div class="card"><h3>Constancia</h3><p class="note">Cada cuadro es un día</p>
+    <div class="card"><h3>Consistency</h3><p class="note">Each square is a day</p>
       <div id="c-hm"></div></div>
-    <div class="card"><h3>Volumen semanal</h3><p class="note">Toneladas levantadas por semana</p>
+    <div class="card"><h3>Weekly volume</h3><p class="note">Tonnes lifted per week</p>
       <div id="c-vol"></div></div>
-    <div class="card"><h3>Pasos</h3><p class="note">Reloj vía Health Connect</p>
+    <div class="card"><h3>Steps</h3><p class="note">Wearable via Health Connect</p>
       <div id="c-st"></div></div>
-    <div class="card"><h3>Sueño</h3><p class="note">Fases por noche, sin contar el tiempo despierto</p>
+    <div class="card"><h3>Sleep</h3><p class="note">Fases por noche, sin contar el tiempo despierto</p>
       <div id="c-sl"></div></div>
     ${tarjetaCalorias(d)}
   </div>`;
@@ -928,14 +928,14 @@ function sectionActividad() {
   if (conKc.length >= 2) {
     const basal = basalKc;
     lineChart($("#c-kc"), conKc, "kc", {
-      color: PAL.brass, unit: "kcal", label: "Calorías", avg: 7,
+      color: PAL.brass, unit: "kcal", label: "Calories", avg: 7,
       ref: basal, refLabel: basal ? `basal ${Math.round(basal)}` : "",
     });
     const card = $("#card-kc");
     card.classList.add("zoomable");
     ampliable(card, {
-      titulo: "Calorías quemadas",
-      nota: "Total diario de Health Connect · la línea marca tu metabolismo basal",
+      titulo: "Calories burned",
+      nota: "Total daily de Health Connect · la línea marca tu metabolismo basal",
       stats: resumen(conKc, "kc", 0, "kcal"),
       dibuja: c => lineChart(c, conKc, "kc", {
         color: PAL.brass, unit: "kcal", avg: 7,
@@ -946,9 +946,9 @@ function sectionActividad() {
   heatmap($("#c-hm"), d);
   $("#c-hm").closest(".card").classList.add("zoomable");
   ampliable($("#c-hm").closest(".card"), {
-    titulo: "Constancia", nota: "Cada cuadro es un día; el color, el volumen",
-    stats: [["Días entrenados", d.filter(x => x.v).length],
-            ["Volumen total", (d.reduce((a, x) => a + (x.v || 0), 0) / 1000).toFixed(0) + " t"]],
+    titulo: "Consistency", nota: "Each square is a day; colour is volume",
+    stats: [["Days trained", d.filter(x => x.v).length],
+            ["Total volume", (d.reduce((a, x) => a + (x.v || 0), 0) / 1000).toFixed(0) + " t"]],
     dibuja: c => heatmap(c, d),
   });
 
@@ -960,20 +960,20 @@ function sectionActividad() {
     byWeek[k] = byWeek[k] || { d: x.d, t: 0 }; byWeek[k].t += x.v / 1000; });
   const semanas = Object.values(byWeek);
   lineChart($("#c-vol"), semanas, "t",
-            { unit: "t", zero: true, label: "Volumen semanal", h: 220 });
+            { unit: "t", zero: true, label: "Weekly volume", h: 220 });
   $("#c-vol").closest(".card").classList.add("zoomable");
   ampliable($("#c-vol").closest(".card"), {
-    titulo: "Volumen semanal", nota: "Toneladas levantadas por semana",
+    titulo: "Weekly volume", nota: "Tonnes lifted per week",
     stats: resumen(semanas, "t", 1, "t"),
     dibuja: c => lineChart(c, semanas, "t", { unit: "t", zero: true, h: 420 }),
   });
 
   const pasos = d.filter(x => x.st != null);
   lineChart($("#c-st"), pasos, "st",
-            { avg: 7, unit: "pasos", zero: true, color: PAL.up, label: "Pasos diarios" });
+            { avg: 7, unit: "pasos", zero: true, color: PAL.up, label: "Daily steps" });
   $("#c-st").closest(".card").classList.add("zoomable");
   ampliable($("#c-st").closest(".card"), {
-    titulo: "Pasos", nota: "Samsung Health · media móvil de 7 días",
+    titulo: "Steps", nota: "Health Connect · 7-day moving average",
     stats: resumen(pasos, "st", 0),
     dibuja: c => lineChart(c, pasos, "st",
                            { avg: 7, unit: "pasos", zero: true, color: PAL.up, h: 420 }),
@@ -982,16 +982,16 @@ function sectionActividad() {
   const noches = d.filter(x => x.sl != null);
   const fases = [["sd", "sr", "sli"], ["#2a78d6", "#5598e7", "#9ec5f4"],
                  ["profundo", "REM", "ligero"]];
-  stackChart($("#c-sl"), noches, ...fases, { label: "Fases del sueño" });
+  stackChart($("#c-sl"), noches, ...fases, { label: "Sleep stages" });
   $("#c-sl").closest(".card").classList.add("zoomable");
   ampliable($("#c-sl").closest(".card"), {
-    titulo: "Sueño", nota: "Fases por noche, sin contar el tiempo despierto",
+    titulo: "Sleep", nota: "Fases por noche, sin contar el tiempo despierto",
     stats: resumen(noches, "sl", 1, "h"),
     dibuja: c => stackChart(c, noches, ...fases, { h: 420 }),
   });
 }
 
-function sectionCuerpo() {
+function sectionBody() {
   const el = $("#sec-cuerpo");
   const b = DATA.daily.filter(x => x.kg != null);
   if (!b.length) {
@@ -999,27 +999,27 @@ function sectionCuerpo() {
     const solaCinta = bloqueMedidas();
     el.innerHTML = solaCinta.html
       ? `<div class="cards">${solaCinta.html}</div>`
-      : `<div class="card"><h3>Cuerpo</h3><p class="blank">Sin pesajes todavía.</p></div>`;
+      : `<div class="card"><h3>Body</h3><p class="blank">No weigh-ins yet.</p></div>`;
     solaCinta.pintar();
     return;
   }
 
   // clave, etiqueta, unidad, decimales, si subir es bueno (null = neutro)
   const M = [
-    ["kg", "Peso",               "kg",   1, false],
-    ["fa", "Grasa corporal",     "%",    1, false],
-    ["fm", "Grasa",              "kg",   1, false],
+    ["kg", "Weight",               "kg",   1, false],
+    ["fa", "Body fat",     "%",    1, false],
+    ["fm", "Fat",              "kg",   1, false],
     ["mu", "Masa muscular",      "kg",   1, true ],
-    ["sk", "Músculo esquelético","%",    1, true ],
-    ["lm", "Masa magra",         "kg",   1, true ],
-    ["wa", "Agua corporal",      "%",    1, true ],
-    ["pr", "Proteína",           "%",    1, true ],
-    ["vi", "Grasa visceral",     "",     1, false],
-    ["sc", "Grasa subcutánea",   "%",    1, false],
+    ["sk", "Skeletal muscle","%",    1, true ],
+    ["lm", "Lean mass",         "kg",   1, true ],
+    ["wa", "Body water",      "%",    1, true ],
+    ["pr", "Protein",           "%",    1, true ],
+    ["vi", "Visceral fat",     "",     1, false],
+    ["sc", "Subcutaneous fat",   "%",    1, false],
     ["bmi","IMC",                "",     1, false],
-    ["bo", "Masa ósea",          "kg",   1, null ],
-    ["br", "Metabolismo basal",  "kcal", 0, null ],
-    ["ag", "Edad corporal",      "años", 0, false],
+    ["bo", "Bone mass",          "kg",   1, null ],
+    ["br", "Basal metabolism",  "kcal", 0, null ],
+    ["ag", "Body age",      "yrs", 0, false],
   ].filter(([k]) => b.some(x => x[k] != null));
 
   const last = b[b.length - 1];
@@ -1056,19 +1056,19 @@ function sectionCuerpo() {
 
   el.innerHTML = `<div class="cards">
     <div class="card">
-      <h3>Ahora mismo</h3>
-      <p class="note">${longd(last.d)} · el cambio es frente a hace 30 días</p>
+      <h3>Right now</h3>
+      <p class="note">${longd(last.d)} · change is against 30 days ago</p>
       <div class="tiles wide">${tiles}</div>
     </div>
     <div class="card">
-      <h3>Evolución</h3>
-      <p class="note">${b.length} pesajes desde ${longd(b[0].d)}</p>
+      <h3>Trend</h3>
+      <p class="note">${b.length} weigh-ins since ${longd(b[0].d)}</p>
       <div class="minigrid">${charts}</div>
     </div>
     <div class="card">
-      <h3>Últimos pesajes</h3>
+      <h3>Latest weigh-ins</h3>
       <div class="tblwrap"><table>
-        <thead><tr><th>Fecha</th>${M.map(([, l, u]) =>
+        <thead><tr><th>Date</th>${M.map(([, l, u]) =>
           `<th>${l}${u ? " (" + u + ")" : ""}</th>`).join("")}</tr></thead>
         <tbody>${filas}</tbody></table></div>
     </div>
@@ -1083,7 +1083,7 @@ function sectionCuerpo() {
     const col = color[k] || PAL.brass;
     lineChart(box, b, k, { color: col, unit: u, label: lbl, h: 150 });
     ampliable(box.closest(".mini"), {
-      titulo: lbl, nota: `${b.filter(x => x[k] != null).length} pesajes desde ${longd(b[0].d)}`,
+      titulo: lbl, nota: `${b.filter(x => x[k] != null).length} weigh-ins since ${longd(b[0].d)}`,
       stats: resumen(b, k, dec, u),
       dibuja: c => lineChart(c, b, k, { color: col, unit: u, h: 430 }),
     });
@@ -1093,7 +1093,7 @@ function sectionCuerpo() {
 }
 
 /* ---------- medidas de cinta ----------
-   Van dentro de "Cuerpo" y no en una pestana propia: son dato corporal, y
+   Van dentro de "Body" y no en una pestana propia: son dato corporal, y
    con dos metricas al principio una pestana entera quedaria vacia.
 
    La referencia NO es "hace 30 dias" como en los pesajes, sino la tanda
@@ -1155,21 +1155,21 @@ function bloqueMedidas() {
   const desde = longd(t[0].d);
   const html = `
     <div class="card">
-      <h3>Cinta métrica</h3>
-      <p class="note">${longd(last.d)}${prev ? " · el cambio es frente a la medición anterior, "
+      <h3>Tape measure</h3>
+      <p class="note">${longd(last.d)}${prev ? " · change is against the previous measurement, "
         + longd(prev.d) : ""}</p>
       <div class="tiles wide">${tiles}</div>
     </div>
     ${charts ? `<div class="card">
-      <h3>Evolución de las medidas</h3>
-      <p class="note">${t.length} mediciones desde ${desde}</p>
+      <h3>Measurement trend</h3>
+      <p class="note">${t.length} measurements since ${desde}</p>
       <div class="minigrid">${charts}</div>
     </div>` : ""}
     <div class="card">
-      <h3>Historial de medidas</h3>
+      <h3>Measurement history</h3>
       <div class="tblwrap"><table>
-        <thead><tr><th>Fecha</th>${M.map(([, l]) => `<th>${l} (cm)</th>`).join("")}
-          <th>Nota</th></tr></thead>
+        <thead><tr><th>Date</th>${M.map(([, l]) => `<th>${l} (cm)</th>`).join("")}
+          <th>Note</th></tr></thead>
         <tbody>${filas}</tbody></table></div>
     </div>`;
 
@@ -1181,7 +1181,7 @@ function bloqueMedidas() {
       lineChart(box, t, k, { color: col, unit: "cm", label: lbl, h: 150 });
       ampliable(box.closest(".mini"), {
         titulo: lbl,
-        nota: `${t.filter(x => x[k] != null).length} mediciones desde ${desde}`,
+        nota: `${t.filter(x => x[k] != null).length} measurements since ${desde}`,
         stats: resumen(t, k, 1, "cm"),
         dibuja: c => lineChart(c, t, k, { color: col, unit: "cm", h: 430 }),
       });
@@ -1201,14 +1201,14 @@ const num = (v, d = 0) => v == null ? "—" : v.toLocaleString("es-ES",
 function delta(act, prev, { dec = 0, bueno = true, unidad = "" } = {}) {
   if (act == null || prev == null) return "";
   const d = act - prev;
-  if (Math.abs(d) < (dec ? 0.05 : 0.5)) return `<span class="flat">igual</span>`;
+  if (Math.abs(d) < (dec ? 0.05 : 0.5)) return `<span class="flat">same</span>`;
   const cls = (d > 0) === bueno ? "up" : "down";
   return `<span class="${cls}">${d > 0 ? "+" : ""}${num(d, dec)}${unidad}</span>`;
 }
 
 function tablaComparativa(a, b, etiquetas, filas) {
   return `<table class="cmp">
-    <thead><tr><th></th><th>${etiquetas[0]}</th><th>${etiquetas[1]}</th><th>Cambio</th></tr></thead>
+    <thead><tr><th></th><th>${etiquetas[0]}</th><th>${etiquetas[1]}</th><th>Change</th></tr></thead>
     <tbody>${filas.map(([k, lbl, dec, bueno, u]) => `<tr>
       <td>${lbl}</td>
       <td>${num(a[k], dec)}${u || ""}</td>
@@ -1225,7 +1225,7 @@ function balanceMuscular(ms) {
     const col = m.desvio < -4 ? "var(--down)" : m.desvio > 4 ? "var(--up)" : "var(--steel)";
     return `<div class="fila">
       <span class="nom" title="${m.musculo}">${m.musculo}</span>
-      <span class="barra" title="mes ${m.pct_reciente}% · histórico ${m.pct_historico}%">
+      <span class="barra" title="month ${m.pct_reciente}% · history ${m.pct_historico}%">
         <i style="width:${(m.pct_reciente / max * 100).toFixed(1)}%;background:${col}"></i>
         <u style="left:${(m.pct_historico / max * 100).toFixed(1)}%"></u>
       </span>
@@ -1278,7 +1278,7 @@ function avisos() {
   return out;
 }
 
-function sectionResumen() {
+function sectionOverview() {
   const el = $("#sec-resumen");
   // Los entrenos se cuentan desde un corte (cambio de gimnasio). Decirlo evita
   // que parezca que falta historia, y avisa de contra qué se compara.
@@ -1295,24 +1295,24 @@ function sectionResumen() {
   const cuenta = e => est.filter(x => x.estado === e).length;
 
   const cuerpoFilas = [
-    ["peso", "Peso", "kg", 1, false],
-    ["grasa_kg", "Grasa", "kg", 1, false],
-    ["musculo", "Músculo", "kg", 1, true],
-    ["visceral", "Grasa visceral", "", 1, false],
+    ["peso", "Weight", "kg", 1, false],
+    ["grasa_kg", "Fat", "kg", 1, false],
+    ["musculo", "Muscle", "kg", 1, true],
+    ["visceral", "Visceral fat", "", 1, false],
   ].filter(([k]) => c[k]?.actual != null);
 
   el.innerHTML = `<div class="cards">${aviso}
 
     <div class="card">
-      <h3>Cómo vas</h3>
-      <p class="note">Lo que ha cambiado, no lo que hay</p>
+      <h3>How it's going</h3>
+      <p class="note">What changed, not what is</p>
       <div class="pills">
-        <span class="pill">Racha <b>${r.actual || 0}</b> semanas</span>
-        <span class="pill">Mejor <b>${r.mejor || 0}</b></span>
-        <span class="pill">Último entreno hace <b>${r.dias_desde ?? "—"}</b> d</span>
-        <span class="pill">Progresan <b>${cuenta("progresa")}</b></span>
-        <span class="pill">Estancados <b>${cuenta("estancado")}</b></span>
-        <span class="pill">Abandonados <b>${cuenta("abandonado")}</b></span>
+        <span class="pill">Streak <b>${r.actual || 0}</b> semanas</span>
+        <span class="pill">Best <b>${r.mejor || 0}</b></span>
+        <span class="pill">Last workout <b>${r.dias_desde ?? "—"}</b> d</span>
+        <span class="pill">Progressing <b>${cuenta("progresa")}</b></span>
+        <span class="pill">Stalled <b>${cuenta("estancado")}</b></span>
+        <span class="pill">Dropped <b>${cuenta("abandonado")}</b></span>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
         ${avisos().map(([ic, t]) =>
@@ -1321,39 +1321,39 @@ function sectionResumen() {
     </div>
 
     <div class="duo">
-      <div class="card"><h3>Esta semana</h3>
+      <div class="card"><h3>This week</h3>
         <p class="note">${s.desde} → ${s.hasta}, frente a los 7 días anteriores</p>
-        ${tablaComparativa(s, sp, ["Ahora", "Antes"], [
-          ["sesiones", "Sesiones", 0, true, ""],
-          ["volumen", "Volumen", 0, true, " kg"],
-          ["series", "Series", 0, true, ""],
+        ${tablaComparativa(s, sp, ["Now", "Antes"], [
+          ["sesiones", "Sessions", 0, true, ""],
+          ["volumen", "Volume", 0, true, " kg"],
+          ["series", "Sets", 0, true, ""],
           ["minutos", "Minutos", 0, true, ""],
-          ["pasos", "Pasos/día", 0, true, ""],
-          ["sueno", "Sueño", 2, true, " h"],
+          ["pasos", "Steps/day", 0, true, ""],
+          ["sueno", "Sleep", 2, true, " h"],
         ])}
       </div>
-      <div class="card"><h3>Este mes</h3>
-        <p class="note">Últimos 30 días, frente a los 30 anteriores</p>
-        ${tablaComparativa(m, mp, ["Ahora", "Antes"], [
-          ["sesiones", "Sesiones", 0, true, ""],
-          ["volumen", "Volumen", 0, true, " kg"],
-          ["series", "Series", 0, true, ""],
+      <div class="card"><h3>This month</h3>
+        <p class="note">Last 30 days, against the 30 before</p>
+        ${tablaComparativa(m, mp, ["Now", "Antes"], [
+          ["sesiones", "Sessions", 0, true, ""],
+          ["volumen", "Volume", 0, true, " kg"],
+          ["series", "Sets", 0, true, ""],
           ["minutos", "Minutos", 0, true, ""],
-          ["pasos", "Pasos/día", 0, true, ""],
-          ["sueno", "Sueño", 2, true, " h"],
+          ["pasos", "Steps/day", 0, true, ""],
+          ["sueno", "Sleep", 2, true, " h"],
         ])}
       </div>
     </div>
 
     <div class="duo">
-      <div class="card"><h3>Equilibrio muscular</h3>
-        <p class="note">Reparto del último mes contra tu histórico</p>
+      <div class="card"><h3>Muscle balance</h3>
+        <p class="note">Last month's split against your history</p>
         ${balanceMuscular(IN.musculos || [])}
       </div>
-      <div class="card"><h3>Composición corporal</h3>
-        <p class="note">${cuerpoFilas.length ? "Cambio a 7, 30 y 90 días" : ""}</p>
+      <div class="card"><h3>Body composition</h3>
+        <p class="note">${cuerpoFilas.length ? "Change over 7, 30 and 90 days" : ""}</p>
         ${cuerpoFilas.length ? `<table class="cmp">
-          <thead><tr><th></th><th>Ahora</th><th>7 d</th><th>30 d</th><th>90 d</th></tr></thead>
+          <thead><tr><th></th><th>Now</th><th>7 d</th><th>30 d</th><th>90 d</th></tr></thead>
           <tbody>${cuerpoFilas.map(([k, lbl, u, dec, bueno]) => `<tr>
             <td>${lbl}</td>
             <td>${num(c[k].actual, dec)}${u}</td>
@@ -1361,7 +1361,7 @@ function sectionResumen() {
               c[k]["d" + dd] == null ? "—" : delta(c[k].actual, c[k].actual - c[k]["d" + dd],
                                                    { dec, bueno })}</td>`).join("")}
           </tr>`).join("")}</tbody></table>`
-        : `<p class="blank">Sin pesajes suficientes.</p>`}
+        : `<p class="blank">Not enough weigh-ins.</p>`}
       </div>
     </div>
 
@@ -1380,13 +1380,13 @@ $("#tabs").addEventListener("click", e => {
     $("#sec-" + k).hidden = k !== t);
   if (!built[t]) {
     if (t === "fuerza") render();
-    if (t === "actividad") sectionActividad();
-    if (t === "cuerpo") sectionCuerpo();
+    if (t === "actividad") sectionActivity();
+    if (t === "cuerpo") sectionBody();
     built[t] = true;
   }
 });
 
-sectionResumen();
+sectionOverview();
 </script>
 
 </body>
