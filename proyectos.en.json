@@ -17,7 +17,12 @@
       "tituloSeo": "Ciber-AsesorIA: ENS, NIS2 and DORA compliance",
       "resumen": "Bachelor's thesis: an engine that, given a company profile and a legislative control, deterministically infers which technical requirements ENS, NIS2 and DORA impose on it, and runs a conversational audit that issues a traceable, scored verdict.",
       "descripcionSeo": "Bachelor's thesis: an engine that deterministically infers what ENS, NIS2 and DORA require of a company and runs an audit with a traceable verdict.",
-      "categorias": ["AI", "Cybersecurity", "Knowledge graphs", "Regulatory compliance"],
+      "categorias": [
+        "AI",
+        "Cybersecurity",
+        "Knowledge graphs",
+        "Regulatory compliance"
+      ],
       "destacados": [
         "Principle of Maxima resolved in Cypher over Neo4j: for each control it selects the strictest requirement across the three frameworks, combining floors, reinforcements and exclusions",
         "Deterministic inference by graph query, kept apart from the LLM stages: the verdict can be reconstructed and explained",
@@ -38,7 +43,12 @@
       "tituloSeo": "Habla con tu dinero: AI banking assistant",
       "resumen": "An assistant that lets you handle your finances by voice or in writing: check your balance, send a Bizum (the Spanish instant transfer system), analyse transactions in plain language and produce charts that the model itself designs.",
       "descripcionSeo": "Banking assistant by voice or in writing: check your balance, send a Bizum transfer, analyse transactions in plain language and produce charts with AI.",
-      "categorias": ["AI", "LLM agents", "Accessibility", "Backend"],
+      "categorias": [
+        "AI",
+        "LLM agents",
+        "Accessibility",
+        "Backend"
+      ],
       "destacados": [
         "LLM agent with tool calling: four tools orchestrated by the model over a simulated banking API",
         "NL → SQL with server-side validation: read-only, a single statement and a keyword blacklist",
@@ -54,8 +64,22 @@
     "museo-ar": {
       "titulo": "Museo AR - Augmented reality museum guide",
       "resumen": "An AR application that detects ArUco markers through a webcam and overlays 3D models of historical pieces, with face recognition of the visitor, spoken queries and photo souvenirs sent by email.",
-      "categorias": ["Computer vision", "Augmented reality", "AI"],
-      "stack": ["Python", "OpenCV", "ArUco", "pyrender", "OSMesa", "glTF", "Face recognition", "SMTP", "Telegram Bot API"],
+      "categorias": [
+        "Computer vision",
+        "Augmented reality",
+        "AI"
+      ],
+      "stack": [
+        "Python",
+        "OpenCV",
+        "ArUco",
+        "pyrender",
+        "OSMesa",
+        "glTF",
+        "Face recognition",
+        "SMTP",
+        "Telegram Bot API"
+      ],
       "destacados": [
         "Detection of ArUco DICT_5X5_50 markers and rendering of glTF models aligned with the real world",
         "Face recognition for persistent visitor registration across sessions",
@@ -68,7 +92,10 @@
     "tienda-online": {
       "titulo": "Full-stack online shop",
       "resumen": "A complete e-commerce site with an Express + MongoDB backend, an authenticated REST API, a React frontend and a containerised deployment with Caddy as the reverse proxy.",
-      "categorias": ["Web development", "Full-stack"],
+      "categorias": [
+        "Web development",
+        "Full-stack"
+      ],
       "destacados": [
         "REST API with separate routes for the shop, the users and the public API",
         "Authentication and user session management",
@@ -82,7 +109,10 @@
     "waf-modsecurity": {
       "titulo": "WAF with ModSecurity and the OWASP CRS on Docker",
       "resumen": "A Web Application Firewall sitting between the client and a farm of web servers, with OWASP CRS rules and a measurement of what it costs in performance.",
-      "categorias": ["Cybersecurity", "DevOps"],
+      "categorias": [
+        "Cybersecurity",
+        "DevOps"
+      ],
       "destacados": [
         "Nginx + ModSecurity v3 + OWASP Core Rule Set in a dedicated container",
         "Mitigation of SQLi, XSS and LFI/RFI verified through functional tests",
@@ -96,7 +126,10 @@
     "granja-web": {
       "titulo": "High performance web farm",
       "resumen": "Design, deployment and evaluation of a scalable web farm: load balancing compared across five technologies, TLS, firewalling and benchmarking.",
-      "categorias": ["DevOps", "Infrastructure"],
+      "categorias": [
+        "DevOps",
+        "Infrastructure"
+      ],
       "destacados": [
         "Empirical comparison of Nginx, HAProxy, Traefik, Envoy and GoBetween as load balancers",
         "HTTPS with certificates generated and managed through OpenSSL",
@@ -109,8 +142,16 @@
     "agente-ia": {
       "titulo": "Intelligent agent for a competitive game",
       "resumen": "A turn-based agent that picks its moves with Minimax and Alpha-Beta pruning, and evaluation heuristics refined over several iterations.",
-      "categorias": ["AI", "Algorithms"],
-      "stack": ["C++", "SFML", "Minimax", "Alpha-Beta pruning"],
+      "categorias": [
+        "AI",
+        "Algorithms"
+      ],
+      "stack": [
+        "C++",
+        "SFML",
+        "Minimax",
+        "Alpha-Beta pruning"
+      ],
       "destacados": [
         "Minimax with Alpha-Beta pruning: the same decision as full Minimax at a far lower cost",
         "Greater search depth within the available time limit",
@@ -122,7 +163,9 @@
     "motor-grafico": {
       "titulo": "Interactive 3D graphics engine in OpenGL",
       "resumen": "A 3D graphics application built incrementally: scene graph, cameras, hierarchical animation, lighting and object picking.",
-      "categorias": ["Computer graphics"],
+      "categorias": [
+        "Computer graphics"
+      ],
       "destacados": [
         "Scene graph with per-node local transformations",
         "Articulated animations driven from the keyboard",
@@ -135,7 +178,10 @@
     "ecommerce-oracle": {
       "titulo": "E-commerce platform on Oracle",
       "resumen": "A desktop system connecting buyers and sellers that handles users, products, cart, orders, payments and reviews on top of an Oracle database.",
-      "categorias": ["Databases", "Backend"],
+      "categorias": [
+        "Databases",
+        "Backend"
+      ],
       "destacados": [
         "Five subsystems: users, products, cart, orders and reviews",
         "Automatic transactional stock control when an order is confirmed or cancelled",
@@ -148,8 +194,14 @@
     "irrgarten": {
       "titulo": "Irrgarten - the same game in Java and Ruby",
       "resumen": "A turn-based maze game implemented in full in two languages, comparing how each one solves the same object-oriented design.",
-      "categorias": ["Object-oriented programming"],
-      "stack": ["Java", "Ruby", "OOP"],
+      "categorias": [
+        "Object-oriented programming"
+      ],
+      "stack": [
+        "Java",
+        "Ruby",
+        "OOP"
+      ],
       "destacados": [
         "Complete domain model: Player, Monster, Labyrinth, Game, Weapon, Shield, Dice",
         "Randomness encapsulated in a single Dice class",
@@ -162,8 +214,18 @@
       "titulo": "Agenda Digital - cross-platform app for academic events",
       "tituloSeo": "Agenda Digital: Flutter app with a Rails backend",
       "resumen": "A Flutter application with a Ruby on Rails backend for managing academic events organised in a hierarchical tree of months, weeks, days and events.",
-      "categorias": ["Mobile development", "Full-stack"],
-      "stack": ["Dart", "Flutter", "Ruby on Rails", "SQLite", "REST", "Design patterns"],
+      "categorias": [
+        "Mobile development",
+        "Full-stack"
+      ],
+      "stack": [
+        "Dart",
+        "Flutter",
+        "Ruby on Rails",
+        "SQLite",
+        "REST",
+        "Design patterns"
+      ],
       "destacados": [
         "Cross-platform Flutter client (iOS, Android, Web) with Material Design 3",
         "REST API backend in Ruby on Rails 8.1 with ActiveRecord and SQLite",
@@ -177,8 +239,15 @@
       "titulo": "Automatic language classifier based on bigrams",
       "tituloSeo": "Bigram-based language classifier in C++",
       "resumen": "A C++ system that models each language by the frequency of its character pairs and classifies an unknown text by measuring its distance to the known models.",
-      "categorias": ["Algorithms", "Language processing"],
-      "stack": ["C++", "Text processing", "Dynamic memory"],
+      "categorias": [
+        "Algorithms",
+        "Language processing"
+      ],
+      "stack": [
+        "C++",
+        "Text processing",
+        "Dynamic memory"
+      ],
       "destacados": [
         "A language model as a bigram profile, serialised to its own .bgr format",
         "Classification by distance between models: it gets Spanish, English, French and German right on real literary texts",
@@ -188,6 +257,28 @@
         "Incremental development over six iterations (Language0 → Language5)"
       ],
       "contexto": "Programming Methodology - University of Granada"
+    },
+    "rutina-export": {
+      "titulo": "rutina-export - Your health data into Notion, no subscription",
+      "tituloSeo": "rutina-export: Health Connect and Hevy into Notion, free",
+      "resumen": "An Android app and pipeline that pull steps, sleep, body composition and workouts out of Health Connect, Samsung Health, FitDays and Hevy, and carry them into Notion and a web dashboard on their own, without the subscription those export apps charge for.",
+      "descripcionSeo": "Export Health Connect, Samsung Health, FitDays and Hevy to Notion and a dashboard, automatically and with no subscription. Own Android app, installed over ADB.",
+      "destacados": [
+        "The READ_HEALTH_DATA_IN_BACKGROUND permission is free: what gates the automation is Google Play's review for health apps, and an app installed over ADB never goes through it",
+        "The app reads Health Connect with the screen locked and uploads to GitHub through its API, needing neither the computer nor the home wifi",
+        "FitDays only publishes 4 of its 15 metrics to Health Connect: the rest come from driving its UI with an accessibility service restricted to that one app",
+        "The repository is the source of truth: no single source keeps the full history, so it accumulates in JSONL and a day measured halfway fixes itself",
+        "Bogus-data detection: some days report a calorie total that is exactly the basal rate, with no activity, and they are dropped from the averages instead of sinking them",
+        "Five related Notion databases and an interactive dashboard published on Pages",
+        "One command sets GitHub up: it creates the databases, uploads the eight secrets and turns on Pages"
+      ],
+      "categorias": [
+        "Android",
+        "Automation",
+        "Personal data",
+        "Backend"
+      ],
+      "contexto": "Personal project"
     }
   }
 }
