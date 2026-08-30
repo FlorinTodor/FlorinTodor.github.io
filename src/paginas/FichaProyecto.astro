@@ -6,6 +6,7 @@
 import Base from '../layouts/Base.astro';
 import DemoGrafo from '../components/DemoGrafo.astro';
 import DemoBanca from '../components/DemoBanca.astro';
+import DemoRutina from '../components/DemoRutina.astro';
 import { perfil } from '../idiomas/contenido.js';
 import { t, LOCALE } from '../idiomas/textos.js';
 import { enlace, recurso } from '../idiomas/rutas.js';
@@ -153,6 +154,14 @@ if (video) {
             <div class="titulo-seccion"><h2>{F.tituloGrafo}</h2><div class="linea"></div></div>
             <p style="color:var(--texto-suave)">{F.introGrafo}</p>
             <DemoGrafo idioma={idioma} />
+          </section>
+        )}
+
+        {p.id === 'rutina-export' && (
+          <section id={hayVideo || gif ? undefined : 'demo'}>
+            <div class="titulo-seccion"><h2>{F.tituloRutina}</h2><div class="linea"></div></div>
+            <p style="color:var(--texto-suave)">{F.introRutina}</p>
+            <DemoRutina idioma={idioma} />
           </section>
         )}
 

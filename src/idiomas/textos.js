@@ -190,6 +190,16 @@ export const TEXTOS = {
       tituloGrafo: 'Explora el grafo normativo',
       introGrafo:
         'El núcleo del módulo es un grafo que enlaza los artículos de NIS2 y DORA con los controles del ENS que los satisfacen. Elige un artículo y verás qué controles exige. Son los datos reales del grafo del TFG.',
+      tituloRutina: 'Míralo funcionando',
+      introRutina:
+        'Lo que produce la canalización, con datos inventados: ninguna cifra sale de un dispositivo ni de una persona real.',
+      rutina: {
+        pasos: 'Pasos', sueno: 'Sueño', kcal: 'Calorías', volumen: 'Volumen',
+        peso: 'Peso', grasa: 'Grasa', pecho: 'Pecho', abdomen: 'Abdomen',
+        entrenos: 'Entrenos', media: 'Media', cambio: 'Cambio total',
+        registros: 'Registros', sinDato: 'Sin datos suficientes para esta métrica.',
+        error: 'No se pudo cargar la demo.',
+      },
       tituloBanca: 'Pruébalo',
       introBanca:
         'Pulsa las preguntas sugeridas para reproducir una conversación: verás las llamadas a herramientas del modelo, el SQL que genera y los gráficos que decide dibujar.',
@@ -451,6 +461,16 @@ export const TEXTOS = {
       tituloGrafo: 'Explore the compliance graph',
       introGrafo:
         'At the core of the module is a graph linking the articles of NIS2 and DORA to the Spanish ENS controls that satisfy them. Pick an article and you will see which controls it demands. This is the real data from the thesis graph, kept in the original Spanish and EU wording.',
+      tituloRutina: 'See it running',
+      introRutina:
+        'What the pipeline produces, with made-up data: no figure comes from a real device or a real person.',
+      rutina: {
+        pasos: 'Steps', sueno: 'Sleep', kcal: 'Calories', volumen: 'Volume',
+        peso: 'Weight', grasa: 'Body fat', pecho: 'Chest', abdomen: 'Abdomen',
+        entrenos: 'Workouts', media: 'Average', cambio: 'Total change',
+        registros: 'Records', sinDato: 'Not enough data for this metric.',
+        error: 'The demo could not be loaded.',
+      },
       tituloBanca: 'Try it',
       introBanca:
         'Click the suggested questions to replay a conversation: you will see the model’s tool calls, the SQL it writes and the charts it decides to draw.',
