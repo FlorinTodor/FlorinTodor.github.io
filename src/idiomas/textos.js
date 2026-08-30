@@ -194,11 +194,9 @@ export const TEXTOS = {
       introRutina:
         'Lo que produce la canalización, con datos inventados: ninguna cifra sale de un dispositivo ni de una persona real.',
       rutina: {
-        pasos: 'Pasos', sueno: 'Sueño', kcal: 'Calorías', volumen: 'Volumen',
-        peso: 'Peso', grasa: 'Grasa', pecho: 'Pecho', abdomen: 'Abdomen',
-        entrenos: 'Entrenos', media: 'Media', cambio: 'Cambio total',
-        registros: 'Registros', sinDato: 'Sin datos suficientes para esta métrica.',
-        error: 'No se pudo cargar la demo.',
+        aviso: 'Es el dashboard real del proyecto, generado con datos inventados: ninguna cifra procede de un dispositivo ni de una persona real.',
+        titulo: 'Dashboard de rutina-export con datos de ejemplo',
+        abrir: 'Abrirlo en una pestaña aparte',
       },
       tituloBanca: 'Pruébalo',
       introBanca:
@@ -465,11 +463,9 @@ export const TEXTOS = {
       introRutina:
         'What the pipeline produces, with made-up data: no figure comes from a real device or a real person.',
       rutina: {
-        pasos: 'Steps', sueno: 'Sleep', kcal: 'Calories', volumen: 'Volume',
-        peso: 'Weight', grasa: 'Body fat', pecho: 'Chest', abdomen: 'Abdomen',
-        entrenos: 'Workouts', media: 'Average', cambio: 'Total change',
-        registros: 'Records', sinDato: 'Not enough data for this metric.',
-        error: 'The demo could not be loaded.',
+        aviso: 'This is the project\'s real dashboard, generated from made-up data: no figure comes from a real device or a real person.',
+        titulo: 'rutina-export dashboard with sample data',
+        abrir: 'Open it in its own tab',
       },
       tituloBanca: 'Try it',
       introBanca:
