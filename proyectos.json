@@ -28,6 +28,7 @@
         "El repositorio es la fuente de verdad: ninguna fuente guarda el histórico entero, así que se acumula en JSONL y un día medido a medias se corrige solo",
         "Detección de datos falsos: hay días cuyo total de calorías es exactamente la basal, sin actividad, y se descartan de las medias en vez de hundirlas",
         "Cinco bases de Notion relacionadas y un dashboard interactivo publicado en Pages",
+        "El dashboard no se queda en la curva de fuerza: cada ejercicio enseña la carga de cada sesión (kilos movidos, mejor serie, series y la escalera de récords), y lo que no se levanta en kilos, como las flexiones o la comba, se cuenta en repeticiones o en minutos en vez de dibujarle un volumen a cero",
         "Un comando deja GitHub configurado: crea las bases, sube los ocho secretos y enciende Pages"
       ],
       "stack": [
