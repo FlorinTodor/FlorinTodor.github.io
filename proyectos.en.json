@@ -270,6 +270,7 @@
         "The repository is the source of truth: no single source keeps the full history, so it accumulates in JSONL and a day measured halfway fixes itself",
         "Bogus-data detection: some days report a calorie total that is exactly the basal rate, with no activity, and they are dropped from the averages instead of sinking them",
         "Five related Notion databases and an interactive dashboard published on Pages",
+        "The dashboard doesn't stop at the strength curve: every exercise also shows each session's load (kilos moved, best set, working sets and the ladder of records), and what isn't lifted in kilos, like push-ups or jump rope, is counted in reps or minutes instead of being drawn a volume of zero",
         "One command sets GitHub up: it creates the databases, uploads the eight secrets and turns on Pages"
       ],
       "categorias": [
