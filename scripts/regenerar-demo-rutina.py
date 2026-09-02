@@ -35,15 +35,16 @@ SALIDA = RAIZ / "public" / "demo" / "rutina-export"
 AVISO = """<div style="background:#3a2a00;color:#ffd479;padding:10px 16px;\
 font:14px/1.4 system-ui,sans-serif;text-align:center;border-bottom:1px solid #5a4200">
 <b>{titulo}</b> {texto}
-<a href="https://github.com/FlorinTodor/rutina-export" style="color:#ffd479">{enlace}</a>
+<a href="https://github.com/FlorinTodor/rutina-export" target="_blank" \
+rel="noopener" style="color:#ffd479">{enlace}</a>
 </div>
 """
 
 AVISO_ES = dict(
     titulo="Demo con datos inventados.",
     texto="Ninguna cifra procede de un dispositivo ni de una persona real: se "
-          "generan con una tendencia y ruido para ensenar que produce la canalizacion.",
-    enlace="Codigo en GitHub")
+          "generan con una tendencia y ruido para enseñar qué produce la canalización.",
+    enlace="Código en GitHub")
 AVISO_EN = dict(
     titulo="Demo with made-up data.",
     texto="No figure comes from a real device or person: they are generated from "
@@ -602,6 +603,11 @@ def main() -> int:
     print("\nSin castellano suelto. Pasa ahora el test del DOM sobre las dos copias:")
     print("    node ../rutina-export/tests/test_dashboard.mjs "
           f"{SALIDA/'index.html'}")
+    # La miniatura de la portada es una foto de este mismo HTML, así que se
+    # queda vieja en cuanto el dashboard cambia. No se hace aquí para no
+    # arrastrar Chrome a un guion que sólo necesitaba Python.
+    print("Y rehaz la miniatura de la tarjeta, que es una foto de esto:")
+    print("    python3 scripts/generar-poster-demo-rutina.py")
     return 0
 
 
