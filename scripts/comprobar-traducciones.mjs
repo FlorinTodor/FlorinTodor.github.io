@@ -86,6 +86,16 @@ for (const f of traducidos) {
 if (!fs.existsSync(new URL('../public/demo/sesion-banca.en.json', import.meta.url))) {
   fallos.push('public/demo/: falta sesion-banca.en.json');
 }
+// El dashboard de rutina-export se embebe entero, interfaz incluida, y su
+// miniatura de la portada es una foto de él: las dos cosas llevan texto y las
+// dos tienen que existir en inglés.
+if (!fs.existsSync(new URL('../public/demo/rutina-export/en/index.html', import.meta.url))) {
+  fallos.push('public/demo/rutina-export/en/: falta index.html');
+}
+if (fs.existsSync(new URL('../public/media/poster/rutina-export.jpg', import.meta.url)) &&
+    !fs.existsSync(new URL('../public/media/poster/rutina-export-en.jpg', import.meta.url))) {
+  fallos.push('public/media/poster/: falta rutina-export-en.jpg');
+}
 
 // -----------------------------------------------------------------------------
 if (fallos.length) {

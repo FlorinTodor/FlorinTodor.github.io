@@ -88,6 +88,7 @@ scripts/comprobar-traducciones.mjs  ← avisa de lo que falta por traducir
 scripts/generar-og.py       ← redibuja las tarjetas de og, en los dos idiomas
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
+scripts/generar-poster-demo-rutina.py  ← fotografía la demo embebida
 scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
 ```
 
@@ -95,6 +96,14 @@ Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
 `poster/<id>.jpg`. La duración y el tamaño del `VideoObject` se leen del fichero
 al compilar, y la fecha de publicación sale del commit que lo tocó - por eso el
 workflow hace `checkout` con `fetch-depth: 0`, para tener historial.
+
+Las demos que no son un vídeo sino una página (el dashboard de rutina-export)
+dejaban la tarjeta de la portada en blanco, porque no hay fotograma que enseñar.
+Su miniatura es una foto de la propia demo, hecha con Chrome sin ventana por
+`scripts/generar-poster-demo-rutina.py`, y va en `poster/<id>.jpg` con su gemela
+inglesa `poster/<id>-en.jpg`, que la interfaz del dashboard también está
+traducida. Hay que rehacerla cuando cambie la demo: es una foto, no se entera
+sola.
 
 ## El nombre
 
