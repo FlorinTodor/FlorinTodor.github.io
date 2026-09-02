@@ -272,6 +272,9 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 }
 .tarjeta-proyecto .miniatura video,
 .tarjeta-proyecto .miniatura img { width: 100%; height: 100%; object-fit: cover; }
+/* La foto de una demo interactiva se recorta por abajo, nunca por el centro:
+   arriba está la cabecera, que es lo que la hace reconocible. */
+.tarjeta-proyecto .miniatura img.cartel { object-position: top center; }
 .tarjeta-proyecto .miniatura .sin-video {
   position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
   color: var(--texto-tenue); font-size: .82rem; gap: .3rem;

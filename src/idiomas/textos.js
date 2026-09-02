@@ -162,6 +162,8 @@ export const TEXTOS = {
 
     tarjeta: {
       insignia: '▶ demo',
+      insigniaInteractiva: 'demo interactiva',
+      cartelAlt: (titulo) => `Captura de la demo de ${titulo}`,
       privado: 'Código privado',
       codigo: 'Código ↗',
       memoria: 'Memoria ↗',
@@ -431,6 +433,8 @@ export const TEXTOS = {
 
     tarjeta: {
       insignia: '▶ demo',
+      insigniaInteractiva: 'interactive demo',
+      cartelAlt: (titulo) => `Screenshot of the ${titulo} demo`,
       privado: 'Private code',
       codigo: 'Code ↗',
       memoria: 'Report ↗',
