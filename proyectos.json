@@ -185,6 +185,50 @@
       ]
     },
     {
+      "id": "bold-burger",
+      "destacado": true,
+      "privado": false,
+      "titulo": "Bold Burger - Caso de estudio UX de una web de comida rápida",
+      "tituloSeo": "Bold Burger: caso de estudio UX/UI con Figma y Figma Make",
+      "resumen": "Caso de estudio completo, de la investigación con usuarios al prototipo funcional. Partimos de auditar la web de Goiko y el rediseño le da la vuelta al trabajo que se le pide a quien tiene alergias: en vez de buscar en un PDF aparte lo que no puede comer, filtra al entrar y la carta le enseña sólo lo que sí puede.",
+      "descripcionSeo": "Caso de estudio UX/UI: investigación, personas, wireframes, design system atómico en Figma y prototipo React generado con Figma Make, evaluado con SUS, A/B testing y eye tracking.",
+      "destacados": [
+        "El patrón filter-first como decisión de diseño: el filtro de alérgenos va antes de la carta, no escondido en otra sección, y el menú se recalcula por intersección sobre los 14 alérgenos oficiales de la UE",
+        "Investigación previa sobre la web de Goiko y dos competidores locales: revisión heurística con checklist (81 sobre 100), dos personas con sus journey maps y el análisis del embudo de conversión",
+        "Design system propio siguiendo Atomic Design: cinco rampas de color con contraste validado en WCAG AA, tokens semánticos, escala tipográfica y rejilla de 8 px, viviendo 1:1 entre Figma y el código",
+        "El prototipo documenta su propio design system en una pantalla de siete pestañas, de los átomos a las pantallas montadas, que sirve de prueba de que cualquier vista nueva se construye con piezas existentes",
+        "Wireframes de baja fidelidad sobre rejilla de 12 columnas y mockup de alta fidelidad con Auto Layout responsive (móvil, tablet y escritorio)",
+        "Del diseño al código con Figma Make, la IA de Figma: genera React + Vite + Tailwind con componentes Radix, que exportamos y comprobamos en local antes de publicarlo",
+        "Evaluación cruzada con el proyecto de otro equipo: cuestionario SUS (82,5 frente a 65), A/B testing con Tally (85 frente a 55,8) y un experimento de eye tracking sobre el diseño ajeno",
+        "El informe de usabilidad ajeno se cierra con hallazgos concretos: botones de votar etiquetados «PEDIR AHORA» y texto rojo sobre negro que la gente no llegaba a leer"
+      ],
+      "stack": [
+        "Figma",
+        "Figma Make",
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "Radix UI",
+        "Atomic Design"
+      ],
+      "categorias": [
+        "Diseño UX/UI",
+        "Accesibilidad",
+        "IA"
+      ],
+      "repo": "https://github.com/DIU3-ADE/UX_CaseStudy",
+      "prototipo": "https://www.figma.com/make/BfRL0v8kemXdSN3ozQ5sRF/Prototipo-de-interfaz-hi-fi?fullscreen=1",
+      "anio": 2026,
+      "contexto": "Diseño de Interfaces de Usuario - Doble Grado en Ingeniería Informática y ADE, UGR",
+      "autoria": "Práctica en pareja con Laura Zafra Alarcos (equipo DIU3.ADE). El repositorio cuelga de una organización de GitHub porque la asignatura pedía uno por equipo, no personal; el caso de estudio va firmado por los dos.",
+      "pendiente": [
+        "Concretar en `autoria` qué fases llevé yo: ahora sólo dice que es un trabajo en pareja",
+        "El README del caso de estudio deja sin rellenar el apartado 3.b (landing page) y el 5.f (usability report de B), y quedan plantillas del profesor con marcas >>>",
+        "El prototipo vive en Figma Make: si algún día se cae el enlace, el proyecto se queda sin demo navegable"
+      ]
+    },
+    {
       "id": "tienda-online",
       "destacado": true,
       "titulo": "Tienda online full-stack",

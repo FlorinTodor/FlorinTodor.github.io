@@ -97,6 +97,10 @@ Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
 al compilar, y la fecha de publicación sale del commit que lo tocó - por eso el
 workflow hace `checkout` con `fetch-depth: 0`, para tener historial.
 
+Los proyectos con `prototipo` tampoco tienen vídeo, y su miniatura sale del
+mismo `poster/<id>.jpg`, con la insignia «prototipo» en vez de «demo
+interactiva».
+
 Las demos que no son un vídeo sino una página (el dashboard de rutina-export)
 dejaban la tarjeta de la portada en blanco, porque no hay fotograma que enseñar.
 Su miniatura es una foto de la propia demo, hecha con Chrome sin ventana por
@@ -174,6 +178,7 @@ Todo sale de `proyectos.json`:
 | `destacados[]` | Lista de «Qué hace». |
 | `stack[]`, `categorias[]` | Etiquetas. |
 | `autoria` | Opcional. En trabajos compartidos, deja clara tu parte. |
+| `prototipo` | Opcional. URL de algo navegable que vive fuera (un prototipo de Figma). Pasa a ser el botón verde de la ficha, y la sección de medios se titula «El prototipo» en vez de «Demostración»: la nota de la portada promete grabaciones reales, y un montaje de capturas no lo es. |
 | `pendiente[]` | Notas privadas. **No se publican.** Si una empieza por `NO PUBLICAR`, el proyecto se excluye del sitio automáticamente. |
 | `memoria` | Opcional. Ruta dentro de `public/` a un documento largo; añade el panel «Memoria» y lo declara como `Thesis`. |
 
