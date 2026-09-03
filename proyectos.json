@@ -221,9 +221,7 @@
       "prototipo": "https://www.figma.com/make/BfRL0v8kemXdSN3ozQ5sRF/Prototipo-de-interfaz-hi-fi?fullscreen=1",
       "anio": 2026,
       "contexto": "Diseño de Interfaces de Usuario - Doble Grado en Ingeniería Informática y ADE, UGR",
-      "autoria": "Práctica en pareja con Laura Zafra Alarcos (equipo DIU3.ADE). El repositorio cuelga de una organización de GitHub porque la asignatura pedía uno por equipo, no personal; el caso de estudio va firmado por los dos.",
       "pendiente": [
-        "Concretar en `autoria` qué fases llevé yo: ahora sólo dice que es un trabajo en pareja",
         "El README del caso de estudio deja sin rellenar el apartado 3.b (landing page) y el 5.f (usability report de B), y quedan plantillas del profesor con marcas >>>",
         "El prototipo vive en Figma Make: si algún día se cae el enlace, el proyecto se queda sin demo navegable"
       ]
