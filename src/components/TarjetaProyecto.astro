@@ -15,9 +15,10 @@ import { enlace, recurso } from '../idiomas/rutas.js';
 const { p, idioma = 'es', destacado = false, etiquetas = 3 } = Astro.props;
 const T = t(idioma).tarjeta;
 const video = hayVideo(p.id);
-// Las demos que se juegan en la página no tienen vídeo del que sacar un
-// fotograma: enseñan una foto de la propia demo, si es que la hay.
-const cartel = !video && DEMOS_INTERACTIVAS.includes(p.id) ? buscarCartel(p.id, idioma) : null;
+// Las demos que se juegan en la página y los prototipos que viven fuera no
+// tienen vídeo del que sacar un fotograma: enseñan una foto, si es que la hay.
+const interactiva = DEMOS_INTERACTIVAS.includes(p.id);
+const cartel = !video && (interactiva || p.prototipo) ? buscarCartel(p.id, idioma) : null;
 ---
 
 <article class={`tarjeta-proyecto ${destacado ? 'destacado' : ''}`}>
@@ -32,8 +33,14 @@ const cartel = !video && DEMOS_INTERACTIVAS.includes(p.id) ? buscarCartel(p.id, 
   )}
   {cartel && (
     <div class="miniatura">
-      <img class="cartel" src={recurso(cartel)} alt={T.cartelAlt(p.titulo)} loading="lazy" />
-      <span class="insignia-video">{T.insigniaInteractiva}</span>
+      <img
+        class="cartel"
+        src={recurso(cartel)}
+        alt={(interactiva ? T.cartelAlt : T.cartelPrototipoAlt)(p.titulo)}
+        loading="lazy" />
+      <span class="insignia-video">
+        {interactiva ? T.insigniaInteractiva : T.insigniaPrototipo}
+      </span>
     </div>
   )}
   <div class="cuerpo">
@@ -52,7 +59,12 @@ const cartel = !video && DEMOS_INTERACTIVAS.includes(p.id) ? buscarCartel(p.id, 
       {p.memoria && (
         <a href={recurso(p.memoria)} target="_blank" rel="noopener">{T.memoria}</a>
       )}
-      {hayDemo(p.id) && <a href={enlace(idioma, `proyectos/${p.id}/#demo`)}>{T.demo}</a>}
+      {p.prototipo && (
+        <a href={p.prototipo} target="_blank" rel="noopener">{T.prototipo}</a>
+      )}
+      {hayDemo(p.id) && !p.prototipo && (
+        <a href={enlace(idioma, `proyectos/${p.id}/#demo`)}>{T.demo}</a>
+      )}
     </div>
   </div>
 </article>

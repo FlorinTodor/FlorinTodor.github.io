@@ -25,12 +25,14 @@ const hayDemo = hayVideo || !!gif || conDemo;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
 // Enlaces de la cabecera, de más a menos fuerte: el primero se pinta en verde.
-// En los proyectos con el repositorio privado manda la memoria, y si tampoco la
+// Manda el prototipo cuando lo hay, porque es lo único que se puede tocar; en
+// los proyectos con el repositorio privado manda la memoria, y si tampoco la
 // hay, la demo; el correo queda siempre el último.
 const acciones = [
+  ...(p.prototipo ? [{ href: p.prototipo, texto: F.verPrototipo, externo: true }] : []),
   ...(!p.privado ? [{ href: p.repo, texto: F.verCodigo, externo: true }] : []),
   ...(p.memoria ? [{ href: recurso(p.memoria), texto: F.verMemoria, externo: true }] : []),
-  ...(hayDemo ? [{ href: '#demo', texto: F.verDemo }] : []),
+  ...(hayDemo && !p.prototipo ? [{ href: '#demo', texto: F.verDemo }] : []),
   ...(p.privado ? [{ href: `mailto:${perfil(idioma).email}`, texto: F.privadoEscribeme }] : []),
 ];
 
@@ -134,7 +136,10 @@ if (video) {
         {/* ---------- vídeo ---------- */}
         {(hayVideo || gif) && (
           <section id="demo">
-            <div class="titulo-seccion"><h2>{F.demostracion}</h2><div class="linea"></div></div>
+            <div class="titulo-seccion">
+              <h2>{p.prototipo ? F.tituloPrototipo : F.demostracion}</h2><div class="linea"></div>
+            </div>
+            {p.prototipo && <p style="color:var(--texto-suave)">{F.introPrototipo}</p>}
             <div class="marco-media">
               {hayVideo ? (
                 <video
@@ -142,7 +147,10 @@ if (video) {
                   poster={recurso(`media/poster/${p.id}.jpg`)}
                   controls muted loop playsinline preload="none"></video>
               ) : (
-                <img src={recurso(gif.replace('/public/', ''))} alt={F.demostracionAlt(p.titulo)} loading="lazy" />
+                <img
+                  src={recurso(gif.replace('/public/', ''))}
+                  alt={(p.prototipo ? F.capturasAlt : F.demostracionAlt)(p.titulo)}
+                  loading="lazy" />
               )}
             </div>
           </section>
