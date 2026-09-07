@@ -105,6 +105,7 @@ export const TEXTOS = {
         { area: 'Desarrollo móvil', items: ['Android', 'Kotlin', 'Health Connect', 'WorkManager', 'Flutter', 'Notion API'] },
         { area: 'Diseño de interfaces', items: ['Figma', 'Figma Make', 'Atomic Design', 'Sistemas de diseño', 'Wireframes y prototipado', 'Accesibilidad WCAG AA', 'Radix UI', 'Cuestionario SUS', 'Test A/B', 'Eye tracking'] },
         { area: 'Rendimiento y pruebas', items: ['Apache Benchmark', 'Locust', 'pytest', 'Jest', 'RAGAS'] },
+        { area: 'Competencias personales', items: ['Trabajo en equipo', 'Comunicación', 'Habilidades sociales', 'Liderazgo'] },
       ],
     },
 
@@ -385,6 +386,7 @@ export const TEXTOS = {
         { area: 'Mobile development', items: ['Android', 'Kotlin', 'Health Connect', 'WorkManager', 'Flutter', 'Notion API'] },
         { area: 'Interface design', items: ['Figma', 'Figma Make', 'Atomic Design', 'Design systems', 'Wireframing and prototyping', 'WCAG AA accessibility', 'Radix UI', 'SUS questionnaire', 'A/B testing', 'Eye tracking'] },
         { area: 'Performance and testing', items: ['Apache Benchmark', 'Locust', 'pytest', 'Jest', 'RAGAS'] },
+        { area: 'Soft skills', items: ['Teamwork', 'Communication', 'Interpersonal skills', 'Leadership'] },
       ],
     },
 
