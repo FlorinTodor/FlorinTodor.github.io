@@ -22,9 +22,9 @@ export const TEXTOS = {
   es: {
     selector: { titulo: 'Idioma', es: 'Español', en: 'English' },
     saltar: 'Saltar al contenido',
-    profesion: 'Ingeniero Informático',
+    profesion: 'Desarrollador back-end',
     descripcionPersona:
-      'Ingeniero informático especializado en administración de sistemas Linux, ciberseguridad e inteligencia artificial aplicada.',
+      'Desarrollador back-end en Python, con base en administración de sistemas Linux, ciberseguridad e inteligencia artificial aplicada.',
     universidad: 'Universidad de Granada',
     conocimientos: [
       'Linux', 'Docker', 'Ciberseguridad', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
@@ -36,6 +36,7 @@ export const TEXTOS = {
 
     nav: {
       sobreMi: 'Sobre mí',
+      experiencia: 'Experiencia',
       proyectos: 'Proyectos',
       blog: 'Blog',
       competencias: 'Competencias',
@@ -73,7 +74,7 @@ export const TEXTOS = {
         'Portafolio de Florin Emanuel Todor Gliga (Florín Todor): sistemas Linux y Docker, ciberseguridad e IA aplicada. Doble Grado en Informática y ADE, UGR.',
       titular: ['Construyo sistemas.', 'Y me aseguro de que ', 'aguanten', '.'],
       entradilla:
-        'Soy Florin, de Motril. Acabo de terminar el <strong>Doble Grado en Ingeniería Informática y ADE</strong> en la Universidad de Granada. Trabajo sobre todo con <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>.',
+        'Soy Florin, de Motril. Trabajo como <strong>desarrollador back-end</strong> en Gestiona Sistemas, en Python y en remoto. Vengo del <strong>Doble Grado en Ingeniería Informática y ADE</strong> de la Universidad de Granada, y me manejo sobre todo en <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>.',
       verProyectos: 'Ver proyectos',
       escribeme: 'Escríbeme',
     },
@@ -83,7 +84,50 @@ export const TEXTOS = {
       parrafos: [
         'Estudié el <strong>Doble Grado en Ingeniería Informática y ADE</strong>, cinco años entre asignaturas de programación y de empresa. Al principio no lo tenía claro, pero con el tiempo le he visto la utilidad: además de la parte técnica entiendo cómo funciona una empresa por dentro, y eso ayuda a la hora de justificar decisiones.',
         'Donde mejor me manejo es en <strong>Linux y Docker</strong>. He montado una granja web con ocho servidores comparando cuatro balanceadores distintos, he puesto un WAF con ModSecurity delante de una aplicación vulnerable para ver qué bloqueaba de verdad, y he configurado HTTPS y cortafuegos con iptables sobre contenedores. Aparte de eso he tocado cosas bastante distintas: un e-commerce con Node y MongoDB, una app en Flutter con backend en Rails, realidad aumentada con OpenCV y varios proyectos en C++.',
-        'Ahora busco un primer trabajo en algo relacionado con <strong>sistemas, seguridad o inteligencia artificial</strong>. También estoy subiendo el nivel de inglés, que es lo que peor llevo. Si te encaja algo de lo que hay aquí, escríbeme.',
+        'Desde septiembre de 2026 trabajo en <strong>Gestiona Sistemas</strong>, de back-end en Python. Sigo subiendo el nivel de inglés, que es lo que peor llevo. Si te encaja algo de lo que hay aquí, escríbeme.',
+      ],
+    },
+
+    /**
+     * Un objeto por puesto, del más reciente al más antiguo. Campos:
+     *
+     *   fecha         rango, con guion medio: '2026 – actualidad'
+     *   empresa       nombre de la empresa
+     *   puesto        el cargo
+     *   lugar         'Granada, en remoto', opcional
+     *   enlace        web de la empresa, opcional
+     *   logo          ruta dentro de public/, opcional
+     *   actual        true pinta la pastilla de "Actualmente"
+     *   detalle       dos o tres líneas de qué haces ahí, opcional
+     *   herramientas  ['Docker', 'Ansible'], lo que usas de verdad, opcional
+     *
+     * Mientras esté vacío, ni la sección ni el enlace del menú se pintan, y el
+     * resto de secciones se renumeran solas.
+     *
+     * Lo que salga aquí tiene que salir también en `en.experiencia.entradas`:
+     * comprobar-traducciones.mjs cuenta las entradas de los dos y falla si no
+     * coinciden, porque una entrada sin traducir se sirve en español sin avisar.
+     */
+    experiencia: {
+      titulo: 'Experiencia',
+      actual: 'Actualmente',
+      herramientas: 'Herramientas',
+      logoAlt: (empresa) => `Logo de ${empresa}`,
+      entradas: [
+        {
+          fecha: 'sept. 2026 – actualidad',
+          empresa: 'Gestiona Sistemas',
+          puesto: 'Back-end Developer (prácticas)',
+          lugar: 'Granada, en remoto',
+          actual: true,
+          logo: 'img/empresas/gestiona-sistemas.png',
+          detalle: 'Back-end en Python sobre PostgreSQL, con modelos de lenguaje integrados en producción.',
+          herramientas: [
+            'Python', 'Flask', 'Pydantic', 'SQLAlchemy', 'Alembic', 'PostgreSQL', 'Supabase',
+            'Claude API', 'Docker', 'APScheduler', 'pytest', 'Ruff', 'Arquitectura hexagonal',
+            'Bitbucket Pipelines', 'Jira', 'Confluence',
+          ],
+        },
       ],
     },
 
@@ -97,14 +141,15 @@ export const TEXTOS = {
     competencias: {
       titulo: 'Competencias',
       areas: [
-        { area: 'Sistemas e infraestructura', items: ['Linux', 'Bash', 'Docker', 'Docker Compose', 'Nginx', 'HAProxy', 'Traefik', 'Envoy', 'Balanceo de carga', 'Alta disponibilidad', 'GitHub Actions'] },
+        { area: 'Sistemas e infraestructura', items: ['Linux', 'Bash', 'Docker', 'Docker Compose', 'Nginx', 'HAProxy', 'Traefik', 'Envoy', 'Balanceo de carga', 'Alta disponibilidad', 'GitHub Actions', 'Bitbucket Pipelines', 'APScheduler'] },
         { area: 'Ciberseguridad', items: ['ModSecurity', 'OWASP CRS', 'IPTABLES', 'HTTPS/SSL (OpenSSL)', 'ENS', 'NIS2', 'DORA', 'PCAP (Cisco)'] },
-        { area: 'IA y datos', items: ['IA generativa', 'RAG', 'Grafos de conocimiento', 'Neo4j', 'Ollama', 'LangChain', 'Sentence-BERT', 'Whisper', 'Piper TTS', 'Pandas', 'Statsmodels'] },
+        { area: 'IA y datos', items: ['IA generativa', 'RAG', 'Grafos de conocimiento', 'Neo4j', 'Ollama', 'LangChain', 'Sentence-BERT', 'Whisper', 'Piper TTS', 'Pandas', 'Statsmodels', 'Claude API'] },
         { area: 'Lenguajes', items: ['Python', 'C++', 'Java', 'JavaScript', 'TypeScript', 'Kotlin', 'Dart', 'Ruby', 'SQL', 'Cypher'] },
-        { area: 'Desarrollo web', items: ['Node.js', 'Express', 'FastAPI', 'React', 'Next.js', 'Vite', 'MongoDB', 'Tailwind'] },
+        { area: 'Desarrollo web', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Pydantic', 'SQLAlchemy', 'Alembic', 'React', 'Next.js', 'Vite', 'PostgreSQL', 'MongoDB', 'Supabase', 'Tailwind'] },
         { area: 'Desarrollo móvil', items: ['Android', 'Kotlin', 'Health Connect', 'WorkManager', 'Flutter', 'Notion API'] },
         { area: 'Diseño de interfaces', items: ['Figma', 'Figma Make', 'Atomic Design', 'Sistemas de diseño', 'Wireframes y prototipado', 'Accesibilidad WCAG AA', 'Radix UI', 'Cuestionario SUS', 'Test A/B', 'Eye tracking'] },
-        { area: 'Rendimiento y pruebas', items: ['Apache Benchmark', 'Locust', 'pytest', 'Jest', 'RAGAS'] },
+        { area: 'Rendimiento y pruebas', items: ['Apache Benchmark', 'Locust', 'pytest', 'pytest-cov', 'Ruff', 'Jest', 'RAGAS'] },
+        { area: 'Arquitectura y método', items: ['Arquitectura hexagonal', 'Diseño orientado al dominio', 'Patrón repositorio', 'Inyección de dependencias', 'Git flow', 'Conventional commits', 'Desarrollo ágil', 'Jira', 'Confluence'] },
         { area: 'Competencias personales', items: ['Trabajo en equipo', 'Comunicación', 'Habilidades sociales', 'Liderazgo'] },
       ],
     },
@@ -303,9 +348,9 @@ export const TEXTOS = {
   en: {
     selector: { titulo: 'Language', es: 'Español', en: 'English' },
     saltar: 'Skip to content',
-    profesion: 'Computer Engineer',
+    profesion: 'Back-end Developer',
     descripcionPersona:
-      'Computer engineer specialised in Linux systems administration, cybersecurity and applied artificial intelligence.',
+      'Python back-end developer, with a background in Linux systems administration, cybersecurity and applied artificial intelligence.',
     universidad: 'University of Granada',
     conocimientos: [
       'Linux', 'Docker', 'Cybersecurity', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
@@ -317,6 +362,7 @@ export const TEXTOS = {
 
     nav: {
       sobreMi: 'About',
+      experiencia: 'Experience',
       proyectos: 'Projects',
       blog: 'Blog',
       competencias: 'Skills',
@@ -354,7 +400,7 @@ export const TEXTOS = {
         'Portfolio of Florin Emanuel Todor Gliga: Linux and Docker systems, cybersecurity and applied AI. Double Degree in Computer Engineering and Business, University of Granada.',
       titular: ['I build systems.', 'And I make sure they ', 'hold up', '.'],
       entradilla:
-        "I'm Florin, from Motril, in the south of Spain. I've just finished a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada. I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>.",
+        "I'm Florin, from Motril, in the south of Spain. I work as a <strong>back-end developer</strong> at Gestiona Sistemas, in Python and remotely. I come from a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada, and I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>.",
       verProyectos: 'See the projects',
       escribeme: 'Email me',
     },
@@ -364,7 +410,31 @@ export const TEXTOS = {
       parrafos: [
         "I studied a <strong>Double Degree in Computer Engineering and Business Administration</strong>: five years split between programming subjects and business ones. I wasn't sure about it at first, but over time I've come to see the point. On top of the technical side I understand how a company works from the inside, and that helps when the time comes to justify a decision.",
         'Where I work best is <strong>Linux and Docker</strong>. I have built an eight-server web farm comparing four different load balancers, put a ModSecurity WAF in front of a deliberately vulnerable application to see what it really blocked, and set up HTTPS and iptables firewalls on containers. Beyond that I have worked on fairly different things: an e-commerce site with Node and MongoDB, a Flutter app with a Rails backend, augmented reality with OpenCV and several C++ projects.',
-        "I'm now looking for a first job in something to do with <strong>systems, security or artificial intelligence</strong>. I'm also working on my English, which is the part I find hardest. If something here fits what you need, drop me a line.",
+        "Since September 2026 I have been working at <strong>Gestiona Sistemas</strong> as a Python back-end developer. I'm still working on my English, which is the part I find hardest. If something here fits what you need, drop me a line.",
+      ],
+    },
+
+    // Misma lista que en `es.experiencia.entradas`, entrada por entrada.
+    experiencia: {
+      titulo: 'Experience',
+      actual: 'Current',
+      herramientas: 'Tools',
+      logoAlt: (empresa) => `${empresa} logo`,
+      entradas: [
+        {
+          fecha: 'Sept 2026 – present',
+          empresa: 'Gestiona Sistemas',
+          puesto: 'Back-end Developer (internship)',
+          lugar: 'Granada, remote',
+          actual: true,
+          logo: 'img/empresas/gestiona-sistemas.png',
+          detalle: 'Python back-end on PostgreSQL, with language models running in production.',
+          herramientas: [
+            'Python', 'Flask', 'Pydantic', 'SQLAlchemy', 'Alembic', 'PostgreSQL', 'Supabase',
+            'Claude API', 'Docker', 'APScheduler', 'pytest', 'Ruff', 'Hexagonal architecture',
+            'Bitbucket Pipelines', 'Jira', 'Confluence',
+          ],
+        },
       ],
     },
 
@@ -378,14 +448,15 @@ export const TEXTOS = {
     competencias: {
       titulo: 'Skills',
       areas: [
-        { area: 'Systems and infrastructure', items: ['Linux', 'Bash', 'Docker', 'Docker Compose', 'Nginx', 'HAProxy', 'Traefik', 'Envoy', 'Load balancing', 'High availability', 'GitHub Actions'] },
+        { area: 'Systems and infrastructure', items: ['Linux', 'Bash', 'Docker', 'Docker Compose', 'Nginx', 'HAProxy', 'Traefik', 'Envoy', 'Load balancing', 'High availability', 'GitHub Actions', 'Bitbucket Pipelines', 'APScheduler'] },
         { area: 'Cybersecurity', items: ['ModSecurity', 'OWASP CRS', 'IPTABLES', 'HTTPS/SSL (OpenSSL)', 'ENS', 'NIS2', 'DORA', 'PCAP (Cisco)'] },
-        { area: 'AI and data', items: ['Generative AI', 'RAG', 'Knowledge graphs', 'Neo4j', 'Ollama', 'LangChain', 'Sentence-BERT', 'Whisper', 'Piper TTS', 'Pandas', 'Statsmodels'] },
+        { area: 'AI and data', items: ['Generative AI', 'RAG', 'Knowledge graphs', 'Neo4j', 'Ollama', 'LangChain', 'Sentence-BERT', 'Whisper', 'Piper TTS', 'Pandas', 'Statsmodels', 'Claude API'] },
         { area: 'Programming languages', items: ['Python', 'C++', 'Java', 'JavaScript', 'TypeScript', 'Kotlin', 'Dart', 'Ruby', 'SQL', 'Cypher'] },
-        { area: 'Web development', items: ['Node.js', 'Express', 'FastAPI', 'React', 'Next.js', 'Vite', 'MongoDB', 'Tailwind'] },
+        { area: 'Web development', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Pydantic', 'SQLAlchemy', 'Alembic', 'React', 'Next.js', 'Vite', 'PostgreSQL', 'MongoDB', 'Supabase', 'Tailwind'] },
         { area: 'Mobile development', items: ['Android', 'Kotlin', 'Health Connect', 'WorkManager', 'Flutter', 'Notion API'] },
         { area: 'Interface design', items: ['Figma', 'Figma Make', 'Atomic Design', 'Design systems', 'Wireframing and prototyping', 'WCAG AA accessibility', 'Radix UI', 'SUS questionnaire', 'A/B testing', 'Eye tracking'] },
-        { area: 'Performance and testing', items: ['Apache Benchmark', 'Locust', 'pytest', 'Jest', 'RAGAS'] },
+        { area: 'Performance and testing', items: ['Apache Benchmark', 'Locust', 'pytest', 'pytest-cov', 'Ruff', 'Jest', 'RAGAS'] },
+        { area: 'Architecture and method', items: ['Hexagonal architecture', 'Domain-driven design', 'Repository pattern', 'Dependency injection', 'Git flow', 'Conventional commits', 'Agile development', 'Jira', 'Confluence'] },
         { area: 'Soft skills', items: ['Teamwork', 'Communication', 'Interpersonal skills', 'Leadership'] },
       ],
     },

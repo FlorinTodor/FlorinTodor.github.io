@@ -72,6 +72,11 @@ const persona = {
     addressRegion: 'Granada',
     addressCountry: 'ES',
   },
+  // El puesto actual sale de la primera entrada de experiencia, para que no
+  // haya dos sitios donde cambiar de empresa.
+  ...(T.experiencia.entradas[0]
+    ? { worksFor: { '@type': 'Organization', name: T.experiencia.entradas[0].empresa } }
+    : {}),
   alumniOf: {
     '@type': 'CollegeOrUniversity',
     name: T.universidad,
@@ -184,6 +189,11 @@ const banderas = {
         <a class="marca" href={enlace(idioma)}>Florin <span>Todor</span></a>
         <nav id="menu">
           <a href={`${enlace(idioma)}#sobre-mi`}>{T.nav.sobreMi}</a>
+          {/* Mientras no haya ningún puesto la sección no se pinta, así que el
+              enlace llevaría a un ancla que no existe. */}
+          {T.experiencia.entradas.length > 0 && (
+            <a href={`${enlace(idioma)}#experiencia`}>{T.nav.experiencia}</a>
+          )}
           <a href={`${enlace(idioma)}#proyectos`}>{T.nav.proyectos}</a>
           <a href={enlace(idioma, 'blog/')}>{T.nav.blog}</a>
           <a href={`${enlace(idioma)}#competencias`}>{T.nav.competencias}</a>
