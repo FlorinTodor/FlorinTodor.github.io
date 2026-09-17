@@ -16,6 +16,14 @@ const { idioma = 'es' } = Astro.props;
 const T = t(idioma);
 const p = perfil(idioma);
 
+// Experiencia no se pinta mientras no haya ningún puesto, así que los números
+// de las secciones se calculan en vez de ir escritos a mano: si no, al aparecer
+// la sección habría que renumerar las cinco siguientes (y al quitarla, quedaría
+// un hueco).
+const hayExperiencia = T.experiencia.entradas.length > 0;
+const SECCIONES = ['sobre-mi', ...(hayExperiencia ? ['experiencia'] : []), 'proyectos', 'competencias', 'formacion', 'cv', 'contacto'];
+const num = (id) => String(SECCIONES.indexOf(id) + 1).padStart(2, '0');
+
 const proyectos = publicables(idioma);
 const destacados = proyectos.filter((x) => x.destacado);
 const resto = proyectos.filter((x) => !x.destacado);
@@ -59,9 +67,9 @@ const certPorId = Object.fromEntries(
     </div>
   </section>
 
-  {/* ---------------- 01 Sobre mí ---------------- */}
+  {/* ---------------- Sobre mí ---------------- */}
   <section id="sobre-mi">
-    <div class="titulo-seccion"><h2>{T.sobreMi.titulo}</h2><div class="linea"></div><div class="num">01</div></div>
+    <div class="titulo-seccion"><h2>{T.sobreMi.titulo}</h2><div class="linea"></div><div class="num">{num('sobre-mi')}</div></div>
     <div class="tarjeta">
       {T.sobreMi.parrafos.map((texto, i) => (
         <p style={i === T.sobreMi.parrafos.length - 1 ? 'margin-bottom:0' : undefined} set:html={texto}></p>
@@ -69,9 +77,44 @@ const certPorId = Object.fromEntries(
     </div>
   </section>
 
-  {/* ---------------- 02 Proyectos ---------------- */}
+  {/* ---------------- Experiencia ---------------- */}
+  {hayExperiencia && (
+    <section id="experiencia">
+      <div class="titulo-seccion"><h2>{T.experiencia.titulo}</h2><div class="linea"></div><div class="num">{num('experiencia')}</div></div>
+      {T.experiencia.entradas.map((e) => (
+        <div class="tarjeta">
+          <span class="pastilla-fecha">{e.fecha}</span>
+          {e.actual && <span class="pastilla-actual">{T.experiencia.actual}</span>}
+          <div class="cabecera-puesto">
+            {e.logo && <img class="logo-empresa" src={recurso(e.logo)} alt={T.experiencia.logoAlt(e.empresa)} width="44" height="44" loading="lazy" />}
+            <div>
+              <div style="color:var(--texto-tenue);font-size:.84rem">
+                {e.empresa}{e.lugar && ` · ${e.lugar}`}
+              </div>
+              <h3 style="font-size:1.02rem;margin:.25rem 0 0">{e.puesto}</h3>
+            </div>
+          </div>
+          {e.detalle && <div style="height:.6rem"></div>}
+          {e.detalle && <p style="color:var(--texto-suave);font-size:.9rem;margin:0">{e.detalle}</p>}
+          {e.enlace && (
+            <a href={e.enlace} target="_blank" rel="noopener" style="font-size:.9rem">
+              {e.empresa} ↗
+            </a>
+          )}
+          {e.herramientas && e.herramientas.length > 0 && (
+            <div style="margin-top:.9rem">
+              <div style="color:var(--texto-tenue);font-size:.78rem;margin-bottom:.45rem">{T.experiencia.herramientas}</div>
+              <div class="etiquetas">{e.herramientas.map((h) => <span class="etiqueta">{h}</span>)}</div>
+            </div>
+          )}
+        </div>
+      ))}
+    </section>
+  )}
+
+  {/* ---------------- Proyectos ---------------- */}
   <section id="proyectos">
-    <div class="titulo-seccion"><h2>{T.proyectos.titulo}</h2><div class="linea"></div><div class="num">02</div></div>
+    <div class="titulo-seccion"><h2>{T.proyectos.titulo}</h2><div class="linea"></div><div class="num">{num('proyectos')}</div></div>
 
     <p class="nota-proyectos">{T.proyectos.nota}</p>
 
@@ -88,9 +131,9 @@ const certPorId = Object.fromEntries(
     </div>
   </section>
 
-  {/* ---------------- 03 Competencias ---------------- */}
+  {/* ---------------- Competencias ---------------- */}
   <section id="competencias">
-    <div class="titulo-seccion"><h2>{T.competencias.titulo}</h2><div class="linea"></div><div class="num">03</div></div>
+    <div class="titulo-seccion"><h2>{T.competencias.titulo}</h2><div class="linea"></div><div class="num">{num('competencias')}</div></div>
     {T.competencias.areas.map((c) => (
       <div class="tarjeta">
         <div style="color:var(--verde);font-weight:700;font-size:.9rem;margin-bottom:.7rem">{c.area}</div>
@@ -99,9 +142,9 @@ const certPorId = Object.fromEntries(
     ))}
   </section>
 
-  {/* ---------------- 04 Formación ---------------- */}
+  {/* ---------------- Formación ---------------- */}
   <section id="formacion">
-    <div class="titulo-seccion"><h2>{T.formacion.titulo}</h2><div class="linea"></div><div class="num">04</div></div>
+    <div class="titulo-seccion"><h2>{T.formacion.titulo}</h2><div class="linea"></div><div class="num">{num('formacion')}</div></div>
     {T.formacion.entradas.map((f) => (
       <div class="tarjeta">
         <span class="pastilla-fecha">{f.fecha}</span>
@@ -144,9 +187,9 @@ const certPorId = Object.fromEntries(
     </p>
   </section>
 
-  {/* ---------------- 05 CV ---------------- */}
+  {/* ---------------- CV ---------------- */}
   <section id="cv">
-    <div class="titulo-seccion"><h2>{T.cv.titulo}</h2><div class="linea"></div><div class="num">05</div></div>
+    <div class="titulo-seccion"><h2>{T.cv.titulo}</h2><div class="linea"></div><div class="num">{num('cv')}</div></div>
     <div class="tarjeta bloque-cv">
       <a class="vista" href={recurso(p.cv)} target="_blank" rel="noopener" aria-label={T.cv.abrirAria}>
         <img src={recurso('img/cv-preview-1.jpg')} alt={T.cv.portadaAlt} loading="lazy" />
@@ -158,9 +201,9 @@ const certPorId = Object.fromEntries(
     </div>
   </section>
 
-  {/* ---------------- 06 Contacto ---------------- */}
+  {/* ---------------- Contacto ---------------- */}
   <section id="contacto">
-    <div class="titulo-seccion"><h2>{T.contacto.titulo}</h2><div class="linea"></div><div class="num">06</div></div>
+    <div class="titulo-seccion"><h2>{T.contacto.titulo}</h2><div class="linea"></div><div class="num">{num('contacto')}</div></div>
     <div class="rejilla-contacto">
       <div class="contacto-item">
         <div class="clave">{T.contacto.correo}</div>

@@ -218,6 +218,23 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   padding: .15rem .55rem; margin-bottom: .7rem;
 }
 
+/* Va al lado de la pastilla de fecha, en el puesto que sigue vigente. Relleno
+   en vez de contorno para que se distinga de la fecha de un vistazo. */
+.pastilla-actual {
+  display: inline-block; font-family: var(--mono); font-size: .78rem; font-weight: 600;
+  color: var(--verde); background: var(--verde-tenue); border-radius: 6px;
+  padding: .15rem .55rem; margin: 0 0 .7rem .4rem;
+}
+
+/* Experiencia: el logo de la empresa al lado del puesto. El fondo blanco es
+   para los logos que vienen con fondo transparente o muy oscuro, que sobre el
+   panel azul del sitio se perderían. */
+.cabecera-puesto { display: flex; align-items: center; gap: .8rem; }
+.logo-empresa {
+  width: 44px; height: 44px; flex: 0 0 44px; border-radius: 8px;
+  background: #fff; border: 1px solid var(--borde); object-fit: contain; padding: 2px;
+}
+
 /* Portada */
 .portada {
   background: var(--panel); border: 1px solid var(--borde); border-radius: var(--radio);

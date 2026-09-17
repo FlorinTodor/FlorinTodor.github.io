@@ -27,6 +27,33 @@ const enEn = claves(TEXTOS.en);
 for (const k of enEs) if (!enEn.includes(k)) fallos.push(`textos.js: falta en inglés  ${k}`);
 for (const k of enEn) if (!enEs.includes(k)) fallos.push(`textos.js: sobra en inglés  ${k}`);
 
+// --- 1b. Listas de textos.js -------------------------------------------------
+// La comparación de arriba trata un array como una hoja: `experiencia.entradas`
+// existe en los dos idiomas aunque el inglés tenga una entrada menos, y esa
+// entrada se serviría en español sin avisar. Aquí se cuentan y se mira campo a
+// campo. Son las dos listas que crecen con el tiempo; las demás (competencias)
+// se tocan de una pieza.
+const LISTAS = [
+  { ruta: 'experiencia.entradas', campos: ['fecha', 'empresa', 'puesto', 'lugar', 'detalle', 'herramientas', 'logo'] },
+  { ruta: 'formacion.entradas', campos: ['fecha', 'centro', 'titulo', 'detalle'] },
+];
+
+for (const { ruta, campos } of LISTAS) {
+  const buscar = (raiz) => ruta.split('.').reduce((o, k) => o?.[k], raiz);
+  const es = buscar(TEXTOS.es) || [];
+  const en = buscar(TEXTOS.en) || [];
+  if (es.length !== en.length) {
+    fallos.push(`textos.js: ${ruta} tiene ${es.length} en español y ${en.length} en inglés`);
+    continue;
+  }
+  es.forEach((entrada, i) => {
+    for (const campo of campos) {
+      if (entrada[campo] === undefined || en[i][campo] !== undefined) continue;
+      fallos.push(`textos.js: ${ruta}[${i}] sin "${campo}" en inglés`);
+    }
+  });
+}
+
 // --- 2. Proyectos ------------------------------------------------------------
 const { proyectos } = leer('proyectos.json');
 const proyectosEn = leer('proyectos.en.json').proyectos;
