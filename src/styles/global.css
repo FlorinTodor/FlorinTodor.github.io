@@ -83,10 +83,16 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   display: flex; align-items: center; gap: 1.5rem; padding: .8rem 1.4rem;
   backdrop-filter: blur(8px);
 }
-.marca { font-weight: 800; font-size: 1.05rem; color: var(--texto); letter-spacing: -.02em; }
+/* El nombre no se parte: es la marca del sitio, y en dos líneas estira la
+   cabecera entera. Al quedarse en una línea ocupa unos 45 px más, que salen
+   del hueco y del tamaño de los enlaces de al lado. */
+.marca { font-weight: 800; font-size: 1.05rem; color: var(--texto); letter-spacing: -.02em; white-space: nowrap; flex: 0 0 auto; }
 .marca span { color: var(--verde); }
-.cabecera nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; }
-.cabecera nav a { color: var(--texto-suave); font-size: .93rem; font-weight: 500; padding-bottom: 2px; }
+/* El recuadro de la cabecera no pasa de --ancho, así que por mucha pantalla
+   que haya el sitio para los enlaces es siempre el mismo: con nueve, el hueco
+   de 1.4rem y el cuerpo de .93rem ya no cabían. */
+.cabecera nav { margin-left: auto; display: flex; gap: clamp(.6rem, 1.05vw, 1.2rem); align-items: center; }
+.cabecera nav a { color: var(--texto-suave); font-size: .89rem; font-weight: 500; padding-bottom: 2px; white-space: nowrap; }
 .cabecera nav a:hover { color: var(--texto); }
 
 .boton {
@@ -94,6 +100,7 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   background: var(--verde); color: #052616; font-weight: 700; font-size: .85rem;
   letter-spacing: .03em; text-transform: uppercase;
   padding: .6rem 1.1rem; border-radius: 999px; border: 0; cursor: pointer;
+  white-space: nowrap;
   transition: background .15s, transform .15s;
 }
 .boton:hover { background: var(--verde-hover); color: #052616; transform: translateY(-1px); }
@@ -394,13 +401,12 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 980px) {
-  .disposicion { grid-template-columns: minmax(0, 1fr); }
-  /* En móvil interesa leer el titular antes que la ficha personal. */
-  .contenido { order: 1; }
-  .lateral { position: static; order: 2; }
-  .lateral .retrato { width: 130px; height: 130px; }
 
+/* La cabecera se pliega antes que la disposición de la página: la barra
+   lateral aguanta hasta 980, pero nueve enlaces más las banderas y el botón
+   de CV dejan de caber en una línea bastante antes. El español es el que más
+   ocupa (deja de caber sobre los 1140) y de ahí el margen hasta 1200. */
+@media (max-width: 1200px) {
   .cabecera-caja { gap: .8rem; padding: .7rem 1rem; flex-wrap: wrap; }
   .idiomas { margin-left: auto; }
   .menu-movil { display: grid; }
@@ -417,6 +423,14 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 
   /* El botón de CV cabe entero en una línea propia. */
   .cabecera .boton { font-size: .78rem; padding: .5rem .8rem; }
+}
+
+@media (max-width: 980px) {
+  .disposicion { grid-template-columns: minmax(0, 1fr); }
+  /* En móvil interesa leer el titular antes que la ficha personal. */
+  .contenido { order: 1; }
+  .lateral { position: static; order: 2; }
+  .lateral .retrato { width: 130px; height: 130px; }
 }
 
 @media (max-width: 420px) {
