@@ -190,7 +190,7 @@ const certPorId = Object.fromEntries(
     <div class="titulo-seccion"><h2>{T.cv.titulo}</h2><div class="linea"></div><div class="num">{num('cv')}</div></div>
     <div class="tarjeta bloque-cv">
       <a class="vista" href={recurso(p.cv)} target="_blank" rel="noopener" aria-label={T.cv.abrirAria}>
-        <img src={recurso('img/cv-preview-1.jpg')} alt={T.cv.portadaAlt} loading="lazy" />
+        <img src={recurso(p.cvVista)} alt={T.cv.portadaAlt} loading="lazy" />
       </a>
       <div class="acciones">
         <a class="boton" href={recurso(p.cv)} download>{T.cv.descargar}</a>

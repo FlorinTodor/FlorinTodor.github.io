@@ -23,6 +23,7 @@ Dónde va cada cosa:
 | El guion de la demo bancaria | `public/demo/sesion-banca.en.json` |
 | Formación o competencias | Están enteras en `textos.js`: hay que tocar `es` y `en` |
 | Las tarjetas de compartir | `python3 scripts/generar-og.py` (saca las dos tandas) |
+| El CV | `originales/CV_Florin_Todor_en.docx` → `public/CV_Florin_Emanuel_Todor_Gliga_en.pdf` y `public/img/cv-preview-1-en.jpg` |
 
 Antes de dar por terminado un cambio:
 
@@ -39,8 +40,8 @@ publica**. La salida de emergencia es lanzar el workflow a mano desde Actions
 
 - **`public/demo/grafo-normativo.json`.** Son artículos del ENS, NIS2 y DORA en su
   redacción oficial. Traducirlos a mano sería inventarse terminología legal.
-- **El CV y la memoria del TFG.** Están en español y sólo existe el PDF. El botón
-  inglés lo dice: «Download CV (Spanish)».
+- **La memoria del TFG.** Está en español y sólo existe el PDF; la ficha inglesa
+  lo avisa.
 - **Los vídeos de las demos.** Están grabados en español; la nota de la portada lo
   advierte en la versión inglesa.
 

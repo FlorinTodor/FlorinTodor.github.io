@@ -9,7 +9,9 @@
   "perfil": {
     "rol": "Linux systems · Cybersecurity · Applied AI",
     "titulo": "Double Degree in Computer Engineering and Business Administration - University of Granada",
-    "ubicacion": "Motril, Granada (Spain)"
+    "ubicacion": "Motril, Granada (Spain)",
+    "cv": "CV_Florin_Emanuel_Todor_Gliga_en.pdf",
+    "cvVista": "img/cv-preview-1-en.jpg"
   },
   "proyectos": {
     "ciber-asesoria": {
