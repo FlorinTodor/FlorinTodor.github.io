@@ -11,6 +11,7 @@ import TarjetaProyecto from '../components/TarjetaProyecto.astro';
 import { perfil, publicables, certificaciones } from '../idiomas/contenido.js';
 import { t } from '../idiomas/textos.js';
 import { enlace, recurso } from '../idiomas/rutas.js';
+import { ficherosPublicos } from '../utilidades/publicos.js';
 
 const { idioma = 'es' } = Astro.props;
 const T = t(idioma);
@@ -31,10 +32,7 @@ const resto = proyectos.filter((x) => !x.destacado);
 // Los certificados viven en public/certificaciones/ y se llaman como su `id`,
 // igual que en /certificaciones/: así cada entrada de formación puede enseñar
 // la miniatura del documento sin repetir rutas a mano.
-const ficherosCert = Object.keys({
-  ...import.meta.glob('/public/certificaciones/*.pdf'),
-  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
-}).map((f) => f.replace('/public/certificaciones/', ''));
+const ficherosCert = ficherosPublicos('certificaciones', ['pdf', 'jpg', 'jpeg', 'png', 'webp']).map((f) => f.replace('/public/certificaciones/', ''));
 
 const buscarCert = (id, extensiones) =>
   ficherosCert.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));

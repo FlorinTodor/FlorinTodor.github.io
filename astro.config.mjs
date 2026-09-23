@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -44,6 +45,38 @@ const videos = new Map(
   ),
 );
 
+// Fecha del último commit que tocó alguno de estos ficheros. Si el sitemap dice
+// que todo cambió en cada build, Google deja de hacer caso al lastmod; así sólo
+// se mueve cuando cambia lo que alimenta esa página. Sin historial (un fichero
+// sin commitear), no se declara fecha.
+const ultimoCommit = (...ficheros) => {
+  try {
+    const fecha = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...ficheros], { encoding: 'utf8' }).trim();
+    return fecha || undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const MAQUETA = ['src/layouts', 'src/styles', 'src/idiomas/textos.js'];
+
+// Qué ficheros alimentan cada URL (sin el prefijo /en).
+const fuentes = (camino) => {
+  let m;
+  if ((m = camino.match(/^\/blog\/([^/]+)\/$/))) {
+    return [`src/content/blog/${m[1]}.md`, `src/content/blog/en/${m[1]}.md`, 'src/paginas/BlogArticulo.astro'];
+  }
+  if (camino === '/blog/') return ['src/content/blog', 'src/paginas/BlogIndice.astro', ...MAQUETA];
+  if (camino.startsWith('/proyectos/')) {
+    const id = camino.split('/')[2];
+    return ['proyectos.json', 'proyectos.en.json', `public/media/${id}.mp4`, 'src/paginas/FichaProyecto.astro', ...MAQUETA];
+  }
+  if (camino === '/certificaciones/') {
+    return ['certificaciones.json', 'certificaciones.en.json', 'public/certificaciones', 'src/paginas/Certificaciones.astro', ...MAQUETA];
+  }
+  return ['proyectos.json', 'proyectos.en.json', 'certificaciones.json', 'certificaciones.en.json', 'src/paginas/Portada.astro', 'src/components', ...MAQUETA];
+};
+
 // Publicado en https://florintodor.dev (repo: FlorinTodor/FlorinTodor.github.io)
 // El dominio propio hace innecesario el ajuste de `base`.
 export default defineConfig({
@@ -55,12 +88,12 @@ export default defineConfig({
       // El original es el español: la portada inglesa va un escalón por debajo.
       serialize(item) {
         item.changefreq = 'monthly';
-        item.lastmod = new Date();
         item.priority = item.url === `${SITIO}/` ? 1.0 : item.url === `${SITIO}/en/` ? 0.9 : 0.7;
 
         // Las dos versiones de cada página se declaran hermanas también aquí,
         // además del hreflang del <head>. El 404 no entra en el sitemap.
-        const camino = item.url.slice(SITIO.length).replace(/^\/en/, '');
+        const camino = item.url.slice(SITIO.length).replace(/^\/en/, '') || '/';
+        item.lastmod = ultimoCommit(...fuentes(camino));
         item.links = [
           { lang: 'es', url: `${SITIO}${camino}` },
           { lang: 'en', url: `${SITIO}/en${camino}` },

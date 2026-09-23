@@ -6,8 +6,9 @@
  * componentes, así que sí van por id; están aquí para que la página del
  * proyecto y la tarjeta de la portada no lleven cada una su lista.
  */
-const medios = import.meta.glob('/public/media/*', { eager: true });
-const rutas = Object.keys(medios);
+import { ficherosPublicos } from './publicos.js';
+
+const rutas = ficherosPublicos('media');
 
 export const hayVideo = (id) => rutas.some((f) => f.endsWith(`/media/${id}.mp4`));
 
@@ -25,8 +26,7 @@ export const DEMOS_INTERACTIVAS = ['ciber-asesoria', 'habla-con-tu-dinero', 'rut
  * hay texto en pantalla, tiene gemela inglesa igual que las tarjetas de
  * compartir: <id>.jpg y <id>-en.jpg.
  */
-const carteles = import.meta.glob('/public/media/poster/*', { eager: true });
-const rutasCartel = Object.keys(carteles);
+const rutasCartel = ficherosPublicos('media/poster');
 
 export const buscarCartel = (id, idioma = 'es') => {
   const nombre = idioma === 'en' && rutasCartel.includes(`/public/media/poster/${id}-en.jpg`)

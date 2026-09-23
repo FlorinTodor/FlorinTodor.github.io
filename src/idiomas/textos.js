@@ -82,9 +82,9 @@ export const TEXTOS = {
     sobreMi: {
       titulo: 'Sobre mí',
       parrafos: [
-        'Estudié el <strong>Doble Grado en Ingeniería Informática y ADE</strong>, cinco años entre asignaturas de programación y de empresa. Al principio no lo tenía claro, pero con el tiempo le he visto la utilidad: además de la parte técnica entiendo cómo funciona una empresa por dentro, y eso ayuda a la hora de justificar decisiones.',
+        'Estudié el <strong>Doble Grado en Ingeniería Informática y ADE</strong>, cinco años entre asignaturas de programación y de empresa. Además de la parte técnica entiendo cómo funciona una empresa por dentro, y eso ayuda a la hora de justificar decisiones.',
         'Donde mejor me manejo es en <strong>Linux y Docker</strong>. He montado una granja web con ocho servidores comparando cuatro balanceadores distintos, he puesto un WAF con ModSecurity delante de una aplicación vulnerable para ver qué bloqueaba de verdad, y he configurado HTTPS y cortafuegos con iptables sobre contenedores. Aparte de eso he tocado cosas bastante distintas: un e-commerce con Node y MongoDB, una app en Flutter con backend en Rails, realidad aumentada con OpenCV y varios proyectos en C++.',
-        'Desde septiembre de 2026 trabajo en <strong>Gestiona Sistemas</strong>, de back-end en Python. Sigo subiendo el nivel de inglés, que es lo que peor llevo. Si te encaja algo de lo que hay aquí, escríbeme.',
+        'Desde septiembre de 2026 trabajo en <strong>Gestiona Sistemas</strong>, de back-end en Python. Si te encaja algo de lo que hay aquí, escríbeme.',
       ],
     },
 
@@ -408,9 +408,9 @@ export const TEXTOS = {
     sobreMi: {
       titulo: 'About me',
       parrafos: [
-        "I studied a <strong>Double Degree in Computer Engineering and Business Administration</strong>: five years split between programming subjects and business ones. I wasn't sure about it at first, but over time I've come to see the point. On top of the technical side I understand how a company works from the inside, and that helps when the time comes to justify a decision.",
+        "I studied a <strong>Double Degree in Computer Engineering and Business Administration</strong>: five years split between programming subjects and business ones. On top of the technical side I understand how a company works from the inside, and that helps when the time comes to justify a decision.",
         'Where I work best is <strong>Linux and Docker</strong>. I have built an eight-server web farm comparing four different load balancers, put a ModSecurity WAF in front of a deliberately vulnerable application to see what it really blocked, and set up HTTPS and iptables firewalls on containers. Beyond that I have worked on fairly different things: an e-commerce site with Node and MongoDB, a Flutter app with a Rails backend, augmented reality with OpenCV and several C++ projects.',
-        "Since September 2026 I have been working at <strong>Gestiona Sistemas</strong> as a Python back-end developer. I'm still working on my English, which is the part I find hardest. If something here fits what you need, drop me a line.",
+        "Since September 2026 I have been working at <strong>Gestiona Sistemas</strong> as a Python back-end developer. If something here fits what you need, drop me a line.",
       ],
     },
 
