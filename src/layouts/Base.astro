@@ -1,4 +1,7 @@
 ---
+// Inter se sirve desde el propio sitio: con Google Fonts la hoja bloqueaba el
+// primer pintado y cada visita le pasaba la IP a Google.
+import '@fontsource-variable/inter';
 import '../styles/global.css';
 import { perfil } from '../idiomas/contenido.js';
 import { t, LOCALE, OG_LOCALE, IDIOMAS } from '../idiomas/textos.js';
@@ -176,9 +179,6 @@ const banderas = {
     <link rel="icon" href={recurso('icon/favicon.svg')} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={recurso('icon/apple-touch.png')} />
     <link rel="manifest" href={recurso('icon/site.webmanifest')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
 
   <body>
@@ -309,5 +309,28 @@ const banderas = {
       });
       document.addEventListener('keydown', (e) => e.key === 'Escape' && alternar(false));
     </script>
+    {/* Visitas con GoatCounter: sin cookies, así que no hace falta banner. Sólo en
+        producción, para no contar las visitas de `astro dev`. Además de las
+        páginas se cuentan como eventos las descargas del CV y los clics de
+        contacto, que es lo que dice si alguien ha pasado de mirar a escribir. */}
+    {import.meta.env.PROD && (
+      <>
+        <script is:inline data-goatcounter="https://florintodor.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+        <script is:inline>
+          document.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href]');
+            if (!a || !window.goatcounter?.count) return;
+            const href = a.getAttribute('href');
+            let evento = null;
+            if (/CV_.*\.pdf$/.test(href)) evento = 'cv';
+            else if (href.startsWith('mailto:')) evento = 'correo';
+            else if (href.includes('linkedin.com')) evento = 'linkedin';
+            else if (href.includes('github.com')) evento = 'github';
+            else if (href.includes('/docs/') && href.endsWith('.pdf')) evento = 'memoria';
+            if (evento) window.goatcounter.count({ path: `${evento}: ${location.pathname}`, title: href, event: true });
+          });
+        </script>
+      </>
+    )}
   </body>
 </html>

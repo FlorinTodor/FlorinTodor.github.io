@@ -297,9 +297,9 @@
       "id": "granja-web",
       "destacado": true,
       "titulo": "Granja web de altas prestaciones",
-      "resumen": "Diseño, despliegue y evaluación de una granja web escalable: balanceo de carga comparado entre cinco tecnologías, TLS, cortafuegos y benchmarking.",
+      "resumen": "Diseño, despliegue y evaluación de una granja web escalable: balanceo de carga comparado entre cuatro tecnologías, TLS, cortafuegos y benchmarking.",
       "destacados": [
-        "Comparativa empírica de Nginx, HAProxy, Traefik, Envoy y GoBetween como balanceadores",
+        "Comparativa empírica de Nginx, HAProxy, Traefik y Envoy como balanceadores",
         "HTTPS con certificados generados y gestionados vía OpenSSL",
         "Seguridad perimetral con iptables a nivel de contenedor",
         "Benchmarking bajo carga con Apache Benchmark y Locust",

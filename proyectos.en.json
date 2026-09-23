@@ -147,13 +147,13 @@
     },
     "granja-web": {
       "titulo": "High performance web farm",
-      "resumen": "Design, deployment and evaluation of a scalable web farm: load balancing compared across five technologies, TLS, firewalling and benchmarking.",
+      "resumen": "Design, deployment and evaluation of a scalable web farm: load balancing compared across four technologies, TLS, firewalling and benchmarking.",
       "categorias": [
         "DevOps",
         "Infrastructure"
       ],
       "destacados": [
-        "Empirical comparison of Nginx, HAProxy, Traefik, Envoy and GoBetween as load balancers",
+        "Empirical comparison of Nginx, HAProxy, Traefik and Envoy as load balancers",
         "HTTPS with certificates generated and managed through OpenSSL",
         "Perimeter security with iptables at container level",
         "Benchmarking under load with Apache Benchmark and Locust",

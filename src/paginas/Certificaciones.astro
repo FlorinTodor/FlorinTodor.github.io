@@ -6,6 +6,7 @@ import Base from '../layouts/Base.astro';
 import { perfil, certificaciones as listado } from '../idiomas/contenido.js';
 import { t } from '../idiomas/textos.js';
 import { enlace, recurso } from '../idiomas/rutas.js';
+import { ficherosPublicos } from '../utilidades/publicos.js';
 
 const { idioma = 'es' } = Astro.props;
 const T = t(idioma);
@@ -14,10 +15,7 @@ const p = perfil(idioma);
 
 // Los ficheros viven en public/certificaciones/. Como el poster de los vídeos,
 // se detectan solos: basta con que se llamen igual que el `id`.
-const ficheros = Object.keys({
-  ...import.meta.glob('/public/certificaciones/*.pdf'),
-  ...import.meta.glob('/public/certificaciones/*.{jpg,jpeg,png,webp}'),
-}).map((f) => f.replace('/public/certificaciones/', ''));
+const ficheros = ficherosPublicos('certificaciones', ['pdf', 'jpg', 'jpeg', 'png', 'webp']).map((f) => f.replace('/public/certificaciones/', ''));
 
 const buscar = (id, extensiones) =>
   ficheros.find((f) => extensiones.some((e) => f.toLowerCase() === `${id}.${e}`));
