@@ -68,8 +68,9 @@ src/
 public/
   media/<id>.mp4            ← vídeo de cada proyecto (se detecta solo)
   img/florin-emanuel-todor-gliga.jpg  ← retrato
-  img/cv-preview-1.png      ← primera página del CV
-  CV_Florin_Emanuel_Todor_Gliga.pdf   ← CV descargable
+  img/cv-preview-1.jpg      ← primera página del CV (y cv-preview-1-en.jpg)
+  CV_Florin_Emanuel_Todor_Gliga.pdf      ← CV descargable
+  CV_Florin_Emanuel_Todor_Gliga_en.pdf   ← el mismo, en inglés
   img/og.jpg, og-en.jpg     ← tarjeta que se ve al compartir (la genera el script)
   img/og/<id>.jpg           ← una por proyecto (y og/en/<id>.jpg en inglés)
   favicon.ico               ← se queda en la raíz: Google y los navegadores

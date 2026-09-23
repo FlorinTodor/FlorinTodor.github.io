@@ -388,7 +388,7 @@ export const TEXTOS = {
       contactar: 'Get in touch',
     },
 
-    cabecera: { descargarCv: 'Download CV (Spanish)' },
+    cabecera: { descargarCv: 'Download CV' },
 
     pie: {
       hecho: 'Built with Astro and published on GitHub Pages.',
@@ -503,7 +503,7 @@ export const TEXTOS = {
       titulo: 'CV',
       abrirAria: 'Open the CV as a PDF',
       portadaAlt: `First page of the CV of ${NOMBRE}`,
-      descargar: 'Download PDF (Spanish)',
+      descargar: 'Download PDF',
       abrir: 'Open in the browser',
     },
 
