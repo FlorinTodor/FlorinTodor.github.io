@@ -265,13 +265,13 @@
       "id": "waf-modsecurity",
       "destacado": true,
       "titulo": "WAF con ModSecurity y OWASP CRS sobre Docker",
-      "resumen": "Web Application Firewall intercalado entre el cliente y una granja de servidores web, con reglas OWASP CRS y evaluación del impacto en rendimiento.",
+      "resumen": "Web Application Firewall con reglas OWASP CRS delante de OWASP Juice Shop, una tienda vulnerable a propósito, con el coste en rendimiento medido por escenarios.",
       "destacados": [
         "Nginx + ModSecurity v3 + OWASP Core Rule Set en contenedor dedicado",
         "Mitigación verificada de SQLi, XSS y LFI/RFI mediante pruebas funcionales",
-        "Arquitectura de 1 WAF + 2 backends Apache sobre red Docker interna",
+        "Nginx con ModSecurity como proxy inverso delante de Juice Shop, en Docker Compose",
         "Exclusiones personalizadas de reglas para tráfico WebSocket/Socket.IO",
-        "Coste medido con Apache Benchmark: 2.586 → 1.663 req/s y +2,1 ms por petición, sin una sola petición fallida",
+        "Coste medido con Apache Benchmark: el proxy solo no cuesta nada medible y el WAF en paranoia 4 baja un 27 % (+1,1 ms por petición); en paranoia 1, un 18 %",
         "Reglas del CRS que intervienen: 942100/942110 (SQLi vía libinjection), 941100/941110/941160/941320 (XSS), 930100/930120 (path traversal), 932160 (ejecución remota)"
       ],
       "stack": [
@@ -280,7 +280,7 @@
         "Nginx",
         "ModSecurity v3",
         "OWASP CRS",
-        "Apache",
+        "Juice Shop",
         "Bash"
       ],
       "categorias": [
