@@ -5,6 +5,8 @@
   public/img/og/<id>.jpg     una por proyecto publicado
   public/img/og-en.jpg       la del sitio, en inglés
   public/img/og/en/<id>.jpg  una por proyecto, en inglés
+  public/img/og/blog/<slug>.jpg     una por artículo del blog
+  public/img/og/en/blog/<slug>.jpg  la de su traducción
 
 Se dibujan aquí en vez de exportarlas de un diseño para que el nombre y los
 colores salgan siempre de la misma fuente que la web (src/styles/global.css), y
@@ -18,12 +20,15 @@ la tarjeta genérica del portafolio, que no dice de qué va el enlace.
 import json
 from pathlib import Path
 
+import yaml
+
 from PIL import Image, ImageDraw, ImageFont
 
 RAIZ = Path(__file__).resolve().parent.parent
 RETRATO = RAIZ / 'public/img/florin-emanuel-todor-gliga.jpg'
 SALIDA = {'es': RAIZ / 'public/img/og.jpg', 'en': RAIZ / 'public/img/og-en.jpg'}
 SALIDA_PROYECTOS = {'es': RAIZ / 'public/img/og', 'en': RAIZ / 'public/img/og/en'}
+BLOG = {'es': RAIZ / 'src/content/blog', 'en': RAIZ / 'src/content/blog/en'}
 
 # Lo único que cambia de idioma en la tarjeta del sitio. Los proyectos sacan su
 # texto de proyectos.json y proyectos.en.json, igual que la web.
@@ -32,11 +37,19 @@ TEXTOS = {
         'rol': ['Sistemas Linux · Ciberseguridad', 'IA aplicada'],
         'formacion': ['Doble Grado en Ingeniería Informática y ADE',
                       'Universidad de Granada'],
+        'meses': ['ene', 'feb', 'mar', 'abr', 'may', 'jun',
+                  'jul', 'ago', 'sept', 'oct', 'nov', 'dic'],
+        'fecha': lambda f, m: f'{f.day} {m} {f.year}',
+        'minutos': '{} min de lectura',
     },
     'en': {
         'rol': ['Linux systems · Cybersecurity', 'Applied AI'],
         'formacion': ['Double Degree in Computer Engineering and Business',
                       'University of Granada'],
+        'meses': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+        'fecha': lambda f, m: f'{m} {f.day}, {f.year}',
+        'minutos': '{} min read',
     },
 }
 
@@ -134,15 +147,15 @@ def tarjeta_sitio(idioma):
     guardar(img, SALIDA[idioma])
 
 
-def tarjeta_proyecto(p, idioma):
+def tarjeta_texto(destino, encima, titulo, resumen, pie):
+    """La tarjeta de un proyecto o de un artículo: antetítulo, titular,
+    resumen, una línea de detalle y la firma."""
     img = lienzo()
     d = ImageDraw.Draw(img)
     X, DERECHA = 80, ANCHO - 80
     ancho_texto = DERECHA - X
 
-    # Antetítulo: año y categorías, lo que sitúa el proyecto de un vistazo.
-    encima = ' · '.join([str(p['anio'])] + p.get('categorias', [])[:2]).upper()
-    y = escribir(d, X, 84, [encima], fuente(NEGRITA, 24), VERDE)
+    escribir(d, X, 84, [encima.upper()], fuente(NEGRITA, 24), VERDE)
 
     # El bloque de texto se centra entre el antetítulo y la firma: los títulos
     # van de una a tres líneas y con posiciones fijas unas tarjetas quedaban
@@ -150,9 +163,9 @@ def tarjeta_proyecto(p, idioma):
     f_titulo = fuente(NEGRITA, 54)
     f_resumen = fuente(NORMAL, 27)
     f_stack = fuente(NEGRITA, 23)
-    titulo = envolver(p['titulo'], f_titulo, ancho_texto, 3)
-    resumen = envolver(p['resumen'], f_resumen, ancho_texto, 2)
-    stack = envolver(' · '.join(p['stack'][:6]), f_stack, ancho_texto, 1)
+    titulo = envolver(titulo, f_titulo, ancho_texto, 3)
+    resumen = envolver(resumen, f_resumen, ancho_texto, 2)
+    stack = envolver(pie, f_stack, ancho_texto, 1)
 
     ARRIBA, ABAJO = 150, 495
     alto = (len(titulo) * int(f_titulo.size * 1.24) + 18
@@ -170,7 +183,34 @@ def tarjeta_proyecto(p, idioma):
     d.text((X + 82, 538), 'Florin Emanuel Todor Gliga', font=fuente(NEGRITA, 26), fill=TEXTO)
     d.text((X + 82, 572), 'florintodor.dev', font=fuente(NORMAL, 23), fill=SUAVE)
 
-    guardar(img, SALIDA_PROYECTOS[idioma] / f"{p['id']}.jpg")
+    guardar(img, destino)
+
+
+def tarjeta_proyecto(p, idioma):
+    # Antetítulo: año y categorías, lo que sitúa el proyecto de un vistazo.
+    tarjeta_texto(
+        SALIDA_PROYECTOS[idioma] / f"{p['id']}.jpg",
+        ' · '.join([str(p['anio'])] + p.get('categorias', [])[:2]),
+        p['titulo'], p['resumen'], ' · '.join(p['stack'][:6]),
+    )
+
+
+def tarjeta_articulo(md, idioma):
+    """Sin ella, un artículo compartido en LinkedIn enseñaba la tarjeta del
+    sitio, con la cara y el titular general en vez del título del artículo."""
+    datos = yaml.safe_load(md.read_text(encoding='utf-8').split('---', 2)[1])
+    if datos.get('borrador'):
+        return
+    textos = TEXTOS[idioma]
+    f = datos['fecha']
+    encima = ['Blog', textos['fecha'](f, textos['meses'][f.month - 1])]
+    if datos.get('minutos'):
+        encima.append(textos['minutos'].format(datos['minutos']))
+    tarjeta_texto(
+        SALIDA_PROYECTOS[idioma] / 'blog' / f'{md.stem}.jpg',
+        ' · '.join(encima),
+        datos['titulo'], datos['descripcion'], ' · '.join(datos.get('etiquetas', [])[:5]),
+    )
 
 
 def main():
@@ -190,6 +230,8 @@ def main():
             # Sin traducción se cae al español, igual que la web.
             tarjeta_proyecto({**p, **traducciones.get(p['id'], {})} if idioma == 'en' else p,
                              idioma)
+        for md in sorted(BLOG[idioma].glob('*.md')):
+            tarjeta_articulo(md, idioma)
 
 
 if __name__ == '__main__':

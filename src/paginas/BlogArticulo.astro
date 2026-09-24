@@ -21,6 +21,10 @@ const { Content } = await render(a);
 const fmt = (d) => d.toLocaleDateString(LOCALE[idioma], { day: 'numeric', month: 'long', year: 'numeric' });
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
+// La tarjeta del artículo la dibuja scripts/generar-og.py; npm run comprobar
+// falla si falta, así que no hace falta caer a la del sitio.
+const tarjeta = `img/og/${idioma === 'en' ? 'en/' : ''}blog/${slugDe(a)}.jpg`;
+
 // Firmar el artículo con la misma entidad Person del sitio: cada texto publicado
 // pasa a ser una señal más de autoría a nombre completo.
 const esquema = [{
@@ -31,6 +35,7 @@ const esquema = [{
   datePublished: a.data.fecha.toISOString(),
   inLanguage: LOCALE[idioma],
   keywords: a.data.etiquetas,
+  image: new URL(tarjeta, Astro.site).href,
   mainEntityOfPage: { '@id': `${url}#pagina` },
   author: { '@id': 'https://florintodor.dev/#persona' },
   publisher: { '@id': 'https://florintodor.dev/#persona' },
@@ -45,6 +50,8 @@ const esquema = [{
   esquemaExtra={esquema}
   conAlternativas={gemelo}
   alternoFallback="blog/"
+  imagenOg={tarjeta}
+  altOg={B.altOg(a.data.titulo)}
 >
   <article style="max-width:760px;margin:0 auto">
     <a class="volver" href={enlace(idioma, 'blog/')}>{B.volver}</a>
