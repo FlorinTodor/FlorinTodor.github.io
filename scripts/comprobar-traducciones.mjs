@@ -104,6 +104,14 @@ for (const f of md(dirBlog)) {
   const borrador = /^borrador:\s*true/m.test(fs.readFileSync(path.join(dirBlog.pathname, f), 'utf8'));
   if (borrador) continue;
   if (!traducidos.includes(f)) fallos.push(`src/content/blog/en/: falta  ${f}`);
+  // La tarjeta de compartir lleva el título dibujado: sin ella la página
+  // apuntaría a una imagen que no existe. Sale de scripts/generar-og.py.
+  const slug = f.replace(/\.md$/, '');
+  for (const dir of ['og/blog', 'og/en/blog']) {
+    if (!fs.existsSync(new URL(`../public/img/${dir}/${slug}.jpg`, import.meta.url))) {
+      fallos.push(`public/img/${dir}/: falta ${slug}.jpg (python3 scripts/generar-og.py)`);
+    }
+  }
 }
 for (const f of traducidos) {
   if (!md(dirBlog).includes(f)) fallos.push(`src/content/blog/: el inglés ${f} no tiene original`);

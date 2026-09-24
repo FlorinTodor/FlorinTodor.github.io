@@ -73,6 +73,7 @@ public/
   CV_Florin_Emanuel_Todor_Gliga_en.pdf   ← el mismo, en inglés
   img/og.jpg, og-en.jpg     ← tarjeta que se ve al compartir (la genera el script)
   img/og/<id>.jpg           ← una por proyecto (y og/en/<id>.jpg en inglés)
+  img/og/blog/<slug>.jpg    ← una por artículo (y og/en/blog/<slug>.jpg en inglés)
   favicon.ico               ← se queda en la raíz: Google y los navegadores
                               piden /favicon.ico sin preguntar
   icon/                     ← el resto de iconos y el manifiesto, que sí van
