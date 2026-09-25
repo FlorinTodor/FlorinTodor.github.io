@@ -176,11 +176,10 @@
         "Realidad aumentada",
         "IA"
       ],
-      "repo": "https://github.com/FlorinTodor/Computacion-Ubicua-e-Inteligencia-Ambiental-CUIA",
+      "repo": "https://github.com/FlorinTodor/museo-ar",
       "anio": 2025,
       "contexto": "Computación Ubicua e Inteligencia Ambiental - UGR",
       "pendiente": [
-        "Añadir .gitignore y eliminar __pycache__",
         "Mover los .glb (831 MB) a releases o Git LFS",
         "Grabar GIF/vídeo de demostración"
       ]
@@ -287,12 +286,9 @@
         "Ciberseguridad",
         "DevOps"
       ],
-      "repo": "https://github.com/FlorinTodor/SWAP_Trabajo",
+      "repo": "https://github.com/FlorinTodor/waf-modsecurity",
       "anio": 2025,
-      "contexto": "Servidores Web de Altas Prestaciones - UGR",
-      "pendiente": [
-        "Revisar y desversionar los logs commiteados"
-      ]
+      "contexto": "Servidores Web de Altas Prestaciones - UGR"
     },
     {
       "id": "granja-web",
@@ -322,7 +318,7 @@
         "DevOps",
         "Infraestructura"
       ],
-      "repo": "https://github.com/FlorinTodor/SERVIDORES-WEB-DE-ALTAS-PRESTACIONES-SWAP-",
+      "repo": "https://github.com/FlorinTodor/granja-web",
       "anio": 2025,
       "contexto": "Servidores Web de Altas Prestaciones - UGR"
     },
