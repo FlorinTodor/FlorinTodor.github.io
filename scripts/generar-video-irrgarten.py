@@ -2,7 +2,7 @@
 """Convierte una partida real de Irrgarten en public/media/irrgarten.mp4.
 
 La transcripción (scripts/irrgarten-partida.txt) es la salida literal de
-`ruby Main/main.rb` del repo FlorinTodor/PDOO, jugada de principio a fin hasta
+`ruby Main/main.rb` del repo FlorinTodor/irrgarten, jugada de principio a fin hasta
 ganar. Aquí sólo se re-dibuja con tipografía de terminal y se le da el ritmo de
 una sesión real: la salida de cada turno aparece de golpe, hay una pausa
 mientras el jugador decide, y luego se ve la tecla que ha pulsado.
