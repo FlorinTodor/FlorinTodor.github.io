@@ -34,7 +34,7 @@ BLOG = {'es': RAIZ / 'src/content/blog', 'en': RAIZ / 'src/content/blog/en'}
 # texto de proyectos.json y proyectos.en.json, igual que la web.
 TEXTOS = {
     'es': {
-        'rol': ['Sistemas Linux · Ciberseguridad', 'IA aplicada'],
+        'rol': ['Back-end (Python) · Linux', 'Ciberseguridad · IA aplicada'],
         'formacion': ['Doble Grado en Ingeniería Informática y ADE',
                       'Universidad de Granada'],
         'meses': ['ene', 'feb', 'mar', 'abr', 'may', 'jun',
@@ -43,7 +43,7 @@ TEXTOS = {
         'minutos': '{} min de lectura',
     },
     'en': {
-        'rol': ['Linux systems · Cybersecurity', 'Applied AI'],
+        'rol': ['Back-end (Python) · Linux', 'Cybersecurity · Applied AI'],
         'formacion': ['Double Degree in Computer Engineering and Business',
                       'University of Granada'],
         'meses': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
