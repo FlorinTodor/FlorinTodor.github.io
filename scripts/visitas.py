@@ -158,13 +158,16 @@ main { max-width:1200px; margin:0 auto; padding:32px 16px 64px }
 h1 { margin:0 0 4px; font-size:26px } h2 { font-size:18px; margin:36px 0 12px } h3 { font-size:14px; color:var(--suave); margin:0 0 10px; font-weight:600 }
 .sub { color:var(--tenue); margin:0 0 24px } .nota { color:var(--tenue); font-size:13px; margin:8px 0 0 }
 .aviso { background:rgba(255,123,114,.12); border:1px solid var(--rojo); color:var(--rojo); border-radius:14px; padding:12px 16px; margin-bottom:24px }
-.cifras { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px }
+.cifras { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px }
 .cifra, .bloque, .sesion { background:var(--panel); border:1px solid var(--borde); border-radius:14px; padding:16px; min-width:0 }
-.cifra b { display:block; font-size:28px; color:var(--verde); line-height:1.2 } .cifra span { color:var(--suave); font-size:14px }
-.rejilla { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px }
+.cifra { padding:14px } .cifra b { display:block; font-size:26px; color:var(--verde); line-height:1.2 } .cifra span { color:var(--suave); font-size:13px }
+.rejilla { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px } .rejilla.tres { grid-template-columns:repeat(3,minmax(0,1fr)) }
+@media (max-width:900px) { .rejilla, .rejilla.tres { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media (max-width:560px) { .rejilla, .rejilla.tres { grid-template-columns:1fr } }
 .bloque ul { list-style:none; margin:0; padding:0 }
-.bloque li { display:grid; grid-template-columns:minmax(0,1.4fr) 1fr 40px; gap:10px; align-items:center; padding:3px 0; font-size:14px }
-.et { overflow:hidden; text-overflow:ellipsis; white-space:nowrap } .num { text-align:right; color:var(--suave) }
+.bloque li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:3px 10px; padding:5px 0; font-size:14px }
+.et { overflow-wrap:anywhere } .num { text-align:right; color:var(--suave) } .barra { grid-column:1 / -1 }
+.bloque h3 + ul + h3 { margin-top:16px }
 .barra { height:8px; background:#062038; border-radius:4px; overflow:hidden } .barra i { display:block; height:100%; background:var(--verde) }
 .columnas { display:flex; align-items:flex-end; gap:3px; height:120px; padding-top:18px }
 .columnas div { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; min-width:0 }
@@ -251,8 +254,10 @@ def texto_pantalla(v):
     if not p:
         return 'desconocida'
     ancho, alto, densidad = p
-    texto = f'{ancho}×{alto} px' if alto else f'{ancho} px de ancho'
-    return texto + (f', densidad {densidad:g}' if densidad else '')
+    # Cuando falta el alto, GoatCounter tampoco trae una densidad fiable.
+    if not alto:
+        return f'{ancho} px de ancho'
+    return f'{ancho}×{alto} px' + (f', densidad {densidad:g}' if densidad else '')
 
 
 def dispositivo(v):
@@ -329,8 +334,8 @@ def informe(visitas, fallo=None):
     def barras(contador, fmt=e, n=10):
         total = max(contador.values(), default=1)
         return '<ul>' + (''.join(
-            f'<li><span class="et" title="{e(k)}">{fmt(k)}</span><span class="barra"><i style="width:{100 * c / total:.0f}%"></i></span>'
-            f'<span class="num">{c}</span></li>' for k, c in contador.most_common(n)) or '<li class="vacio">Nada todavía</li>') + '</ul>'
+            f'<li><span class="et">{fmt(k)}</span><span class="num">{c}</span>'
+            f'<span class="barra"><i style="width:{100 * c / total:.0f}%"></i></span></li>' for k, c in contador.most_common(n)) or '<li class="vacio">Nada todavía</li>') + '</ul>'
 
     def columnas(pares):
         total = max((c for _, c in pares), default=0) or 1
@@ -350,6 +355,7 @@ def informe(visitas, fallo=None):
         dias = [primero.fromordinal(d) for d in range(primero.toordinal(), ultimo.toordinal() + 1)][-31:]
     else:
         dias = []
+    regiones = Counter(g[0]['Location'] for g in grupos if '-' in g[0]['Location'])
     por_dia = Counter(g[0]['cuando'].date() for g in grupos)
     por_hora = Counter(g[0]['cuando'].hour for g in grupos)
     por_semana = Counter(g[0]['cuando'].weekday() for g in grupos)
@@ -362,13 +368,13 @@ def informe(visitas, fallo=None):
   <div class="cifra"><b>{duracion(sum(duraciones) / len(duraciones)) if duraciones else '-'}</b><span>duración media</span></div>
   <div class="cifra"><b>{100 * rebotes / len(grupos) if grupos else 0:.0f}%</b><span>se van tras una página</span></div>
   <div class="cifra"><b>{sum(1 for v in eventos if evento(v)[0] == 'cv')}</b><span>descargas del CV</span></div>
-  <div class="cifra"><b>{sum(1 for v in eventos if evento(v)[0] in CONTACTO)}</b><span>clics de contacto (correo, LinkedIn, GitHub)</span></div>
+  <div class="cifra"><b>{sum(1 for v in eventos if evento(v)[0] in CONTACTO)}</b><span>clics de contacto</span></div>
   <div class="cifra"><b>{sum(1 for g in grupos if origen_sesion(g)[0] == 'LinkedIn')}</b><span>llegan desde LinkedIn</span></div>
   <div class="cifra"><b>{sum(1 for gs in por_huella.values() if len(gs) > 1)}</b><span>dispositivos que repiten</span></div>
 </section>
 
 <h2>Cuándo</h2>
-<div class="rejilla">
+<div class="rejilla tres">
   {bloque('Visitas por día', columnas([(f'{d:%d/%m}', por_dia[d]) for d in dias]) if dias else '<p class="vacio">Nada todavía</p>', 'Últimos 31 días con datos.')}
   {bloque('A qué hora llegan', columnas([(f'{h}', por_hora[h]) for h in range(24)]), 'Hora de Madrid.')}
   {bloque('Qué día de la semana', columnas([(d[:3], por_semana[i]) for i, d in enumerate(DIAS_SEMANA)]))}
@@ -379,8 +385,8 @@ def informe(visitas, fallo=None):
   {bloque('Procedencia', barras(Counter(origen_sesion(g)[0] for g in grupos)), 'La de la primera página de cada visita.')}
   {bloque('Enlace exacto de procedencia', barras(Counter(g[0]['Referrer'] for g in grupos if g[0]['Referrer'] and origen_sesion(g)[1] != 'interno'), codigo))}
   {bloque('Tipo de procedencia', barras(Counter(ESQUEMAS.get(g[0]['Referrer scheme'], 'sin procedencia') for g in grupos if origen_sesion(g)[1] != 'interno')))}
-  {bloque('País', barras(Counter(v['Location'].split('-')[0] for v in (g[0] for g in grupos)), pais))}
-  {bloque('Región', barras(Counter(g[0]['Location'] for g in grupos if '-' in g[0]['Location']), pais), 'Sólo de los países que tenga marcados GoatCounter en Settings > Region.')}
+  {bloque('País', barras(Counter(v['Location'].split('-')[0] for v in (g[0] for g in grupos)), pais)
+           + (f'<h3>Región</h3>{barras(regiones, pais)}' if regiones else ''))}
 </div>
 
 <h2>Qué ven y qué hacen</h2>
@@ -426,7 +432,7 @@ def informe(visitas, fallo=None):
             ('Llegada', f'{primera["cuando"]:%d/%m/%Y %H:%M:%S} ({DIAS_SEMANA[primera["cuando"].weekday()]})'),
             ('Última acción', f'{ultima["cuando"]:%H:%M:%S}'),
             ('Duración', duracion((ultima['cuando'] - primera['cuando']).total_seconds()) if len(g) > 1 else 'una sola página'),
-            ('Páginas', f'{n_paginas(g)}' + (f' ({sum(n - 1 for _, n in lista)} recargas aparte)' if any(n > 1 for _, n in lista) else '')),
+            ('Páginas', f'{n_paginas(g)}' + (f' (+{sum(n - 1 for _, n in lista)} de recargas)' if any(n > 1 for _, n in lista) else '')),
             ('Clics y descargas', e(', '.join(texto_evento(v) for v in evs)) if evs else 'ninguno'),
             ('Procedencia', e(origen)),
             ('Enlace de procedencia', f'<code>{e(primera["Referrer"])}</code>' if primera['Referrer'] else 'ninguno (directo, app o navegador que no lo envía)'),
@@ -480,7 +486,7 @@ def informe(visitas, fallo=None):
     generado = datetime.now(ZONA)
     return pagina(f'''
 <h1>Visitas del portafolio</h1>
-<p class="sub">Actualizado el {generado:%d/%m/%Y a las %H:%M} (hora de Madrid) · {len(visitas)} registros{f" · {recargas} recargas juntadas" if recargas else ""} · bots excluidos</p>
+<p class="sub">Actualizado el {generado:%d/%m/%Y a las %H:%M} (hora de Madrid) · {len(visitas)} registros{f" · {recargas} recarga{"s" if recargas > 1 else ""} juntada{"s" if recargas > 1 else ""}" if recargas else ""} · bots excluidos</p>
 {f'<p class="aviso">No se pudieron descargar las visitas: {e(fallo)}</p>' if fallo else ''}
 {resumen}
 
