@@ -11,6 +11,9 @@ import { enlace, recurso, equivalente, OTRO } from '../idiomas/rutas.js';
 // esto, un proyecto compartido en LinkedIn enseñaba la tarjeta genérica del
 // sitio. Se generan con scripts/generar-og.py.
 //
+// `articulo` ({ fecha, etiquetas }) marca la página como artículo en Open
+// Graph: sin article:published_time, LinkedIn no enseñaba la fecha.
+//
 // `conAlternativas` en false para las páginas que no existen en el otro idioma
 // (el 404, o un artículo sin traducir): anunciar un hreflang que devuelve otro
 // 404 es peor que no anunciar ninguno. En ese caso el selector lleva a
@@ -19,7 +22,7 @@ import { enlace, recurso, equivalente, OTRO } from '../idiomas/rutas.js';
 const {
   titulo, descripcion, idioma = 'es', conLateral = true, esquemaExtra = [],
   sinIndexar = false, conAlternativas = true, alternoFallback = '',
-  imagenOg, altOg,
+  imagenOg, altOg, articulo,
 } = Astro.props;
 
 const T = t(idioma);
@@ -153,7 +156,10 @@ const banderas = {
     <meta property="og:locale:alternate" content={OG_LOCALE[OTRO[idioma]]} />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descripcion} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={articulo ? 'article' : 'website'} />
+    {articulo && <meta property="article:published_time" content={articulo.fecha.toISOString()} />}
+    {articulo && <meta property="article:author" content="Florin Emanuel Todor Gliga" />}
+    {articulo?.etiquetas.map((e) => <meta property="article:tag" content={e} />)}
     <meta property="og:url" content={urlCanonica} />
     <meta property="og:image" content={imagenSocial} />
     <meta property="og:image:width" content="1200" />
