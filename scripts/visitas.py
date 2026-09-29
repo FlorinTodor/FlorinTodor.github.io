@@ -211,29 +211,68 @@ def pagina(cuerpo):
 '''
 
 
+# Los eventos que manda la web (src/layouts/Base.astro): el path es
+# "<tipo>: <página desde la que se hizo clic>" y el título, el enlace.
+EVENTOS = {'cv': 'descarga del CV', 'correo': 'clic en el correo', 'linkedin': 'clic en LinkedIn',
+           'github': 'clic en GitHub', 'memoria': 'descarga de la memoria del TFG'}
+CONTACTO = ('correo', 'linkedin', 'github')
+# Dos vistas de la misma página con menos de esto entre ellas son una recarga.
+RECARGA = 10
+
+
+def evento(v):
+    """(tipo, página desde la que se hizo) si la fila es un evento; None si es una página."""
+    tipo, sep, desde = v['Path'].partition(': ')
+    if sep and (tipo in EVENTOS or v['Event'].lower() in ('true', 't', '1')):
+        return tipo, desde
+    return None
+
+
+def texto_evento(v):
+    tipo, desde = evento(v)
+    nombre = EVENTOS.get(tipo, tipo)
+    if tipo == 'cv':
+        nombre += ' en inglés' if v['Title'].endswith('_en.pdf') else ' en español'
+    return f'{nombre} desde {desde}'
+
+
 def pantalla(v):
-    """(ancho, alto, densidad) a partir de "1920,1080,1"."""
-    partes = (v.get('Screen size') or '').split(',')
+    """(ancho, alto, densidad) a partir de "1920,1080,1"; 0 donde falta el dato."""
+    partes = (v.get('Screen size') or '').split(',') + ['0', '0', '0']
     try:
-        return int(partes[0]), int(partes[1]), float(partes[2]) if len(partes) > 2 else 1.0
-    except (ValueError, IndexError):
+        ancho, alto, densidad = (float(x or 0) for x in partes[:3])
+    except ValueError:
         return None
+    return (int(ancho), int(alto), densidad) if ancho else None
+
+
+def texto_pantalla(v):
+    p = pantalla(v)
+    if not p:
+        return 'desconocida'
+    ancho, alto, densidad = p
+    texto = f'{ancho}×{alto} px' if alto else f'{ancho} px de ancho'
+    return texto + (f', densidad {densidad:g}' if densidad else '')
 
 
 def dispositivo(v):
     p = pantalla(v)
     if not p:
         return 'desconocido'
-    ancho = min(p[0], p[1]) if 'Android' in v['System'] or 'iOS' in v['System'] else p[0]
+    ancho = min(p[0], p[1] or p[0]) if 'Android' in v['System'] or 'iOS' in v['System'] else p[0]
     return 'móvil' if ancho < 600 else 'tablet' if ancho < 1024 else 'ordenador'
+
+
+def texto_sistema(v):
+    sistema = v['System'] or 'desconocido'
+    # Chrome recorta el User-Agent y en Android siempre dice "Android 10".
+    if sistema == 'Android 10' and v['Browser'].startswith('Chrome'):
+        return 'Android (Chrome no dice la versión real)'
+    return sistema
 
 
 def idioma(path):
     return 'inglés' if path == '/en' or path.startswith('/en/') else 'español'
-
-
-def es_cv(v):
-    return v['Event'] == 'true'
 
 
 def duracion(segundos):
@@ -252,12 +291,37 @@ def huella(v):
     return (v['Browser'], v['System'], v['Screen size'], v['Location'])
 
 
+def pasos_de(g):
+    """Las filas de una sesión con las recargas seguidas juntadas: [(fila, veces)]."""
+    pasos = []
+    for v in g:
+        if (pasos and not evento(v) and not evento(pasos[-1][0]) and v['Path'] == pasos[-1][0]['Path']
+                and (v['cuando'] - pasos[-1][0]['cuando']).total_seconds() < RECARGA):
+            pasos[-1][1] += 1
+        else:
+            pasos.append([v, 1])
+    return pasos
+
+
+def origen_sesion(g):
+    """La procedencia de la visita: la de su primera página."""
+    origen, tipo = procedencia(g[0])
+    if tipo == 'interno':
+        # Si la primera página registrada ya venía de la web, el principio de
+        # la visita no se contó (bloqueador, o antes de activar la recogida).
+        return 'Sin registrar (ya estaba en la web)', 'interno'
+    return origen, tipo
+
+
 def informe(visitas, fallo=None):
     grupos = sesiones(visitas)
-    paginas_vistas = [v for v in visitas if not es_cv(v)]
-    cvs = [v for v in visitas if es_cv(v)]
+    pasos = {id(g): pasos_de(g) for g in grupos}
+    paginas = [v for g in grupos for v, _ in pasos[id(g)] if not evento(v)]
+    eventos = [v for v in visitas if evento(v)]
+    recargas = sum(n - 1 for g in grupos for _, n in pasos[id(g)])
+    n_paginas = lambda g: sum(1 for v, _ in pasos[id(g)] if not evento(v))
     duraciones = [(g[-1]['cuando'] - g[0]['cuando']).total_seconds() for g in grupos]
-    rebotes = sum(1 for g in grupos if len([v for v in g if not es_cv(v)]) <= 1)
+    rebotes = sum(1 for g in grupos if n_paginas(g) <= 1)
     por_huella = defaultdict(list)
     for g in grupos:
         por_huella[huella(g[0])].append(g)
@@ -293,13 +357,14 @@ def informe(visitas, fallo=None):
     resumen = f'''
 <section class="cifras">
   <div class="cifra"><b>{len(grupos)}</b><span>visitas (sesiones)</span></div>
-  <div class="cifra"><b>{len(paginas_vistas)}</b><span>páginas vistas</span></div>
-  <div class="cifra"><b>{len(paginas_vistas) / len(grupos) if grupos else 0:.1f}</b><span>páginas por visita</span></div>
+  <div class="cifra"><b>{len(paginas)}</b><span>páginas vistas</span></div>
+  <div class="cifra"><b>{len(paginas) / len(grupos) if grupos else 0:.1f}</b><span>páginas por visita</span></div>
   <div class="cifra"><b>{duracion(sum(duraciones) / len(duraciones)) if duraciones else '-'}</b><span>duración media</span></div>
   <div class="cifra"><b>{100 * rebotes / len(grupos) if grupos else 0:.0f}%</b><span>se van tras una página</span></div>
-  <div class="cifra"><b>{len(cvs)}</b><span>descargas del CV</span></div>
-  <div class="cifra"><b>{sum(1 for g in grupos if procedencia(g[0])[0] == 'LinkedIn')}</b><span>llegan desde LinkedIn</span></div>
-  <div class="cifra"><b>{sum(1 for h, gs in por_huella.items() if len(gs) > 1)}</b><span>dispositivos que repiten</span></div>
+  <div class="cifra"><b>{sum(1 for v in eventos if evento(v)[0] == 'cv')}</b><span>descargas del CV</span></div>
+  <div class="cifra"><b>{sum(1 for v in eventos if evento(v)[0] in CONTACTO)}</b><span>clics de contacto (correo, LinkedIn, GitHub)</span></div>
+  <div class="cifra"><b>{sum(1 for g in grupos if origen_sesion(g)[0] == 'LinkedIn')}</b><span>llegan desde LinkedIn</span></div>
+  <div class="cifra"><b>{sum(1 for gs in por_huella.values() if len(gs) > 1)}</b><span>dispositivos que repiten</span></div>
 </section>
 
 <h2>Cuándo</h2>
@@ -311,70 +376,77 @@ def informe(visitas, fallo=None):
 
 <h2>De dónde</h2>
 <div class="rejilla">
-  {bloque('Procedencia', barras(Counter(procedencia(g[0])[0] for g in grupos)), 'La de la primera página de cada visita.')}
-  {bloque('Enlace exacto de procedencia', barras(Counter(g[0]['Referrer'] for g in grupos if g[0]['Referrer'] and procedencia(g[0])[1] != 'interno'), codigo))}
-  {bloque('Tipo de procedencia', barras(Counter(ESQUEMAS.get(g[0]['Referrer scheme'], 'sin procedencia') for g in grupos)))}
+  {bloque('Procedencia', barras(Counter(origen_sesion(g)[0] for g in grupos)), 'La de la primera página de cada visita.')}
+  {bloque('Enlace exacto de procedencia', barras(Counter(g[0]['Referrer'] for g in grupos if g[0]['Referrer'] and origen_sesion(g)[1] != 'interno'), codigo))}
+  {bloque('Tipo de procedencia', barras(Counter(ESQUEMAS.get(g[0]['Referrer scheme'], 'sin procedencia') for g in grupos if origen_sesion(g)[1] != 'interno')))}
   {bloque('País', barras(Counter(v['Location'].split('-')[0] for v in (g[0] for g in grupos)), pais))}
-  {bloque('Región', barras(Counter(g[0]['Location'] for g in grupos if '-' in g[0]['Location']), pais), 'GoatCounter sólo guarda la región de EE. UU., Rusia y China (así está configurado).')}
+  {bloque('Región', barras(Counter(g[0]['Location'] for g in grupos if '-' in g[0]['Location']), pais), 'Sólo de los países que tenga marcados GoatCounter en Settings > Region.')}
 </div>
 
-<h2>Qué ven</h2>
+<h2>Qué ven y qué hacen</h2>
 <div class="rejilla">
-  {bloque('Páginas más vistas', barras(Counter(v['Path'] for v in paginas_vistas), codigo))}
-  {bloque('Página de entrada', barras(Counter(g[0]['Path'] for g in grupos), codigo))}
-  {bloque('Última página antes de irse', barras(Counter(g[-1]['Path'] for g in grupos), codigo))}
-  {bloque('Idioma del sitio', barras(Counter(idioma(v['Path']) for v in paginas_vistas)))}
-  {bloque('Descargas del CV', barras(Counter(f"{'inglés' if v['Path'].endswith('_en.pdf') else 'español'}, desde {v['Title'].removeprefix('cv: ')}" for v in cvs)))}
-  {bloque('Páginas por visita', barras(Counter(f"{len([v for v in g if not es_cv(v)])} página(s)" for g in grupos)))}
+  {bloque('Páginas más vistas', barras(Counter(v['Path'] for v in paginas), codigo))}
+  {bloque('Página de entrada', barras(Counter(next((v['Path'] for v, _ in pasos[id(g)] if not evento(v)), '-') for g in grupos), codigo))}
+  {bloque('Última página antes de irse', barras(Counter(next((v['Path'] for v, _ in reversed(pasos[id(g)]) if not evento(v)), '-') for g in grupos), codigo))}
+  {bloque('Idioma del sitio', barras(Counter(idioma(v['Path']) for v in paginas)))}
+  {bloque('Clics y descargas', barras(Counter(EVENTOS.get(evento(v)[0], evento(v)[0]) for v in eventos)))}
+  {bloque('Desde qué página hacen clic', barras(Counter(evento(v)[1] for v in eventos), codigo))}
+  {bloque('CV descargado', barras(Counter(f"{'inglés' if v['Title'].endswith('_en.pdf') else 'español'}, desde {evento(v)[1]}" for v in eventos if evento(v)[0] == 'cv')))}
+  {bloque('Páginas por visita', barras(Counter(f"{n_paginas(g)} página(s)" for g in grupos)))}
 </div>
 
 <h2>Con qué</h2>
 <div class="rejilla">
   {bloque('Dispositivo', barras(Counter(dispositivo(g[0]) for g in grupos)), 'Deducido del tamaño de pantalla.')}
   {bloque('Navegador', barras(Counter(g[0]['Browser'] or 'desconocido' for g in grupos)))}
-  {bloque('Sistema', barras(Counter(g[0]['System'] or 'desconocido' for g in grupos)))}
-  {bloque('Pantalla', barras(Counter(e('×'.join(g[0]['Screen size'].split(',')[:2])) or 'desconocida' for g in grupos)))}
+  {bloque('Sistema', barras(Counter(texto_sistema(g[0]) for g in grupos)))}
+  {bloque('Pantalla', barras(Counter(texto_pantalla(g[0]) for g in grupos)))}
 </div>'''
 
     # --- Visita por visita ---
     tarjetas = []
     for g in grupos:
         primera, ultima = g[0], g[-1]
-        origen, tipo = procedencia(primera)
-        pasos = []
-        for i, v in enumerate(g):
-            siguiente = g[i + 1]['cuando'] if i + 1 < len(g) else None
-            estancia = f'<span class="estancia">{duracion((siguiente - v["cuando"]).total_seconds())} hasta la siguiente</span>' if siguiente else ''
-            if es_cv(v):
-                texto = f'<code>⬇ {e(v["Path"])}</code><span class="titulo">descarga del CV ({"inglés" if v["Path"].endswith("_en.pdf") else "español"}) desde {e(v["Title"].removeprefix("cv: "))}</span>'
+        origen, tipo = origen_sesion(g)
+        lista = pasos[id(g)]
+        filas = []
+        for i, (v, veces) in enumerate(lista):
+            siguiente = lista[i + 1][0]['cuando'] if i + 1 < len(lista) else None
+            estancia = f'<span class="estancia">{duracion((siguiente - v["cuando"]).total_seconds())} hasta lo siguiente</span>' if siguiente else ''
+            repetida = f'<span class="estancia">(recargada, ×{veces})</span>' if veces > 1 else ''
+            if evento(v):
+                texto = f'<code>⬇ {e(texto_evento(v))}</code><span class="titulo">{e(v["Title"])}</span>'
             else:
                 texto = f'<code>{e(v["Path"])}</code><span class="titulo">{e(v["Title"])}</span>'
-            pasos.append(f'<li class="{"evento" if es_cv(v) else ""}"><time>{v["cuando"]:%H:%M:%S}</time>{texto}{estancia}</li>')
+            filas.append(f'<li class="{"evento" if evento(v) else ""}"><time>{v["cuando"]:%H:%M:%S}</time>{texto}{repetida}{estancia}</li>')
 
+        evs = [v for v in g if evento(v)]
         p = pantalla(primera)
         ficha = [
             ('Llegada', f'{primera["cuando"]:%d/%m/%Y %H:%M:%S} ({DIAS_SEMANA[primera["cuando"].weekday()]})'),
-            ('Salida (última acción)', f'{ultima["cuando"]:%H:%M:%S}'),
+            ('Última acción', f'{ultima["cuando"]:%H:%M:%S}'),
             ('Duración', duracion((ultima['cuando'] - primera['cuando']).total_seconds()) if len(g) > 1 else 'una sola página'),
-            ('Páginas', f'{len([v for v in g if not es_cv(v)])}' + (f' + {len([v for v in g if es_cv(v)])} descarga(s)' if any(es_cv(v) for v in g) else '')),
+            ('Páginas', f'{n_paginas(g)}' + (f' ({sum(n - 1 for _, n in lista)} recargas aparte)' if any(n > 1 for _, n in lista) else '')),
+            ('Clics y descargas', e(', '.join(texto_evento(v) for v in evs)) if evs else 'ninguno'),
             ('Procedencia', e(origen)),
             ('Enlace de procedencia', f'<code>{e(primera["Referrer"])}</code>' if primera['Referrer'] else 'ninguno (directo, app o navegador que no lo envía)'),
-            ('Tipo de procedencia', ESQUEMAS.get(primera['Referrer scheme'], 'sin procedencia')),
+            ('Tipo de procedencia', 'la primera página no se registró' if tipo == 'interno' else ESQUEMAS.get(primera['Referrer scheme'], 'sin procedencia')),
             ('País / región', pais(primera['Location'])),
-            ('Idioma del sitio', ', '.join(sorted({idioma(v['Path']) for v in g if not es_cv(v)})) or '-'),
+            ('Idioma del sitio', ', '.join(sorted({idioma(v['Path']) for v in g if not evento(v)})) or '-'),
             ('Navegador', e(primera['Browser'] or 'desconocido')),
-            ('Sistema', e(primera['System'] or 'desconocido')),
+            ('Sistema', e(texto_sistema(primera))),
             ('Dispositivo', dispositivo(primera)),
-            ('Pantalla', f'{p[0]}×{p[1]} px, densidad {p[2]:g}' if p else 'desconocida'),
-            ('Resolución real', f'{round(p[0] * p[2])}×{round(p[1] * p[2])} px' if p else 'desconocida'),
-            ('User-Agent', f'<code>{e(primera["UserAgent"])}</code>' if primera.get('UserAgent') else 'no guardado'),
-            ('Sesión', f'<code>{e(primera["Session"] or "sin sesión")}</code>'),
+            ('Pantalla', texto_pantalla(primera)),
         ]
+        if p and p[1] and p[2]:
+            ficha.append(('Resolución real', f'{round(p[0] * p[2])}×{round(p[1] * p[2])} px'))
+        if primera.get('UserAgent'):
+            ficha.append(('User-Agent', f'<code>{e(primera["UserAgent"])}</code>'))
+        ficha.append(('Sesión', f'<code>{e(primera["Session"] or "sin sesión")}</code>'))
         # Los cambios dentro de la misma sesión (p. ej. girar el móvil) también se ven.
-        for campo, nombre in (('Screen size', 'Otras pantallas'), ('Location', 'Otras ubicaciones'), ('Browser', 'Otros navegadores')):
-            otros = sorted({v[campo] for v in g if v[campo] and v[campo] != primera[campo]})
-            if campo == 'Screen size':
-                otros = ['×'.join(o.split(',')[:2]) for o in otros]
+        for campo, nombre, fmt in (('Screen size', 'Otras pantallas', lambda x: texto_pantalla({'Screen size': x})),
+                                   ('Location', 'Otras ubicaciones', str), ('Browser', 'Otros navegadores', str)):
+            otros = sorted({fmt(v[campo]) for v in g if v[campo] and v[campo] != primera[campo]})
             if otros:
                 ficha.append((nombre, e(', '.join(otros))))
 
@@ -385,8 +457,11 @@ def informe(visitas, fallo=None):
             relacion = (f'<p class="relacion">Mismo navegador, sistema, pantalla y país que las visitas del {fechas}: '
                         f'probablemente la misma persona volviendo.</p>')
 
+        chips_eventos = ''.join(f'<span class="chip cv">{e(EVENTOS.get(t, t))}</span>'
+                                for t in dict.fromkeys(evento(v)[0] for v in evs))
         buscar = ' '.join([origen, primera['Referrer'], primera['Location'], primera['Browser'], primera['System'],
-                           dispositivo(primera), f'{primera["cuando"]:%d/%m/%Y}'] + [v['Path'] for v in g]).lower()
+                           dispositivo(primera), f'{primera["cuando"]:%d/%m/%Y}'] + [v['Path'] for v in g]
+                          + [texto_evento(v) for v in evs]).lower()
         tarjetas.append(f'''
       <article class="sesion" data-buscar="{e(buscar)}">
         <header>
@@ -394,10 +469,10 @@ def informe(visitas, fallo=None):
           <span class="chip origen {tipo}">{e(origen)}</span>
           <span class="chip">{bandera(primera["Location"])} <span data-pais="{e(primera["Location"])}">{e(primera["Location"] or "país desconocido")}</span></span>
           <span class="chip">{dispositivo(primera)}</span>
-          {'<span class="chip cv">descargó el CV</span>' if any(es_cv(v) for v in g) else ''}
+          {chips_eventos}
           {'<span class="chip">repite</span>' if mismas else ''}
         </header>
-        <ol>{''.join(pasos)}</ol>
+        <ol>{''.join(filas)}</ol>
         <dl class="ficha">{''.join(f'<div><dt>{k}</dt><dd>{v}</dd></div>' for k, v in ficha)}</dl>
         {relacion}
       </article>''')
@@ -405,21 +480,25 @@ def informe(visitas, fallo=None):
     generado = datetime.now(ZONA)
     return pagina(f'''
 <h1>Visitas del portafolio</h1>
-<p class="sub">Actualizado el {generado:%d/%m/%Y a las %H:%M} (hora de Madrid) · {len(visitas)} registros · bots excluidos</p>
+<p class="sub">Actualizado el {generado:%d/%m/%Y a las %H:%M} (hora de Madrid) · {len(visitas)} registros{f" · {recargas} recargas juntadas" if recargas else ""} · bots excluidos</p>
 {f'<p class="aviso">No se pudieron descargar las visitas: {e(fallo)}</p>' if fallo else ''}
 {resumen}
 
 <h2>Visita por visita</h2>
-<input class="filtro" id="filtro" type="search" placeholder="Filtrar: linkedin, ES, móvil, /blog, 29/09/2026...">
+<input class="filtro" id="filtro" type="search" placeholder="Filtrar: linkedin, España, móvil, /blog, cv, 29/09/2026...">
 <section class="sesiones">{''.join(tarjetas) or '<p class="vacio">Todavía no hay visitas guardadas.</p>'}</section>
 <p class="nota">Una visita es una sesión de GoatCounter: el mismo navegador durante un máximo de 8 horas. GoatCounter no guarda
 IP ni cookies, así que no se puede saber con certeza si dos visitas son de la misma persona; "repite" sólo indica que
-coinciden navegador, sistema, pantalla y país. El idioma del navegador no se recoge (está desactivado en GoatCounter).</p>
+coinciden navegador, sistema, pantalla y país. Dos vistas de la misma página con menos de {RECARGA} s entre ellas cuentan
+como una (recarga). Quien navega con bloqueador (Brave, uBlock, DNS con filtro) no aparece.</p>
 <script>
 const nombres = new Intl.DisplayNames(['es'], {{type: 'region'}});
 document.querySelectorAll('[data-pais]').forEach(el => {{
   const [p, r] = el.dataset.pais.split('-');
   try {{ if (p) el.textContent = nombres.of(p) + (r ? ` (${{r}})` : ''); }} catch {{}}
+}});
+document.querySelectorAll('.sesion').forEach(s => {{
+  s.dataset.buscar += ' ' + s.textContent.toLowerCase();
 }});
 document.getElementById('filtro').addEventListener('input', ev => {{
   const q = ev.target.value.toLowerCase().trim();
