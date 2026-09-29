@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Cada 12 horas se vuelve a publicar para refrescar /visitas/ (la página
+  # cifrada con las visitas de GoatCounter; ver scripts/visitas.py).
+  schedule:
+    - cron: '17 5,17 * * *'
 
 permissions:
   contents: read
@@ -40,6 +44,17 @@ jobs:
         run: npm run comprobar
       - run: npm ci
       - run: npm run build
+      # Va después del build para quedar fuera del sitemap. Si GoatCounter falla,
+      # la página sale con el aviso y el sitio se publica igual.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install cryptography
+      - name: Página de visitas
+        env:
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+          VISITAS_CLAVE: ${{ secrets.VISITAS_CLAVE }}
+        run: python scripts/visitas.py --publicar dist/visitas/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

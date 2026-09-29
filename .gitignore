@@ -9,3 +9,6 @@ SELECCION.md
 # Vídeos y PDF en bruto ya procesados dentro de public/, la memoria del TFG (lleva
 # el DNI en la autorización de depósito) y los certificados que muestran DNI o NIE.
 originales/
+
+# --- Visitas descargadas de GoatCounter (scripts/visitas.py): datos de visitantes ---
+.visitas/
