@@ -52,6 +52,7 @@ const esquema = [{
   alternoFallback="blog/"
   imagenOg={tarjeta}
   altOg={B.altOg(a.data.titulo)}
+  articulo={{ fecha: a.data.fecha, etiquetas: a.data.etiquetas }}
 >
   <article style="max-width:760px;margin:0 auto">
     <a class="volver" href={enlace(idioma, 'blog/')}>{B.volver}</a>
