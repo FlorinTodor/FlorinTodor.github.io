@@ -92,6 +92,7 @@ scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
 scripts/generar-poster-demo-rutina.py  ← fotografía la demo embebida
 scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
+scripts/visitas.py          ← visitas de GoatCounter una a una; el despliegue la publica cifrada en /visitas/
 ```
 
 Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su
