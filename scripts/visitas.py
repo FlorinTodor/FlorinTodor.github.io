@@ -44,6 +44,7 @@ LOCAL = RAIZ / '.visitas/visitas.html'
 TOKEN = Path.home() / '.config/goatcounter/token'
 API = 'https://florintodor.goatcounter.com/api/v0'
 DOMINIO = 'florintodor.dev'
+PUBLICADA = f'https://{DOMINIO}/visitas/'
 ZONA = ZoneInfo('Europe/Madrid')
 ITERACIONES = 310_000
 
@@ -77,7 +78,15 @@ def pedir(token, metodo, ruta, cuerpo=None, tolerar=()):
 
 def exportar(token):
     """Pide la exportación completa y devuelve el CSV, sin escribirlo en disco."""
-    _, crudo = pedir(token, 'POST', '/export', {'format': 'csv'})
+    # GoatCounter a veces responde 404 o 5xx a una petición correcta y a la
+    # siguiente vuelve a ir. El 429 (una exportación por hora) no se reintenta.
+    for intento in range(3):
+        codigo, crudo = pedir(token, 'POST', '/export', {'format': 'csv'},
+                              tolerar=() if intento == 2 else (404, 500, 502, 503, 504))
+        if crudo is not None:
+            break
+        print(f'::warning::Visitas: GoatCounter respondió {codigo} a POST /export; se reintenta.')
+        time.sleep(30)
     id_ = json.loads(crudo)['id']
     # Recién creada puede tardar en aparecer (404) y en terminar (202).
     for _ in range(90):
@@ -560,6 +569,17 @@ document.getElementById('f').addEventListener('submit', async ev => {{
 </script>''')
 
 
+def publicada():
+    """La página cifrada que hay ahora en la web, o None si no se puede bajar."""
+    try:
+        with urllib.request.urlopen(PUBLICADA, timeout=30) as r:
+            texto = r.read().decode()
+    except (urllib.error.URLError, OSError, UnicodeDecodeError):
+        return None
+    # Sólo vale la página cifrada de verdad, no un 404 de GitHub Pages.
+    return texto if "const K = 'visitas-clave'" in texto else None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--csv', type=Path, help='usa una exportación bajada a mano (.csv o .csv.gz)')
@@ -581,9 +601,16 @@ def main():
     except FalloExportacion as ex:
         if not a.publicar:
             sys.exit(str(ex))
-        # En el despliegue no se corta la publicación del sitio: la página
-        # sale igual, con el aviso de qué falló.
+        # En el despliegue no se corta la publicación del sitio. Se vuelve a
+        # publicar la página que ya está en línea (su fecha delata que no se
+        # ha refrescado) y, si no se puede, una vacía con el aviso.
         print(f'::warning::Visitas: {ex}')
+        anterior = publicada()
+        if anterior:
+            a.publicar.parent.mkdir(parents=True, exist_ok=True)
+            a.publicar.write_text(anterior)
+            print(f'Se mantiene la página publicada. Página: {a.publicar}')
+            return
         visitas, fallo = [], str(ex)
 
     contenido = informe(visitas, fallo)
