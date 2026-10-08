@@ -45,7 +45,8 @@ jobs:
       - run: npm ci
       - run: npm run build
       # Va después del build para quedar fuera del sitemap. Si GoatCounter falla,
-      # la página sale con el aviso y el sitio se publica igual.
+      # la página sale con el aviso y el sitio se publica igual. En los
+      # programados puede esperar una hora al límite de exportaciones.
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

@@ -76,17 +76,28 @@ def pedir(token, metodo, ruta, cuerpo=None, tolerar=()):
         raise FalloExportacion(f'GoatCounter respondió {e.code} a {metodo} {ruta}: {detalle}') from None
 
 
-def exportar(token):
-    """Pide la exportación completa y devuelve el CSV, sin escribirlo en disco."""
-    # GoatCounter a veces responde 404 o 5xx a una petición correcta y a la
-    # siguiente vuelve a ir. El 429 (una exportación por hora) no se reintenta.
+def exportar(token, aguardar=False):
+    """Pide la exportación completa y devuelve el CSV, sin escribirlo en disco.
+
+    Con `aguardar`, si se topa con el límite de una exportación por hora espera
+    a que pase en vez de rendirse.
+    """
+    # GoatCounter a veces responde 404 o 5xx a una petición correcta. Ese fallo
+    # gasta igualmente la exportación de la hora, así que el reintento suele
+    # llevarse un 429. En los despliegues programados no espera nadie y se
+    # aguarda la hora; en los demás se deja la página que ya estaba.
     for intento in range(3):
+        tolerar = (404, 500, 502, 503, 504) + ((429,) if aguardar else ())
         codigo, crudo = pedir(token, 'POST', '/export', {'format': 'csv'},
-                              tolerar=() if intento == 2 else (404, 500, 502, 503, 504))
+                              tolerar=() if intento == 2 else tolerar)
         if crudo is not None:
             break
-        print(f'::warning::Visitas: GoatCounter respondió {codigo} a POST /export; se reintenta.')
-        time.sleep(30)
+        if codigo == 429:
+            print('::warning::Visitas: GoatCounter no deja exportar hasta dentro de una hora; se espera.')
+            time.sleep(61 * 60)
+        else:
+            print(f'::warning::Visitas: GoatCounter respondió {codigo} a POST /export; se reintenta.')
+            time.sleep(30)
     id_ = json.loads(crudo)['id']
     # Recién creada puede tardar en aparecer (404) y en terminar (202).
     for _ in range(90):
@@ -597,7 +608,8 @@ def main():
 
     fallo = None
     try:
-        visitas = leer_csv(a.csv.read_bytes() if a.csv else exportar(leer_token()))
+        visitas = leer_csv(a.csv.read_bytes() if a.csv else exportar(
+            leer_token(), aguardar=os.environ.get('GITHUB_EVENT_NAME') == 'schedule'))
     except FalloExportacion as ex:
         if not a.publicar:
             sys.exit(str(ex))
