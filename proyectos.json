@@ -29,7 +29,6 @@
         "Cadena de respaldo gpt-oss-120b → gpt-oss-20b (Groq) → Qwen3 8B local con Ollama: espera ante el límite por minuto y cambia de modelo en el mismo mensaje cuando se agota la cuota diaria",
         "Voz de entrada con Whisper large-v3-turbo y de salida generada en local, con OmniVoice en GPU o Piper en CPU, frase a frase mientras suena la anterior",
         "Arquitectura hexagonal con un test que falla si una capa interior importa una exterior. El bloqueo de tarjetas se añadió al final como prueba, sin tocar el bucle del agente",
-        "750 pruebas sin red, con un LLM falso que sigue un guion: el agente, el flujo OTP, el aislamiento entre clientes y los intentos de inyección de prompt",
         "Historial compactado (~90% menos tokens por petición) y topes de tokens por cliente, por pregunta y por minuto"
       ],
       "stack": [

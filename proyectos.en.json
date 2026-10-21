@@ -34,7 +34,6 @@
         "Fallback chain gpt-oss-120b → gpt-oss-20b (Groq) → local Qwen3 8B on Ollama: it waits out the per-minute limit and switches model mid-message when the daily quota runs out",
         "Voice input with Whisper large-v3-turbo and voice output generated locally, with OmniVoice on the GPU or Piper on the CPU, sentence by sentence while the previous one plays",
         "Hexagonal architecture with a test that fails if an inner layer imports an outer one. Card blocking was added at the end as a test, without touching the agent loop",
-        "750 offline tests with a fake LLM that follows a script: the agent, the OTP flow, isolation between customers and prompt injection attempts",
         "Compacted history (~90% fewer tokens per request) and token limits per customer, per question and per minute"
       ],
       "memoriaContenido": "architecture, the agent and its NL→SQL, OTP security, scalability, voice, and the real problems that changed the design",
