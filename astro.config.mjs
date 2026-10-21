@@ -82,6 +82,13 @@ const fuentes = (camino) => {
 export default defineConfig({
   site: SITIO,
   build: { format: 'directory' },
+  // Fichas que cambiaron de id. La URL vieja ya estaba indexada y enlazada:
+  // Pages no sabe hacer un 301, así que Astro deja en ella una página que
+  // redirige y declara la nueva como canónica.
+  redirects: {
+    '/proyectos/habla-con-tu-dinero/': '/proyectos/unia/',
+    '/en/proyectos/habla-con-tu-dinero/': '/en/proyectos/unia/',
+  },
   integrations: [
     sitemap({
       // La portada es lo que debe posicionar; las fichas de proyecto la apoyan.

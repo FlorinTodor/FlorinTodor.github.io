@@ -5,7 +5,6 @@
  */
 import Base from '../layouts/Base.astro';
 import DemoGrafo from '../components/DemoGrafo.astro';
-import DemoBanca from '../components/DemoBanca.astro';
 import DemoRutina from '../components/DemoRutina.astro';
 import { perfil } from '../idiomas/contenido.js';
 import { t, LOCALE } from '../idiomas/textos.js';
@@ -56,21 +55,24 @@ const esquema = [{
 
 // La memoria es una obra en sí misma: declararla como Thesis hace que Google
 // la trate como documento académico y no como un PDF suelto del sitio. Está
-// escrita en español aunque la ficha se lea en inglés.
+// escrita en español aunque la ficha se lea en inglés. Una memoria que no es
+// de un TFG (la técnica de un reto) dice su tipo en `memoriaTipo`, y entonces
+// no lleva ni la etiqueta de TFG ni la universidad como editora.
 if (p.memoria) {
+  const tfg = !p.memoriaTipo || p.memoriaTipo === 'Thesis';
   esquema.push({
-    '@type': 'Thesis',
+    '@type': tfg ? 'Thesis' : p.memoriaTipo,
     '@id': `${url}#memoria`,
     name: p.titulo,
     description: p.resumen,
     inLanguage: 'es-ES',
-    learningResourceType: F.tfg,
+    ...(tfg ? { learningResourceType: F.tfg } : {}),
     ...(p.anio ? { datePublished: String(p.anio) } : {}),
     ...(p.memoriaPaginas ? { numberOfPages: p.memoriaPaginas } : {}),
     url: new URL(p.memoria, Astro.site).href,
     encodingFormat: 'application/pdf',
     author: { '@id': 'https://florintodor.dev/#persona' },
-    publisher: { '@type': 'CollegeOrUniversity', name: T.universidad },
+    ...(tfg ? { publisher: { '@type': 'CollegeOrUniversity', name: T.universidad } } : {}),
     about: { '@id': `${url}#proyecto` },
   });
 }
@@ -133,7 +135,10 @@ if (video) {
 
     <div class="columnas-proyecto">
       <div>
-        {/* ---------- vídeo ---------- */}
+        {/* ---------- vídeo ----------
+            Casi todas las demos son grabaciones de pantalla sin sonido, y van en
+            bucle y silenciadas. La que trae audio (una narración, la voz del
+            asistente) se oye al darle al play y no se repite. */}
         {(hayVideo || gif) && (
           <section id="demo">
             <div class="titulo-seccion">
@@ -145,7 +150,7 @@ if (video) {
                 <video
                   src={recurso(`media/${p.id}.mp4`)}
                   poster={recurso(`media/poster/${p.id}.jpg`)}
-                  controls muted loop playsinline preload="none"></video>
+                  controls muted={!video.audio} loop={!video.audio} playsinline preload="none"></video>
               ) : (
                 <img
                   src={recurso(gif.replace('/public/', ''))}
@@ -170,14 +175,6 @@ if (video) {
             <div class="titulo-seccion"><h2>{F.tituloRutina}</h2><div class="linea"></div></div>
             <p style="color:var(--texto-suave)">{F.introRutina}</p>
             <DemoRutina idioma={idioma} />
-          </section>
-        )}
-
-        {p.id === 'habla-con-tu-dinero' && (
-          <section id={hayVideo || gif ? undefined : 'demo'}>
-            <div class="titulo-seccion"><h2>{F.tituloBanca}</h2><div class="linea"></div></div>
-            <p style="color:var(--texto-suave)">{F.introBanca}</p>
-            <DemoBanca idioma={idioma} />
           </section>
         )}
 
@@ -213,7 +210,7 @@ if (video) {
           <div class="panel-lateral">
             <h3>{F.memoria}</h3>
             <p style="margin:0 0 .8rem;font-size:.89rem;color:var(--texto-suave)">
-              {F.memoriaTexto(p.memoriaPaginas)}
+              {F.memoriaTexto(p.memoriaPaginas, p.memoriaContenido)}
             </p>
             <a class="boton fantasma" href={recurso(p.memoria)} download>{F.descargarMemoria}</a>
           </div>

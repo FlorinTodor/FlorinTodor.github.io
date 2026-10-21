@@ -14,6 +14,32 @@
     "cvVista": "img/cv-preview-1-en.jpg"
   },
   "proyectos": {
+    "unia": {
+      "titulo": "Unia - Voice and text banking assistant",
+      "tituloSeo": "Unia: generative AI banking assistant",
+      "resumen": "A banking assistant you can talk or write to, built for the «Habla con tu dinero» (Talk to your money) challenge from the Unicaja Chair at the University of Granada. It checks your balance, answers free-form questions about your transactions, draws charts and prepares Bizum transfers. The model proposes and the server decides: no money moves without the code sent to your phone.",
+      "descripcionSeo": "AI banking assistant by voice and text: safe NL→SQL, charts chosen by the model, OTP-confirmed Bizum transfers and hexagonal architecture. Open source.",
+      "categorias": [
+        "AI",
+        "LLM agents",
+        "Cybersecurity",
+        "Accessibility",
+        "Backend"
+      ],
+      "destacados": [
+        "Hand-written tool-calling agent, no frameworks: eight tools and up to six rounds per question",
+        "The model authorises nothing: a Bizum transfer or a card unlock only leaves a pending operation, confirmed with a 6-digit code (or the simulated fingerprint) on an endpoint the model cannot reach",
+        "NL→SQL in four layers: read-only, an in-memory copy holding only that customer's data, SQLite's authorizer, and limits on time, rows and size",
+        "Charts without templates: the model picks the type, period and title; for the usual queries the server supplies the numbers, and a free-form configuration is validated before it is drawn",
+        "Fallback chain gpt-oss-120b → gpt-oss-20b (Groq) → local Qwen3 8B on Ollama: it waits out the per-minute limit and switches model mid-message when the daily quota runs out",
+        "Voice input with Whisper large-v3-turbo and voice output generated locally, with OmniVoice on the GPU or Piper on the CPU, sentence by sentence while the previous one plays",
+        "Hexagonal architecture with a test that fails if an inner layer imports an outer one. Card blocking was added at the end as a test, without touching the agent loop",
+        "750 offline tests with a fake LLM that follows a script: the agent, the OTP flow, isolation between customers and prompt injection attempts",
+        "Compacted history (~90% fewer tokens per request) and token limits per customer, per question and per minute"
+      ],
+      "memoriaContenido": "architecture, the agent and its NL→SQL, OTP security, scalability, voice, and the real problems that changed the design",
+      "contexto": "«Habla con tu dinero» challenge from the Unicaja Chair of Responsible Artificial Intelligence in Finance, University of Granada. Delivered in October 2026. It runs on a fictitious database: four made-up customers with two years of transactions."
+    },
     "ciber-asesoria": {
       "titulo": "Ciber-AsesorIA/ST - Regulatory compliance assessment engine",
       "tituloSeo": "Ciber-AsesorIA: ENS, NIS2 and DORA compliance",
@@ -38,30 +64,8 @@
         "All 9 specific objectives met"
       ],
       "contexto": "Bachelor's thesis - Double Degree in Computer Engineering and Business Administration, University of Granada. Supervisor: Dr. Pedro García Teodoro",
-      "autoria": "Ciber-AsesorIA is a joint project made of two subsystems. My thesis is the ST module (inference engine, assessment agent, CITAD and the integration with the Coordinator), plus the CITAD and Autopilot pieces of the frontend. The SN module and the rest of the frontend are the work of my project partner, Laura."
-    },
-    "habla-con-tu-dinero": {
-      "titulo": "Habla con tu dinero - Conversational banking assistant",
-      "tituloSeo": "Habla con tu dinero: AI banking assistant",
-      "resumen": "An assistant that lets you handle your finances by voice or in writing: check your balance, send a Bizum (the Spanish instant transfer system), analyse transactions in plain language and produce charts that the model itself designs.",
-      "descripcionSeo": "Banking assistant by voice or in writing: check your balance, send a Bizum transfer, analyse transactions in plain language and produce charts with AI.",
-      "categorias": [
-        "AI",
-        "LLM agents",
-        "Accessibility",
-        "Backend"
-      ],
-      "destacados": [
-        "LLM agent with tool calling: four tools orchestrated by the model over a simulated banking API",
-        "NL → SQL with server-side validation: read-only, a single statement and a keyword blacklist",
-        "Charts without templates: the LLM decides the visualisation and emits the full Chart.js configuration",
-        "Two-way voice: Whisper large-v3-turbo for input and Piper (a local neural voice) as the output fallback",
-        "Three-provider fallback chain that switches over mid-message on a 429, at around 3 s per turn",
-        "History compaction that cuts roughly 90% of the tokens per request",
-        "Token-by-token SSE streaming",
-        "Accessible by design: it works entirely in writing"
-      ],
-      "contexto": "Unicaja Challenge - University of Granada"
+      "autoria": "Ciber-AsesorIA is a joint project made of two subsystems. My thesis is the ST module (inference engine, assessment agent, CITAD and the integration with the Coordinator), plus the CITAD and Autopilot pieces of the frontend. The SN module and the rest of the frontend are the work of my project partner, Laura.",
+      "memoriaContenido": "approach, graph design, evaluation and results"
     },
     "museo-ar": {
       "titulo": "Museo AR - Augmented reality museum guide",

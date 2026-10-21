@@ -20,7 +20,6 @@ Dónde va cada cosa:
 | Un proyecto de `proyectos.json` | `proyectos.en.json`, misma clave `id` |
 | Una certificación de `certificaciones.json` | `certificaciones.en.json`, misma clave `id` |
 | Un artículo de `src/content/blog/` | `src/content/blog/en/<mismo-nombre>.md`, **mismo slug** |
-| El guion de la demo bancaria | `public/demo/sesion-banca.en.json` |
 | Formación o competencias | Están enteras en `textos.js`: hay que tocar `es` y `en` |
 | Las tarjetas de compartir | `python3 scripts/generar-og.py` (saca las dos tandas) |
 | El CV | `originales/CV_Florin_Todor_en.docx` → `public/CV_Florin_Emanuel_Todor_Gliga_en.pdf` y `public/img/cv-preview-1-en.jpg` |

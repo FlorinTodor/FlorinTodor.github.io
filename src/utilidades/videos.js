@@ -45,6 +45,7 @@ function leeMp4(ruta) {
   let segundos = 0;
   let ancho = 0;
   let alto = 0;
+  let audio = false;
 
   recorre(buf, 0, buf.length, ({ tipo, datos }) => {
     if (tipo === 'mvhd') {
@@ -57,10 +58,13 @@ function leeMp4(ruta) {
       // VisualSampleEntry: 8 de cabecera ya descontados, 24 de campos fijos.
       ancho = buf.readUInt16BE(datos + 24);
       alto = buf.readUInt16BE(datos + 26);
+    } else if (tipo === 'hdlr') {
+      // Una pista por caja: tras versión, flags y pre_defined va el tipo.
+      if (buf.toString('latin1', datos + 8, datos + 12) === 'soun') audio = true;
     }
   });
 
-  return { segundos, ancho, alto };
+  return { segundos, ancho, alto, audio };
 }
 
 /**
@@ -83,7 +87,7 @@ function fecha(rutaRelativa) {
   return fs.statSync(path.join(RAIZ, rutaRelativa)).mtime.toISOString();
 }
 
-/** Duración, tamaño y fecha de public/media/<id>.mp4, o null si no existe. */
+/** Duración, tamaño, fecha y si hay pista de audio en public/media/<id>.mp4, o null si no existe. */
 export function datosVideo(id) {
   if (cache.has(id)) return cache.get(id);
   const rutaRelativa = path.join('public/media', `${id}.mp4`);

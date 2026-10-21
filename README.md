@@ -63,7 +63,7 @@ src/
   content/blog/en/          ← los mismos, traducidos
   components/
     DemoGrafo.astro         ← explorador del grafo normativo (TFG)
-    DemoBanca.astro         ← reproductor de sesión del asistente bancario
+    DemoRutina.astro        ← dashboard de rutina-export con datos inventados
   styles/global.css         ← paleta y estilos
 public/
   media/<id>.mp4            ← vídeo de cada proyecto (se detecta solo)
@@ -80,12 +80,12 @@ public/
                               declarados con <link> y pueden vivir aquí
   CNAME, robots.txt         ← atados a la raíz por el protocolo
   demo/*.json               ← datos de las demos interactivas
-  docs/*.pdf                ← documentos largos (la memoria del TFG)
+  docs/*.pdf                ← documentos largos (las memorias del TFG y de Unia)
   certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
 originales/                 ← material en bruto, fuera de git: vídeos y PDF sin
                               procesar, la memoria del TFG y los certificados
                               que muestran DNI o NIE
-src/utilidades/videos.js    ← lee duración y tamaño del propio MP4 al compilar
+src/utilidades/videos.js    ← lee duración, tamaño y si hay audio del propio MP4 al compilar
 scripts/comprobar-traducciones.mjs  ← avisa de lo que falta por traducir
 scripts/generar-og.py       ← redibuja las tarjetas de og, en los dos idiomas
 scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
@@ -137,7 +137,6 @@ Dónde está cada cosa:
 | Textos de la interfaz | `src/idiomas/textos.js`, un objeto por idioma. |
 | Proyectos y certificaciones | `proyectos.en.json` y `certificaciones.en.json`, indexados por `id`. |
 | Artículos del blog | `src/content/blog/en/<mismo-nombre>.md`. El slug tiene que ser el mismo que el del original. |
-| Sesión de la demo bancaria | `public/demo/sesion-banca.en.json`. |
 
 **Lo que falte se sirve en español**, no desaparece: un proyecto nuevo aparece en
 `/en/` con su texto original hasta que se traduzca. Eso es cómodo, pero también
@@ -162,8 +161,8 @@ Dos cosas que **no** se traducen, a propósito:
 - **El grafo normativo** (`public/demo/grafo-normativo.json`). Son artículos del
   ENS, NIS2 y DORA en su redacción oficial; traducirlos a mano sería inventarse
   terminología legal. La demo lo dice en su pie.
-- **El CV y la memoria del TFG.** Están en español y sólo hay el PDF, sin fuente
-  para regenerarlo, así que el botón inglés avisa: «Download CV (Spanish)».
+- **Las memorias del TFG y de Unia.** Están en español y sólo hay el PDF; el
+  panel «Report» de la ficha inglesa lo avisa.
 
 Los vídeos de las demos también están grabados en español; la nota de la portada
 lo advierte en la versión inglesa.
@@ -184,6 +183,8 @@ Todo sale de `proyectos.json`:
 | `prototipo` | Opcional. URL de algo navegable que vive fuera (un prototipo de Figma). Pasa a ser el botón verde de la ficha, y la sección de medios se titula «El prototipo» en vez de «Demostración»: la nota de la portada promete grabaciones reales, y un montaje de capturas no lo es. |
 | `pendiente[]` | Notas privadas. **No se publican.** Si una empieza por `NO PUBLICAR`, el proyecto se excluye del sitio automáticamente. |
 | `memoria` | Opcional. Ruta dentro de `public/` a un documento largo; añade el panel «Memoria» y lo declara como `Thesis`. |
+| `memoriaPaginas`, `memoriaContenido` | Opcionales. Páginas y de qué trata, para el texto del panel: «El documento completo, 19 páginas: …». `memoriaContenido` se traduce. |
+| `memoriaTipo` | Opcional. Si la memoria no es de un TFG, su tipo de schema.org (`Report`): así no se declara como tesis ni con la universidad como editora. |
 
 ## Añadir una certificación
 
@@ -266,17 +267,22 @@ ffmpeg -i original.mp4 -vf "scale=1280:-2,fps=24" -c:v libx264 -crf 30 -an salid
 
 Un `.mp4` sin audio pesa mucho menos que un `.gif` equivalente.
 
+Si el vídeo tiene sonido (el de Unia lleva la voz del asistente), deja el audio
+(`-c:a aac -b:a 96k` en vez de `-an`). La ficha lo detecta y entonces no lo
+silencia ni lo pone en bucle; en la tarjeta de la portada sigue mudo.
+
 ## Las dos demos interactivas
 
 **Grafo normativo** (`ciber-asesoria`). Datos reales exportados del grafo del TFG:
 11 artículos de NIS2 y 68 de DORA enlazados con 70 controles del ENS. Los textos
 normativos provienen del BOE y el DOUE, de dominio público.
 
-**Asistente bancario** (`habla-con-tu-dinero`). Reproduce una conversación grabada,
-porque Pages no puede ejecutar el backend. El esquema SQL, las herramientas y las
-cifras son reales (la base ficticia se genera con semilla fija). Para sustituirlo
-por transcripciones reales, edita `public/demo/sesion-banca.json` (y su gemela
-`sesion-banca.en.json`).
+**Dashboard de rutina-export** (`rutina-export`). El dashboard real del proyecto,
+generado con datos inventados, en `public/demo/rutina-export/` (y `en/` dentro).
+
+Unia, el asistente bancario, no tiene demo interactiva: su código es público y la
+ficha enseña el vídeo de la entrega. Pages no puede ejecutar su backend, y una
+conversación guionizada enseñaría menos que la grabación real.
 
 ## Nunca metas claves aquí
 

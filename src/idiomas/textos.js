@@ -255,8 +255,8 @@ export const TEXTOS = {
       stack: 'Stack',
       contexto: 'Contexto',
       memoria: 'Memoria',
-      memoriaTexto: (paginas) =>
-        `El documento completo${paginas ? `, ${paginas} páginas` : ''}: planteamiento, diseño del grafo, evaluación y resultados.`,
+      memoriaTexto: (paginas, contenido) =>
+        `El documento completo${paginas ? `, ${paginas} páginas` : ''}${contenido ? `: ${contenido}` : ''}.`,
       descargarMemoria: 'Descargar el PDF',
       mas: 'Más',
       otrosProyectos: '← Otros proyectos',
@@ -271,9 +271,6 @@ export const TEXTOS = {
         titulo: 'Dashboard de rutina-export con datos de ejemplo',
         abrir: 'Abrirlo en una pestaña aparte',
       },
-      tituloBanca: 'Pruébalo',
-      introBanca:
-        'Pulsa las preguntas sugeridas para reproducir una conversación: verás las llamadas a herramientas del modelo, el SQL que genera y los gráficos que decide dibujar.',
       altOg: (titulo) => `${titulo} - proyecto de ${NOMBRE}`,
       tfg: 'Trabajo de Fin de Grado',
     },
@@ -352,14 +349,6 @@ export const TEXTOS = {
       error: 'No se pudo cargar el grafo.',
     },
 
-    banca: {
-      aviso:
-        'Sesión grabada, no un modelo en vivo: GitHub Pages es estático y no puede ejecutar el backend. Las cifras, el SQL y las herramientas son los reales del proyecto; los gráficos se renderizan aquí mismo con Chart.js a partir de la misma especificación que emite el modelo.',
-      reiniciar: 'Reiniciar',
-      saludo: 'Hola 👋 Soy tu asistente. Puedes preguntarme por tu saldo, tus gastos o pedirme que envíe un Bizum.',
-      fin: 'Fin de la sesión grabada.',
-      error: 'No se pudo cargar la sesión.',
-    },
   },
 
   en: {
@@ -579,8 +568,8 @@ export const TEXTOS = {
       stack: 'Stack',
       contexto: 'Context',
       memoria: 'Report',
-      memoriaTexto: (paginas) =>
-        `The full document${paginas ? `, ${paginas} pages` : ''}: approach, graph design, evaluation and results. Written in Spanish.`,
+      memoriaTexto: (paginas, contenido) =>
+        `The full document${paginas ? `, ${paginas} pages` : ''}${contenido ? `: ${contenido}` : ''}. Written in Spanish.`,
       descargarMemoria: 'Download the PDF',
       mas: 'More',
       otrosProyectos: '← Other projects',
@@ -595,9 +584,6 @@ export const TEXTOS = {
         titulo: 'rutina-export dashboard with sample data',
         abrir: 'Open it in its own tab',
       },
-      tituloBanca: 'Try it',
-      introBanca:
-        'Click the suggested questions to replay a conversation: you will see the model’s tool calls, the SQL it writes and the charts it decides to draw.',
       altOg: (titulo) => `${titulo} - a project by ${NOMBRE}`,
       tfg: "Bachelor's thesis",
     },
@@ -674,14 +660,6 @@ export const TEXTOS = {
       error: 'The graph could not be loaded.',
     },
 
-    banca: {
-      aviso:
-        'A recorded session, not a live model: GitHub Pages is static and cannot run the backend. The figures, the SQL and the tools are the real ones from the project; the charts are rendered right here with Chart.js from the same specification the model emits.',
-      reiniciar: 'Restart',
-      saludo: 'Hi 👋 I’m your assistant. You can ask me about your balance, your spending, or ask me to send a Bizum transfer.',
-      fin: 'End of the recorded session.',
-      error: 'The session could not be loaded.',
-    },
   },
 };
 

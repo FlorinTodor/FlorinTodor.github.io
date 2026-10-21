@@ -15,6 +15,52 @@
   },
   "proyectos": [
     {
+      "id": "unia",
+      "destacado": true,
+      "titulo": "Unia - Asistente bancario por voz y por texto",
+      "tituloSeo": "Unia: asistente bancario con IA generativa",
+      "resumen": "Asistente bancario por voz o por escrito para el reto «Habla con tu dinero» de la Cátedra Unicaja (UGR): consulta el saldo, responde preguntas libres sobre los movimientos, dibuja gráficos y prepara Bizum. El modelo propone y el servidor decide: sin el código que llega al móvil no se mueve dinero.",
+      "descripcionSeo": "Asistente bancario con IA por voz y por texto: NL→SQL seguro, gráficos que decide el modelo, Bizum con código OTP y arquitectura hexagonal. Código abierto.",
+      "destacados": [
+        "Agente con tool calling escrito a mano, sin frameworks: ocho herramientas y hasta seis rondas por pregunta",
+        "El modelo no autoriza nada: el Bizum y el desbloqueo de tarjeta dejan una operación pendiente que sólo se confirma con un código de 6 dígitos (o la huella simulada) en un endpoint al que el modelo no llega",
+        "NL→SQL en cuatro capas: sólo lectura, una copia en memoria con únicamente los datos del cliente, el authorizer de SQLite y topes de tiempo, filas y tamaño",
+        "Gráficos sin plantillas: el modelo elige tipo, periodo y título; en las consultas habituales los números los pone el servidor, y la configuración libre se valida antes de pintarla",
+        "Cadena de respaldo gpt-oss-120b → gpt-oss-20b (Groq) → Qwen3 8B local con Ollama: espera ante el límite por minuto y cambia de modelo en el mismo mensaje cuando se agota la cuota diaria",
+        "Voz de entrada con Whisper large-v3-turbo y de salida generada en local, con OmniVoice en GPU o Piper en CPU, frase a frase mientras suena la anterior",
+        "Arquitectura hexagonal con un test que falla si una capa interior importa una exterior. El bloqueo de tarjetas se añadió al final como prueba, sin tocar el bucle del agente",
+        "750 pruebas sin red, con un LLM falso que sigue un guion: el agente, el flujo OTP, el aislamiento entre clientes y los intentos de inyección de prompt",
+        "Historial compactado (~90% menos tokens por petición) y topes de tokens por cliente, por pregunta y por minuto"
+      ],
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Groq",
+        "SQLite",
+        "Ollama",
+        "Whisper",
+        "OmniVoice",
+        "Piper TTS",
+        "Chart.js",
+        "SSE",
+        "pytest"
+      ],
+      "categorias": [
+        "IA",
+        "Agentes LLM",
+        "Ciberseguridad",
+        "Accesibilidad",
+        "Backend"
+      ],
+      "repo": "https://github.com/FlorinTodor/Unia",
+      "memoria": "docs/memoria-tecnica-unia.pdf",
+      "memoriaPaginas": 19,
+      "memoriaTipo": "Report",
+      "memoriaContenido": "arquitectura, el agente y su NL→SQL, la seguridad con OTP, la escalabilidad, la voz y los problemas reales que cambiaron el diseño",
+      "anio": 2026,
+      "contexto": "Reto «Habla con tu dinero» de la Cátedra Unicaja de Inteligencia Artificial Responsable en Finanzas, Universidad de Granada. Entregado en octubre de 2026. Funciona sobre una base de datos ficticia: cuatro clientes inventados con dos años de movimientos."
+    },
+    {
       "id": "rutina-export",
       "destacado": true,
       "privado": false,
@@ -92,6 +138,7 @@
       "repo": "https://github.com/FlorinTodor/Ciber-AsesorIA",
       "memoria": "docs/memoria-tfg-ciber-asesoria.pdf",
       "memoriaPaginas": 145,
+      "memoriaContenido": "planteamiento, diseño del grafo, evaluación y resultados",
       "anio": 2026,
       "contexto": "Trabajo de Fin de Grado - Doble Grado en Ingeniería Informática y ADE, UGR. Tutor: Dr. Pedro García Teodoro",
       "autoria": "Ciber-AsesorIA es un proyecto conjunto de dos subsistemas. Mi TFG es el módulo ST (motor de inferencia, agente de evaluación, CITAD y la integración con el Coordinador), más las piezas CITAD y Autopiloto del frontend. El módulo SN y el resto del frontend son obra de mi compañera de proyecto, Laura.",
@@ -100,50 +147,6 @@
         "Sustituir la credencial por os.getenv y limpiar el historial de git antes de publicar",
         "NO subir el PDF del TFG tal cual: contiene el DNI en la autorización de depósito",
         "Confirmar con el tutor la publicación del código"
-      ]
-    },
-    {
-      "id": "habla-con-tu-dinero",
-      "destacado": true,
-      "privado": true,
-      "titulo": "Habla con tu dinero - Asistente bancario conversacional",
-      "tituloSeo": "Habla con tu dinero: asistente bancario con IA",
-      "resumen": "Asistente que permite gestionar tus finanzas por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos que el propio modelo diseña.",
-      "descripcionSeo": "Asistente bancario por voz o por escrito: consultar saldo, enviar Bizum, analizar movimientos en lenguaje natural y generar gráficos con IA.",
-      "destacados": [
-        "Agente LLM con tool calling: cuatro herramientas orquestadas por el modelo sobre una API bancaria simulada",
-        "NL → SQL con validación en servidor: solo lectura, sentencia única y lista negra de palabras clave",
-        "Gráficos sin plantillas: el LLM decide la visualización y emite la configuración Chart.js completa",
-        "Voz bidireccional: Whisper large-v3-turbo para entrada y Piper (voz neuronal local) como fallback de salida",
-        "Cadena de fallback de tres proveedores que salta en el mismo mensaje ante un 429, con ~3 s por turno",
-        "Compactación de historial que reduce ~90% los tokens por petición",
-        "Streaming SSE token a token",
-        "Accesible por diseño: funciona íntegramente por escrito"
-      ],
-      "stack": [
-        "Python",
-        "FastAPI",
-        "SSE",
-        "SQLite",
-        "Groq",
-        "Ollama",
-        "Whisper",
-        "Piper TTS",
-        "Chart.js",
-        "Web Speech API"
-      ],
-      "categorias": [
-        "IA",
-        "Agentes LLM",
-        "Accesibilidad",
-        "Backend"
-      ],
-      "repo": "https://github.com/FlorinTodor/Reto_Unicaja",
-      "anio": 2026,
-      "contexto": "Reto Unicaja - UGR",
-      "pendiente": [
-        "Revisar las bases del reto antes de publicar",
-        "Grabar demo en vídeo: la interacción por voz necesita verse"
       ]
     },
     {

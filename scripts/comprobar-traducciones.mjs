@@ -57,7 +57,7 @@ for (const { ruta, campos } of LISTAS) {
 // --- 2. Proyectos ------------------------------------------------------------
 const { proyectos } = leer('proyectos.json');
 const proyectosEn = leer('proyectos.en.json').proyectos;
-const CAMPOS_PROYECTO = ['titulo', 'tituloSeo', 'resumen', 'descripcionSeo', 'destacados', 'contexto', 'autoria'];
+const CAMPOS_PROYECTO = ['titulo', 'tituloSeo', 'resumen', 'descripcionSeo', 'destacados', 'contexto', 'autoria', 'memoriaContenido'];
 
 for (const p of proyectos) {
   const oculto = p.oculto || (p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR'));
@@ -118,9 +118,6 @@ for (const f of traducidos) {
 }
 
 // --- 5. Demos ----------------------------------------------------------------
-if (!fs.existsSync(new URL('../public/demo/sesion-banca.en.json', import.meta.url))) {
-  fallos.push('public/demo/: falta sesion-banca.en.json');
-}
 // El dashboard de rutina-export se embebe entero, interfaz incluida, y su
 // miniatura de la portada es una foto de él: las dos cosas llevan texto y las
 // dos tienen que existir en inglés.
