@@ -74,7 +74,7 @@ export const TEXTOS = {
         'Portafolio de Florin Emanuel Todor Gliga (Florín Todor): sistemas Linux y Docker, ciberseguridad e IA aplicada. Doble Grado en Informática y ADE, UGR.',
       titular: ['Construyo sistemas.', 'Y me aseguro de que ', 'aguanten', '.'],
       entradilla:
-        'Soy Florin, de Motril. Trabajo como <strong>desarrollador back-end</strong> en Gestiona Sistemas, en Python y en remoto. Vengo del <strong>Doble Grado en Ingeniería Informática y ADE</strong> de la Universidad de Granada, y me manejo sobre todo en <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>.',
+        'Soy Florin, de Motril. Trabajo como <strong>desarrollador back-end</strong> en Gestiona Sistemas, en Python y en remoto. Vengo del <strong>Doble Grado en Ingeniería Informática y ADE</strong> de la Universidad de Granada y ahora curso el <strong>Máster en Investigación en Ingeniería de Software y Sistemas Informáticos</strong> de la UNED. Me manejo sobre todo en <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>.',
       verProyectos: 'Ver proyectos',
       escribeme: 'Escríbeme',
     },
@@ -157,17 +157,31 @@ export const TEXTOS = {
     formacion: {
       titulo: 'Formación',
       verCertificaciones: 'Ver las certificaciones con su documento →',
+      enCurso: 'En curso',
+      logoAlt: (centro) => `Logo de ${centro}`,
       entradas: [
         {
           fecha: '2021 – 2026',
           centro: 'Universidad de Granada',
+          logo: 'img/centros/ugr.png',
           titulo: 'Doble Grado en Ingeniería Informática y Administración y Dirección de Empresas',
           enlace: 'https://grados.ugr.es/informatica-ade/docencia/plan-estudios',
           enlaceTexto: 'Ver el plan de estudios',
         },
         {
+          fecha: '2026 – 2027',
+          centro: 'UNED',
+          titulo: 'Máster Universitario en Investigación en Ingeniería de Software y Sistemas Informáticos',
+          detalle: 'Máster oficial de 60 ECTS, a distancia y orientado a la investigación.',
+          actual: true,
+          logo: 'img/centros/uned.png',
+          enlace: 'https://www.uned.es/universidad/inicio/estudios/masteres/master-universitario-en-investigacion-en-ingenieria-de-software-y-sistemas-informaticos.html?idContenido=1',
+          enlaceTexto: 'Ver el máster',
+        },
+        {
           fecha: '2020 – 2021',
           centro: 'Cisco Networking Academy',
+          logo: 'img/centros/cisco-networking-academy.png',
           titulo: 'PCAP: Programming Essentials in Python',
           detalle: 'Curso completo de Python de la Networking Academy. Hice también Introduction to Cybersecurity y, más tarde, Python Essentials 1.',
           certificados: ['cisco-pcap-programming-essentials-python', 'cisco-introduction-to-cybersecurity', 'cisco-python-essentials-1'],
@@ -175,6 +189,7 @@ export const TEXTOS = {
         {
           fecha: '2021 – 2022',
           centro: 'Universidad de Granada',
+          logo: 'img/centros/ugr.png',
           titulo: 'MOOC de Conocimiento Abierto y Software Libre · MOOC de Machine Learning y Big Data para Bioinformática',
           detalle: 'Dos cursos abiertos de la UGR: uno de software libre y otro de aprendizaje automático aplicado a datos biomédicos.',
           certificados: ['mooc-ugr-software-libre', 'mooc-ugr-ml-bioinformatica'],
@@ -182,6 +197,7 @@ export const TEXTOS = {
         {
           fecha: '2026',
           centro: 'British Council',
+          logo: 'img/centros/british-council.png',
           titulo: 'Aptis ESOL International Certificate - nivel B1',
           detalle: 'Nivel B1 del Marco Común Europeo en las cuatro destrezas: comprensión oral y escrita, y expresión oral y escrita.',
           certificados: ['british-council-aptis-b1'],
@@ -401,7 +417,7 @@ export const TEXTOS = {
         'Portfolio of Florin Emanuel Todor Gliga: Linux and Docker systems, cybersecurity and applied AI. Double Degree in Computer Engineering and Business, University of Granada.',
       titular: ['I build systems.', 'And I make sure they ', 'hold up', '.'],
       entradilla:
-        "I'm Florin, from Motril, in the south of Spain. I work as a <strong>back-end developer</strong> at Gestiona Sistemas, in Python and remotely. I come from a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada, and I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>.",
+        "I'm Florin, from Motril, in the south of Spain. I work as a <strong>back-end developer</strong> at Gestiona Sistemas, in Python and remotely. I come from a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada, and I'm now studying for a <strong>Master's in Research in Software Engineering and Computer Systems</strong> at UNED. I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>.",
       verProyectos: 'See the projects',
       escribeme: 'Email me',
     },
@@ -465,17 +481,31 @@ export const TEXTOS = {
     formacion: {
       titulo: 'Education',
       verCertificaciones: 'See the certifications with their documents →',
+      enCurso: 'In progress',
+      logoAlt: (centro) => `${centro} logo`,
       entradas: [
         {
           fecha: '2021 – 2026',
           centro: 'University of Granada',
+          logo: 'img/centros/ugr.png',
           titulo: 'Double Degree in Computer Engineering and Business Administration',
           enlace: 'https://grados.ugr.es/informatica-ade/docencia/plan-estudios',
           enlaceTexto: 'See the syllabus (in Spanish)',
         },
         {
+          fecha: '2026 – 2027',
+          centro: 'UNED (Spanish National Distance Education University)',
+          titulo: "Master's Degree in Research in Software Engineering and Computer Systems",
+          detalle: 'Official 60 ECTS master\'s degree, taught remotely and focused on research.',
+          actual: true,
+          logo: 'img/centros/uned.png',
+          enlace: 'https://www.uned.es/universidad/inicio/estudios/masteres/master-universitario-en-investigacion-en-ingenieria-de-software-y-sistemas-informaticos.html?idContenido=1',
+          enlaceTexto: 'See the programme (in Spanish)',
+        },
+        {
           fecha: '2020 – 2021',
           centro: 'Cisco Networking Academy',
+          logo: 'img/centros/cisco-networking-academy.png',
           titulo: 'PCAP: Programming Essentials in Python',
           detalle: 'The full Python course from the Networking Academy. I also took Introduction to Cybersecurity and, later, Python Essentials 1.',
           certificados: ['cisco-pcap-programming-essentials-python', 'cisco-introduction-to-cybersecurity', 'cisco-python-essentials-1'],
@@ -483,6 +513,7 @@ export const TEXTOS = {
         {
           fecha: '2021 – 2022',
           centro: 'University of Granada',
+          logo: 'img/centros/ugr.png',
           titulo: 'MOOC on Open Knowledge and Free Software · MOOC on Machine Learning and Big Data for Bioinformatics',
           detalle: 'Two open courses from the University of Granada: one on free software, the other on machine learning applied to biomedical data.',
           certificados: ['mooc-ugr-software-libre', 'mooc-ugr-ml-bioinformatica'],
@@ -490,6 +521,7 @@ export const TEXTOS = {
         {
           fecha: '2026',
           centro: 'British Council',
+          logo: 'img/centros/british-council.png',
           titulo: 'Aptis ESOL International Certificate - level B1',
           detalle: 'CEFR level B1 in the four skills: listening, reading, speaking and writing.',
           certificados: ['british-council-aptis-b1'],

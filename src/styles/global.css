@@ -233,7 +233,8 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
   padding: .15rem .55rem; margin: 0 0 .7rem .4rem;
 }
 
-/* Experiencia: el logo de la empresa al lado del puesto. El fondo blanco es
+/* Experiencia y formación: el logo de la empresa o del centro al lado del
+   puesto o del título. El fondo blanco es
    para los logos que vienen con fondo transparente o muy oscuro, que sobre el
    panel azul del sitio se perderían. */
 .cabecera-puesto { display: flex; align-items: center; gap: .8rem; }

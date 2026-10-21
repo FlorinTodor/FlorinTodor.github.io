@@ -146,8 +146,15 @@ const certPorId = Object.fromEntries(
     {T.formacion.entradas.map((f) => (
       <div class="tarjeta">
         <span class="pastilla-fecha">{f.fecha}</span>
-        <div style="color:var(--texto-tenue);font-size:.84rem">{f.centro}</div>
-        <h3 style="font-size:1.02rem;margin:.4rem 0 .6rem">{f.titulo}</h3>
+        {f.actual && <span class="pastilla-actual">{T.formacion.enCurso}</span>}
+        <div class="cabecera-puesto">
+          {f.logo && <img class="logo-empresa" src={recurso(f.logo)} alt={T.formacion.logoAlt(f.centro)} width="44" height="44" loading="lazy" />}
+          <div>
+            <div style="color:var(--texto-tenue);font-size:.84rem">{f.centro}</div>
+            <h3 style="font-size:1.02rem;margin:.25rem 0 0">{f.titulo}</h3>
+          </div>
+        </div>
+        <div style="height:.6rem"></div>
         {f.detalle && <p style="color:var(--texto-suave);font-size:.9rem;margin:0">{f.detalle}</p>}
         {f.enlace && (
           <a href={f.enlace} target="_blank" rel="noopener" style="font-size:.9rem">

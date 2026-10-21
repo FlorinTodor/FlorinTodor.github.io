@@ -35,7 +35,7 @@ for (const k of enEn) if (!enEs.includes(k)) fallos.push(`textos.js: sobra en in
 // se tocan de una pieza.
 const LISTAS = [
   { ruta: 'experiencia.entradas', campos: ['fecha', 'empresa', 'puesto', 'lugar', 'detalle', 'herramientas', 'logo'] },
-  { ruta: 'formacion.entradas', campos: ['fecha', 'centro', 'titulo', 'detalle'] },
+  { ruta: 'formacion.entradas', campos: ['fecha', 'centro', 'titulo', 'detalle', 'enlaceTexto', 'logo'] },
 ];
 
 for (const { ruta, campos } of LISTAS) {
