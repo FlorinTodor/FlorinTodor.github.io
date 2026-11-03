@@ -22,9 +22,9 @@ export const TEXTOS = {
   es: {
     selector: { titulo: 'Idioma', es: 'Español', en: 'English' },
     saltar: 'Saltar al contenido',
-    profesion: 'Desarrollador back-end',
+    profesion: 'Ingeniero informático',
     descripcionPersona:
-      'Desarrollador back-end en Python, con base en administración de sistemas Linux, ciberseguridad e inteligencia artificial aplicada.',
+      'Ingeniero informático: desarrollo back-end en Python, sistemas Linux, ciberseguridad e inteligencia artificial aplicada. Creador de Radar España.',
     universidad: 'Universidad de Granada',
     conocimientos: [
       'Linux', 'Docker', 'Ciberseguridad', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
@@ -71,10 +71,10 @@ export const TEXTOS = {
     portada: {
       titulo: `${NOMBRE} - Linux, ciberseguridad e IA`,
       descripcion:
-        'Portafolio de Florin Emanuel Todor Gliga (Florín Todor): sistemas Linux y Docker, ciberseguridad e IA aplicada. Doble Grado en Informática y ADE, UGR.',
+        'Portafolio de Florin Emanuel Todor Gliga (Florín Todor), creador de Radar España: sistemas Linux y Docker, ciberseguridad e IA aplicada. Informática y ADE, UGR.',
       titular: ['Construyo sistemas.', 'Y me aseguro de que ', 'aguanten', '.'],
       entradilla:
-        'Soy Florin, de Motril. Trabajo como <strong>desarrollador back-end</strong> en Gestiona Sistemas, en Python y en remoto. Vengo del <strong>Doble Grado en Ingeniería Informática y ADE</strong> de la Universidad de Granada y ahora curso el <strong>Máster en Investigación en Ingeniería de Software y Sistemas Informáticos</strong> de la UNED. Me manejo sobre todo en <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>.',
+        'Soy Florin, de Motril. Trabajo como <strong>desarrollador back-end</strong> en Gestiona Sistemas, en Python y en remoto. Vengo del <strong>Doble Grado en Ingeniería Informática y ADE</strong> de la Universidad de Granada y ahora curso el <strong>Máster en Investigación en Ingeniería de Software y Sistemas Informáticos</strong> de la UNED. Me manejo sobre todo en <strong>sistemas Linux</strong>, <strong>ciberseguridad</strong> e <strong>IA aplicada</strong>. Mi proyecto más conocido es <a href="/proyectos/radar-espana/">Radar España</a>, un mapa de los trenes y las emergencias de España hecho con datos abiertos.',
       verProyectos: 'Ver proyectos',
       escribeme: 'Escríbeme',
     },
@@ -234,6 +234,7 @@ export const TEXTOS = {
       codigo: 'Código ↗',
       memoria: 'Memoria ↗',
       prototipo: 'Prototipo ↗',
+      web: 'Web ↗',
       demo: 'Demo →',
     },
 
@@ -242,6 +243,10 @@ export const TEXTOS = {
       verCodigo: 'Ver el código en GitHub ↗',
       verMemoria: 'Memoria en PDF ↗',
       verPrototipo: 'Abrir el prototipo ↗',
+      verWeb: (dominio) => `Abrir ${dominio} ↗`,
+      cifras: 'En cifras',
+      tituloPantalla: 'La web en marcha',
+      comoEsta: 'Cómo está hecho',
       tituloPrototipo: 'El prototipo',
       introPrototipo: 'Capturas del prototipo de alta fidelidad. El navegable está detrás del botón de arriba.',
       capturasAlt: (titulo) => `Capturas del prototipo de ${titulo}`,
@@ -354,9 +359,9 @@ export const TEXTOS = {
   en: {
     selector: { titulo: 'Language', es: 'Español', en: 'English' },
     saltar: 'Skip to content',
-    profesion: 'Back-end Developer',
+    profesion: 'Computer Engineer',
     descripcionPersona:
-      'Python back-end developer, with a background in Linux systems administration, cybersecurity and applied artificial intelligence.',
+      'Computer engineer: Python back-end development, Linux systems, cybersecurity and applied artificial intelligence. Creator of Radar España.',
     universidad: 'University of Granada',
     conocimientos: [
       'Linux', 'Docker', 'Cybersecurity', 'ModSecurity', 'OWASP', 'Nginx', 'HAProxy',
@@ -403,10 +408,10 @@ export const TEXTOS = {
     portada: {
       titulo: `${NOMBRE} - Linux, cybersecurity and AI`,
       descripcion:
-        'Portfolio of Florin Emanuel Todor Gliga: Linux and Docker systems, cybersecurity and applied AI. Double Degree in Computer Engineering and Business, University of Granada.',
+        'Portfolio of Florin Emanuel Todor Gliga, creator of Radar España: Linux and Docker, cybersecurity and applied AI. Computer Engineering and Business, UGR.',
       titular: ['I build systems.', 'And I make sure they ', 'hold up', '.'],
       entradilla:
-        "I'm Florin, from Motril, in the south of Spain. I work as a <strong>back-end developer</strong> at Gestiona Sistemas, in Python and remotely. I come from a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada, and I'm now studying for a <strong>Master's in Research in Software Engineering and Computer Systems</strong> at UNED. I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>.",
+        "I'm Florin, from Motril, in the south of Spain. I work as a <strong>back-end developer</strong> at Gestiona Sistemas, in Python and remotely. I come from a <strong>Double Degree in Computer Engineering and Business Administration</strong> at the University of Granada, and I'm now studying for a <strong>Master's in Research in Software Engineering and Computer Systems</strong> at UNED. I work mostly with <strong>Linux systems</strong>, <strong>cybersecurity</strong> and <strong>applied AI</strong>. My best-known project is <a href='/en/proyectos/radar-espana/'>Radar España</a>, a map of Spain's trains and emergencies built on open data.",
       verProyectos: 'See the projects',
       escribeme: 'Email me',
     },
@@ -547,6 +552,7 @@ export const TEXTOS = {
       codigo: 'Code ↗',
       memoria: 'Report ↗',
       prototipo: 'Prototype ↗',
+      web: 'Live site ↗',
       demo: 'Demo →',
     },
 
@@ -555,6 +561,10 @@ export const TEXTOS = {
       verCodigo: 'View the code on GitHub ↗',
       verMemoria: 'Full report (PDF) ↗',
       verPrototipo: 'Open the prototype ↗',
+      verWeb: (dominio) => `Open ${dominio} ↗`,
+      cifras: 'In numbers',
+      tituloPantalla: 'The live site',
+      comoEsta: 'Under the hood',
       tituloPrototipo: 'The prototype',
       introPrototipo: 'Screenshots of the high-fidelity prototype. The navigable one is behind the button above.',
       capturasAlt: (titulo) => `Screenshots of the ${titulo} prototype`,

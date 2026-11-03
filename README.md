@@ -181,6 +181,10 @@ Todo sale de `proyectos.json`:
 | `stack[]`, `categorias[]` | Etiquetas. |
 | `autoria` | Opcional. En trabajos compartidos, deja clara tu parte. |
 | `prototipo` | Opcional. URL de algo navegable que vive fuera (un prototipo de Figma). Pasa a ser el botón verde de la ficha, y la sección de medios se titula «El prototipo» en vez de «Demostración»: la nota de la portada promete grabaciones reales, y un montaje de capturas no lo es. |
+| `web` | Opcional. URL de un proyecto en producción. Pasa a ser el botón verde ("Abrir radarespaña.es") y el vídeo sale a mitad de la ficha dentro de un marco de navegador con esa dirección, que se reproduce solo mientras está a la vista. |
+| `pantallaTexto` | Opcional, con `web`. Texto encima de esa pantalla. Se traduce. |
+| `cifras[]` | Opcional. `{ valor, texto }` debajo del resumen (visualizaciones, fuentes...). Se traduce entero: en inglés cambian los separadores de miles. |
+| `apartados[]` | Opcional. `{ titulo, puntos[] }`: tarjetas de "Cómo está hecho" (seguridad, caché, despliegue...). Puntos cortos: el detalle va en el README del proyecto. Se traduce. |
 | `pendiente[]` | Notas privadas. **No se publican.** Si una empieza por `NO PUBLICAR`, el proyecto se excluye del sitio automáticamente. |
 | `memoria` | Opcional. Ruta dentro de `public/` a un documento largo; añade el panel «Memoria» y lo declara como `Thesis`. |
 | `memoriaPaginas`, `memoriaContenido` | Opcionales. Páginas y de qué trata, para el texto del panel: «El documento completo, 19 páginas: …». `memoriaContenido` se traduce. |

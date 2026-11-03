@@ -55,6 +55,7 @@ const cartel = !video && (interactiva || p.prototipo) ? buscarCartel(p.id, idiom
     <div class="enlaces-tarjeta">
       {/* Los privados ya llevan su etiqueta ámbar en el pie: repetir aquí un
           enlace a la propia tarjeta no aporta nada. */}
+      {p.web && <a href={p.web} target="_blank" rel="noopener">{T.web}</a>}
       {!p.privado && <a href={p.repo} target="_blank" rel="noopener">{T.codigo}</a>}
       {p.memoria && (
         <a href={recurso(p.memoria)} target="_blank" rel="noopener">{T.memoria}</a>

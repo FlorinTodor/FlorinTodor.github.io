@@ -7,6 +7,7 @@
     "ciudad": "Motril, Granada",
     "github": "https://github.com/FlorinTodor",
     "linkedin": "https://www.linkedin.com/in/florin-emanuel-todor-gliga/",
+    "x": "https://x.com/Flo183021",
     "instagram": "https://www.instagram.com/florintodor_/",
     "email": "florintodorgliga@gmail.com",
     "telefono": "642 394 364",
@@ -14,6 +15,99 @@
     "cvVista": "img/cv-preview-1.jpg"
   },
   "proyectos": [
+    {
+      "id": "radar-espana",
+      "destacado": true,
+      "titulo": "Radar España - Trenes, metros y emergencias en un mapa",
+      "tituloSeo": "Radar España (radarespaña.es): cómo está hecho",
+      "resumen": "Mapa de los trenes, metros, tranvías y autobuses de España, cruzado con tráfico, terremotos, incendios, avisos meteorológicos, la red eléctrica y los avisos oficiales de protección civil. Reúne 53 fuentes de datos abiertos y un motor de reglas avisa de lo que merece atención. Está en producción en radarespaña.es y su presentación en X pasó de 200.000 visualizaciones.",
+      "descripcionSeo": "Cómo está hecho Radar España, el mapa de trenes y emergencias de radarespaña.es: 53 fuentes de datos abiertos, caché en Cloudflare, Docker y seguridad.",
+      "cifras": [
+        {
+          "valor": "+200.000",
+          "texto": "visualizaciones en X"
+        },
+        {
+          "valor": "53",
+          "texto": "fuentes de datos abiertos"
+        },
+        {
+          "valor": "~2.400",
+          "texto": "estaciones con su ficha"
+        },
+        {
+          "valor": "1 día",
+          "texto": "del primer commit a producción"
+        }
+      ],
+      "destacados": [
+        "Trenes de Renfe (Cercanías, AVE, Larga y Media Distancia), FGC, Euskotren y Metro Bilbao con su posición y su retraso en directo. Donde el operador sólo publica el horario (Ouigo, ALSA, una docena de metros y tranvías), una posición estimada y marcada como tal",
+        "Lo que le queda a cada tren hasta su destino, dibujado por la vía con la red ferroviaria de Adif, y su recorrido de los últimos 45 minutos",
+        "Motor de reglas que avisa de trenes detenidos en plena vía, varios parados en la misma zona, saltos bruscos de retraso, terremotos o incendios cerca de trenes y fuentes de datos caídas",
+        "Apagón de una isla: compara la demanda eléctrica real de cada isla de Canarias, Ceuta y Melilla con la prevista. Con los datos del 2 de noviembre habría avisado del apagón de La Palma a los 3 minutos, una hora antes que el aviso oficial",
+        "Unas 2.400 estaciones con su ficha (trenes que llegan con vía y retraso, líneas, conexiones a pie y accesibilidad) y casi 1.900 fotos de Wikimedia Commons revisadas una a una: licencia, autor y sin personas reconocibles",
+        "Sólo fuentes con licencia de reutilización, cada dato con su atribución y su fecha. Nada de endpoints internos de apps ni de visores: Adif bloquea los clientes automatizados y ese bloqueo no se esquiva"
+      ],
+      "pantallaTexto": "Grabado en producción: Madrid con sus Cercanías, un AVE con lo que le queda hasta su destino, la ficha de una estación y una alerta. La web no se deja incrustar en otras páginas (es una de sus defensas), así que aquí va en vídeo.",
+      "apartados": [
+        {
+          "titulo": "Seguridad",
+          "puntos": [
+            "Ningún puerto web abierto en el VPS: las visitas entran por un túnel de Cloudflare.",
+            "Contenedor de sólo lectura, sin capacidades de Linux ni escalada de privilegios, y con techo de memoria y CPU para que un fallo no se coma la máquina.",
+            "CSP estricta, HSTS y prohibido incrustar la web en otras páginas. Estadísticas sin cookies y sin registro de visitas en el servidor.",
+            "Repositorio público sin pistas para un atacante: ni direcciones, ni claves, ni cómo se protege el servidor."
+          ]
+        },
+        {
+          "titulo": "Caché y rendimiento",
+          "puntos": [
+            "El directo se sirve desde la caché de Cloudflare y se renueva cada pocos segundos: el servidor lo calcula una vez y lo comparten todas las visitas, así que un pico de tráfico apenas le llega.",
+            "Respuestas de la API memorizadas, con caducidad y techo de memoria. Los cálculos caros (el recorrido de un tren, lo que le queda) tienen su propio tope y se comparten entre visitas.",
+            "Horarios GTFS de más de cien redes leídos por partes y guardados ya procesados: tras un reinicio el mapa vuelve completo en segundos, y el pico de memoria bajó de 924 a 584 MB.",
+            "Colas con tope y fallos aislados: ni una fuente que responda mal ni una avalancha de visitas tumban el servidor."
+          ]
+        },
+        {
+          "titulo": "Despliegue",
+          "puntos": [
+            "Pipeline en GitHub Actions: tests, entorno de pruebas con datos reales en el mismo VPS (tras Cloudflare Access), aprobación manual y producción, que despliega la misma imagen que se ha probado.",
+            "Sin cortes: la versión nueva arranca junto a la que funciona y nginx le pasa las visitas cuando ya ha cargado los datos. Si no arranca bien, vuelve sola a la anterior.",
+            "Tests sin red y con reloj inyectable: dan lo mismo en el servidor que en un portátil."
+          ]
+        },
+        {
+          "titulo": "Arquitectura",
+          "puntos": [
+            "Node.js con arquitectura hexagonal: dominio puro, casos de uso con sus puertos y un adaptador por fuente. Una fuente GTFS-Realtime nueva no necesita código.",
+            "Sin framework: servidor HTTP, planificador de sondeos y motor de reglas escritos a mano, con cuatro dependencias en total.",
+            "El trabajo pesado de CPU, como el XML de tráfico de la DGT, va en hilos aparte (worker_threads)."
+          ]
+        }
+      ],
+      "stack": [
+        "Node.js",
+        "MapLibre GL",
+        "Docker",
+        "Cloudflare",
+        "GTFS-Realtime",
+        "GitHub Actions",
+        "nginx",
+        "DATEX II",
+        "worker_threads",
+        "node:test"
+      ],
+      "categorias": [
+        "Datos abiertos",
+        "Backend",
+        "Sistemas",
+        "Ciberseguridad"
+      ],
+      "web": "https://radarespaña.es",
+      "repo": "https://github.com/FlorinTodor/radar-es",
+      "anio": 2026,
+      "contexto": "Proyecto personal y sin ánimo de lucro, en producción desde el 30 de octubre de 2026. Corre en un único VPS con Docker, detrás de Cloudflare. Los datos públicos llegan con retraso: sirve para informarse, no para decisiones de seguridad operativa, que corresponden a Adif y a los operadores."
+    },
     {
       "id": "unia",
       "destacado": true,

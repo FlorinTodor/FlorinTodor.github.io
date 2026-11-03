@@ -14,6 +14,82 @@
     "cvVista": "img/cv-preview-1-en.jpg"
   },
   "proyectos": {
+    "radar-espana": {
+      "titulo": "Radar España - Trains, metros and emergencies on one map",
+      "tituloSeo": "Radar España (radarespaña.es): how it's built",
+      "resumen": "A map of Spain's trains, metros, trams and buses, overlaid with traffic, earthquakes, wildfires, weather warnings, the power grid and official civil protection alerts. It brings together 53 open data sources, and a rule engine flags what deserves attention. It runs in production at radarespaña.es, and its launch post on X passed 200,000 views.",
+      "descripcionSeo": "How Radar España is built, the map of Spain's trains and emergencies at radarespaña.es: 53 open data sources, Cloudflare caching, Docker and security.",
+      "cifras": [
+        {
+          "valor": "200,000+",
+          "texto": "views on X"
+        },
+        {
+          "valor": "53",
+          "texto": "open data sources"
+        },
+        {
+          "valor": "~2,400",
+          "texto": "stations, each with its own page"
+        },
+        {
+          "valor": "1 day",
+          "texto": "from first commit to production"
+        }
+      ],
+      "categorias": [
+        "Open data",
+        "Backend",
+        "Systems",
+        "Cybersecurity"
+      ],
+      "destacados": [
+        "Renfe trains (commuter, high-speed, long and medium distance), FGC, Euskotren and Metro Bilbao with their live position and delay. Where the operator only publishes a timetable (Ouigo, ALSA, a dozen metro and tram networks), an estimated position, clearly marked as such",
+        "What each train has left to its destination, drawn along the actual track using Adif's rail network, plus its route over the last 45 minutes",
+        "A rule engine that warns about trains stopped in open track, several stopped in the same area, sudden jumps in delay, earthquakes or wildfires near trains, and data sources going down",
+        "Island blackouts: it compares the real power demand of each Canary island, Ceuta and Melilla with the forecast. With the data from 2 November it would have flagged the La Palma blackout within 3 minutes, an hour before the official notice",
+        "About 2,400 stations with their own page (incoming trains with platform and delay, lines, walking connections and accessibility) and nearly 1,900 Wikimedia Commons photos reviewed one by one: licence, author and no recognisable people",
+        "Only sources with a reuse licence, every piece of data with its attribution and date. No internal app or viewer endpoints: Adif blocks automated clients, and that block is not bypassed"
+      ],
+      "pantallaTexto": "Recorded in production (the map's interface is in Spanish): Madrid with its commuter trains, a high-speed train with what it has left to its destination, a station page and an alert. The site refuses to be embedded in other pages (one of its defences), so here it is on video.",
+      "apartados": [
+        {
+          "titulo": "Security",
+          "puntos": [
+            "No web port open on the VPS: visitors come in through a Cloudflare tunnel.",
+            "Read-only container with no Linux capabilities and no privilege escalation, plus memory and CPU caps so a failure cannot eat the whole machine.",
+            "Strict CSP, HSTS, and the site cannot be embedded in other pages. Cookie-free analytics and no visitor logs on the server.",
+            "A public repository with nothing useful to an attacker: no addresses, no keys, and nothing about how the server is protected."
+          ]
+        },
+        {
+          "titulo": "Caching and performance",
+          "puntos": [
+            "The live feed is served from Cloudflare's cache and refreshed every few seconds: the server computes it once and every visitor shares it, so a traffic spike barely reaches it.",
+            "Memoised API responses with expiry and a memory cap. Expensive calculations (a train's route, what it has left) have their own limit and are shared between visitors.",
+            "GTFS timetables from over a hundred networks read in chunks and stored already processed: after a restart the map is complete again in seconds, and peak memory dropped from 924 to 584 MB.",
+            "Bounded queues and isolated failures: neither a misbehaving source nor a flood of visitors can take the server down."
+          ]
+        },
+        {
+          "titulo": "Deployment",
+          "puntos": [
+            "GitHub Actions pipeline: tests, a staging environment with real data on the same VPS (behind Cloudflare Access), manual approval, then production, which deploys the very image that was tested.",
+            "Zero downtime: the new version starts next to the running one and nginx hands it traffic once its data is loaded. If it does not start cleanly, it rolls back on its own.",
+            "Tests with no network and an injectable clock: same results on the server as on a laptop."
+          ]
+        },
+        {
+          "titulo": "Architecture",
+          "puntos": [
+            "Node.js with hexagonal architecture: a pure domain, use cases with their ports, and one adapter per source. A new GTFS-Realtime source needs no code.",
+            "No framework: HTTP server, polling scheduler and rule engine written by hand, with four dependencies in total.",
+            "Heavy CPU work, such as parsing the DGT's traffic XML, runs in separate threads (worker_threads)."
+          ]
+        }
+      ],
+      "contexto": "A personal, non-profit project, in production since 30 October 2026. It runs on a single VPS with Docker, behind Cloudflare. Public data arrives with a delay: it is for keeping informed, not for operational safety decisions, which belong to Adif and the operators."
+    },
     "unia": {
       "titulo": "Unia - Voice and text banking assistant",
       "tituloSeo": "Unia: generative AI banking assistant",

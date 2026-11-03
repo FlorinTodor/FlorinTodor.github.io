@@ -92,8 +92,10 @@ const persona = {
   knowsAbout: T.conocimientos,
   // Los perfiles que confirman que es la misma persona, para que Google no la
   // reparta entre varios Florin. Instagram entra aquí pero no se enlaza en la
-  // página: cuenta personal, y el sitio es para enseñar proyectos.
-  sameAs: [p.github, p.linkedin, p.instagram],
+  // página: cuenta personal, y el sitio es para enseñar proyectos. X es donde
+  // se movió Radar España, y radarespaña.es declara esta misma persona (mismo
+  // @id) con ese perfil: tienen que coincidir.
+  sameAs: [p.github, p.linkedin, p.x, p.instagram].filter(Boolean),
 };
 
 const sitio = {

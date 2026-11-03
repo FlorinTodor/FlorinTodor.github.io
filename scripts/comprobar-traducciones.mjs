@@ -57,7 +57,10 @@ for (const { ruta, campos } of LISTAS) {
 // --- 2. Proyectos ------------------------------------------------------------
 const { proyectos } = leer('proyectos.json');
 const proyectosEn = leer('proyectos.en.json').proyectos;
-const CAMPOS_PROYECTO = ['titulo', 'tituloSeo', 'resumen', 'descripcionSeo', 'destacados', 'contexto', 'autoria', 'memoriaContenido'];
+const CAMPOS_PROYECTO = [
+  'titulo', 'tituloSeo', 'resumen', 'descripcionSeo', 'destacados', 'contexto', 'autoria', 'memoriaContenido',
+  'cifras', 'pantallaTexto', 'apartados',
+];
 
 for (const p of proyectos) {
   const oculto = p.oculto || (p.pendiente || []).some((x) => x.startsWith('NO PUBLICAR'));
@@ -76,6 +79,17 @@ for (const p of proyectos) {
   if (tr.destacados && tr.destacados.length !== p.destacados.length) {
     fallos.push(`proyectos.en.json: ${p.id} tiene ${tr.destacados.length} destacados y el español ${p.destacados.length}`);
   }
+  // Las cifras y los apartados son listas: una de menos se serviría en
+  // español entera, porque la traducción sustituye el campo completo.
+  if (tr.cifras && p.cifras && tr.cifras.length !== p.cifras.length) {
+    fallos.push(`proyectos.en.json: ${p.id} tiene ${tr.cifras.length} cifras y el español ${p.cifras.length}`);
+  }
+  (p.apartados || []).forEach((a, i) => {
+    const b = tr.apartados?.[i];
+    if (tr.apartados && (!b || b.puntos.length !== a.puntos.length)) {
+      fallos.push(`proyectos.en.json: ${p.id} apartado ${i + 1} ("${a.titulo}") no cuadra con el español`);
+    }
+  });
 }
 
 // --- 3. Certificaciones ------------------------------------------------------

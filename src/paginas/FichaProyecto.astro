@@ -23,11 +23,19 @@ const conDemo = DEMOS_INTERACTIVAS.includes(p.id);
 const hayDemo = hayVideo || !!gif || conDemo;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
+// Un proyecto que está en producción (`web`) enseña su grabación como una
+// pantalla de navegador, a mitad de la ficha: después de contar qué hace y
+// antes de cómo está hecho. El dominio se escribe tal cual (con su ñ): new
+// URL() lo devolvería en punycode.
+const dominio = p.web ? p.web.replace(/^https?:\/\//, '').replace(/\/$/, '') : null;
+const pantalla = !!p.web && hayVideo;
+
 // Enlaces de la cabecera, de más a menos fuerte: el primero se pinta en verde.
 // Manda el prototipo cuando lo hay, porque es lo único que se puede tocar; en
 // los proyectos con el repositorio privado manda la memoria, y si tampoco la
 // hay, la demo; el correo queda siempre el último.
 const acciones = [
+  ...(p.web ? [{ href: p.web, texto: F.verWeb(dominio), externo: true }] : []),
   ...(p.prototipo ? [{ href: p.prototipo, texto: F.verPrototipo, externo: true }] : []),
   ...(!p.privado ? [{ href: p.repo, texto: F.verCodigo, externo: true }] : []),
   ...(p.memoria ? [{ href: recurso(p.memoria), texto: F.verMemoria, externo: true }] : []),
@@ -50,8 +58,39 @@ const esquema = [{
   ...(p.anio ? { dateCreated: String(p.anio) } : {}),
   ...(p.stack?.length ? { programmingLanguage: p.stack } : {}),
   ...(p.repo && !p.privado ? { codeRepository: p.repo } : {}),
+  ...(p.web ? { targetProduct: { '@id': `${url}#web` } } : {}),
   author: { '@id': 'https://florintodor.dev/#persona' },
 }];
+
+// La web en producción, como aplicación con autor. La URL va en punycode,
+// igual que el canonical de la propia web, para que Google vea que es la misma.
+if (p.web) {
+  esquema.push({
+    '@type': 'WebApplication',
+    '@id': `${url}#web`,
+    name: p.titulo.split(' - ')[0],
+    alternateName: dominio,
+    url: new URL(p.web).href,
+    description: p.resumen,
+    applicationCategory: 'TravelApplication',
+    operatingSystem: 'Web',
+    isAccessibleForFree: true,
+    inLanguage: 'es-ES',
+    creator: { '@id': 'https://florintodor.dev/#persona' },
+  });
+}
+
+// Migas de pan: en los resultados sale "Florin Todor › Radar España" en vez de
+// la URL a secas. Sin el paso intermedio de "Proyectos": no tiene página
+// propia, y un ancla de la portada sería la misma URL que el primer paso.
+esquema.push({
+  '@type': 'BreadcrumbList',
+  '@id': `${url}#migas`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Florin Todor', item: new URL(enlace(idioma), Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: p.titulo.split(' - ')[0], item: url },
+  ],
+});
 
 // La memoria es una obra en sí misma: declararla como Thesis hace que Google
 // la trate como documento académico y no como un PDF suelto del sitio. Está
@@ -120,6 +159,12 @@ if (video) {
       </div>
       <p class="resumen">{p.resumen}</p>
 
+      {p.cifras && (
+        <ul class="cifras" aria-label={F.cifras}>
+          {p.cifras.map((c) => <li><strong>{c.valor}</strong><span>{c.texto}</span></li>)}
+        </ul>
+      )}
+
       {/* Los enlaces van arriba: quien entra busca el código y la demo, no
           quiere bajar a un panel lateral para encontrarlos. */}
       <div class="acciones-proyecto">
@@ -139,7 +184,7 @@ if (video) {
             Casi todas las demos son grabaciones de pantalla sin sonido, y van en
             bucle y silenciadas. La que trae audio (una narración, la voz del
             asistente) se oye al darle al play y no se repite. */}
-        {(hayVideo || gif) && (
+        {(hayVideo || gif) && !pantalla && (
           <section id="demo">
             <div class="titulo-seccion">
               <h2>{p.prototipo ? F.tituloPrototipo : F.demostracion}</h2><div class="linea"></div>
@@ -186,6 +231,49 @@ if (video) {
           </ul>
         </section>
 
+        {/* ---------- la web en producción ----------
+            La grabación va dentro de un marco de navegador con su dirección,
+            que enlaza a la web de verdad. Se reproduce sola, sin sonido,
+            mientras está a la vista (ver el script del final). */}
+        {pantalla && (
+          <section id="demo">
+            <div class="titulo-seccion"><h2>{F.tituloPantalla}</h2><div class="linea"></div></div>
+            {p.pantallaTexto && <p style="color:var(--texto-suave)">{p.pantallaTexto}</p>}
+            <div class="pantalla">
+              <div class="pantalla-barra">
+                <span class="puntos" aria-hidden="true"><i></i><i></i><i></i></span>
+                <a class="direccion" href={p.web} target="_blank" rel="noopener">
+                  <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M4 7V5a4 4 0 1 1 8 0v2h.5A1.5 1.5 0 0 1 14 8.5v6a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-6A1.5 1.5 0 0 1 3.5 7H4Zm2 0h4V5a2 2 0 1 0-4 0v2Z"/></svg>
+                  <span>{dominio}</span>
+                </a>
+              </div>
+              <video
+                src={recurso(`media/${p.id}.mp4`)}
+                poster={recurso(`media/poster/${p.id}.jpg`)}
+                aria-label={F.demostracionAlt(p.titulo)}
+                controls muted loop playsinline preload="none"></video>
+            </div>
+          </section>
+        )}
+
+        {/* ---------- cómo está hecho ----------
+            Tarjetas cortas por tema (seguridad, caché, despliegue...): lo que
+            interesa a quien evalúa el trabajo, sin convertir la ficha en el
+            README del proyecto. */}
+        {p.apartados && (
+          <section>
+            <div class="titulo-seccion"><h2>{F.comoEsta}</h2><div class="linea"></div></div>
+            <div class="rejilla-apartados">
+              {p.apartados.map((a) => (
+                <div class="apartado">
+                  <h3>{a.titulo}</h3>
+                  <ul class="lista">{a.puntos.map((x) => <li>{x}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {p.autoria && (
           <section>
             <div class="titulo-seccion"><h2>{F.autoria}</h2><div class="linea"></div></div>
@@ -224,3 +312,16 @@ if (video) {
     </div>
   </div>
 </Base>
+
+<script>
+  // La pantalla de una web en producción se enciende sola cuando se ve y se
+  // apaga al salir de la vista, para no gastar datos ni batería de fondo. Con
+  // "reducir movimiento" se queda quieta hasta que se le dé al play.
+  const video = document.querySelector<HTMLVideoElement>('.pantalla video');
+  if (video && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) video.play().catch(() => {});
+      else video.pause();
+    }, { threshold: 0.4 }).observe(video);
+  }
+</script>
