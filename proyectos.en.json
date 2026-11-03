@@ -27,14 +27,6 @@
         {
           "valor": "53",
           "texto": "open data sources"
-        },
-        {
-          "valor": "~2,400",
-          "texto": "stations, each with its own page"
-        },
-        {
-          "valor": "1 day",
-          "texto": "from first commit to production"
         }
       ],
       "categorias": [

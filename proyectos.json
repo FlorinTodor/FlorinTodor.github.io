@@ -30,14 +30,6 @@
         {
           "valor": "53",
           "texto": "fuentes de datos abiertos"
-        },
-        {
-          "valor": "~2.400",
-          "texto": "estaciones con su ficha"
-        },
-        {
-          "valor": "1 día",
-          "texto": "del primer commit a producción"
         }
       ],
       "destacados": [
