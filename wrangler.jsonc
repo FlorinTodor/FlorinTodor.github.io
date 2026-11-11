@@ -1,0 +1,32 @@
+// Despliegue en Cloudflare Workers: la web estática (dist/) más un Worker que va
+// por delante sólo en las rutas de `run_worker_first` (ver worker/index.js).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "florintodor-portafolio",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Como GitHub Pages: /proyectos/unia -> /proyectos/unia/ y el 404.html de Astro.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/_v", "/visitas", "/visitas/*", "/CV_*", "/docs/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "visitas-portafolio",
+      "database_id": "pendiente-de-crear",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // El panel (HTML, CSS y su JS de navegador) va dentro del Worker como texto.
+  "rules": [{ "type": "Text", "globs": ["**/panel/*.html", "**/panel/*.css", "**/panel/*.js"], "fallthrough": false }],
+  // ACCESS_EQUIPO y ACCESS_AUD se ponen como secretos (wrangler secret put), no aquí:
+  // este repo es público.
+  "keep_vars": true,
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": true }
+}

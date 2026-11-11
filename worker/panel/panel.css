@@ -1,0 +1,47 @@
+:root { --fondo:#02162b; --panel:#0a2743; --borde:#16456f; --texto:#e8f1f8; --suave:#9fb8cc; --tenue:#7391ab;
+  --verde:#3ddc84; --ambar:#f0b45f; --azul:#5aa9ff; --rojo:#ff7b72; color-scheme:dark; }
+* { box-sizing:border-box }
+body { margin:0; background:var(--fondo); color:var(--texto); font:15px/1.5 Inter, ui-sans-serif, system-ui, sans-serif }
+main { max-width:1200px; margin:0 auto; padding:32px 16px 64px }
+h1 { margin:0 0 4px; font-size:26px } h2 { font-size:18px; margin:36px 0 12px } h3 { font-size:14px; color:var(--suave); margin:0 0 10px; font-weight:600 }
+.sub { color:var(--tenue); margin:0 0 24px } .nota { color:var(--tenue); font-size:13px; margin:8px 0 0 }
+.aviso { background:rgba(255,123,114,.12); border:1px solid var(--rojo); color:var(--rojo); border-radius:14px; padding:12px 16px; margin-bottom:24px }
+.cifras { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px }
+.cifra, .bloque, .sesion { background:var(--panel); border:1px solid var(--borde); border-radius:14px; padding:16px; min-width:0 }
+.cifra { padding:14px } .cifra b { display:block; font-size:26px; color:var(--verde); line-height:1.2 } .cifra span { color:var(--suave); font-size:13px }
+.rejilla { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px } .rejilla.tres { grid-template-columns:repeat(3,minmax(0,1fr)) }
+@media (max-width:900px) { .rejilla, .rejilla.tres { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media (max-width:560px) { .rejilla, .rejilla.tres { grid-template-columns:1fr } }
+.bloque ul { list-style:none; margin:0; padding:0 }
+.bloque li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:3px 10px; padding:5px 0; font-size:14px }
+.et { overflow-wrap:anywhere } .num { text-align:right; color:var(--suave) } .barra { grid-column:1 / -1 }
+.bloque h3 + ul + h3 { margin-top:16px }
+.barra { height:8px; background:#062038; border-radius:4px; overflow:hidden } .barra i { display:block; height:100%; background:var(--verde) }
+.columnas { display:flex; align-items:flex-end; gap:3px; height:120px; padding-top:18px }
+.columnas div { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; min-width:0 }
+.columnas i { display:block; width:100%; background:var(--verde); border-radius:3px 3px 0 0; min-height:1px }
+.columnas small { font-size:10px; color:var(--tenue); margin-top:4px; white-space:nowrap }
+.columnas b { font-size:10px; color:var(--suave); font-weight:500 }
+.vacio { color:var(--tenue) }
+.filtro { width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--borde); background:var(--panel); color:var(--texto); font:inherit; margin-bottom:12px }
+.sesiones { display:grid; gap:12px }
+.sesion header { display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center }
+.sesion header time { font-weight:600 }
+.chip { padding:2px 10px; border-radius:999px; font-size:12px; font-weight:600; background:#16456f; color:var(--suave) }
+.origen.red { background:rgba(90,169,255,.18); color:var(--azul) }
+.origen.buscador { background:rgba(61,220,132,.15); color:var(--verde) }
+.origen.campaña, .origen.otro { background:rgba(240,180,95,.15); color:var(--ambar) }
+.chip.cv { background:rgba(240,180,95,.15); color:var(--ambar) }
+.sesion ol { list-style:none; margin:12px 0 10px; padding:0 0 0 14px; border-left:2px solid var(--borde) }
+.sesion ol li { display:flex; flex-wrap:wrap; gap:2px 10px; padding:3px 0; align-items:baseline }
+.sesion ol time { color:var(--tenue); font-variant-numeric:tabular-nums }
+.sesion code { color:var(--verde); font-family:ui-monospace, Menlo, monospace; word-break:break-all }
+.sesion li.evento code { color:var(--ambar) }
+.titulo { color:var(--suave) } .estancia { color:var(--tenue); font-size:12px }
+.ficha { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:6px 16px; margin:0; font-size:13px }
+.ficha div { min-width:0 } .ficha dt { color:var(--tenue) } .ficha dd { margin:0; overflow-wrap:anywhere }
+.relacion { margin:10px 0 0; font-size:13px; color:var(--azul) }
+.mas { margin:16px auto 0; display:block; padding:10px 16px; border-radius:10px; border:1px solid var(--borde); background:var(--panel);
+  color:var(--texto); font:inherit; cursor:pointer }
+.mas:hover { border-color:var(--verde) }
+[hidden] { display:none !important }

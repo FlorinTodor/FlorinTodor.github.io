@@ -36,6 +36,39 @@ Si alguna vez se cambia el dominio, hay que tocar esos tres sitios a la vez
 (CNAME, DNS y `site:`) y volver a marcar **Enforce HTTPS** en Settings → Pages
 cuando GitHub reemita el certificado.
 
+## Cloudflare y visitas
+
+La misma web se publica también en **Cloudflare Workers** (job `cloudflare` del
+workflow, con `wrangler.jsonc`). Cuando el dominio pase a Cloudflare, GitHub Pages
+se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
+
+- Los ficheros de `dist/` los sirve Cloudflare directamente. El Worker
+  (`worker/`) sólo va por delante en `/_v`, `/visitas/`, `/CV_*` y `/docs/*`.
+- **Visitas propias** en lugar de GoatCounter: la web manda cada página vista,
+  los clics de contacto y, al salir, el tiempo que la página estuvo a la vista
+  (`src/layouts/Base.astro` → `POST /_v`). Las descargas de PDF se apuntan en el
+  servidor, también si llegan con el enlace directo. Todo va a la base de datos
+  D1 `visitas-portafolio` (esquema en `migrations/`).
+- Sin cookies, sin nada guardado en el navegador y sin guardar la IP: la sesión
+  es un SHA-256 de IP + User-Agent con una sal al azar por día que se borra al
+  día siguiente.
+- **El panel** está en `/visitas/`, en directo, detrás de Cloudflare Access. El
+  Worker comprueba además la firma de Access (`worker/acceso.js`) con los
+  secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o entrando por
+  workers.dev, responde 403.
+- Lo recogido con GoatCounter se importa con `scripts/importar-goatcounter.py`
+  (instrucciones dentro). GoatCounter y `scripts/visitas.py` siguen en paralelo
+  mientras se comparan las cifras; después se quitan.
+
+```bash
+npm test                                   # pruebas del Worker (node:test, D1 en memoria)
+npx wrangler d1 migrations apply visitas-portafolio --local
+npx wrangler dev                           # http://localhost:8787 con dist/ y una D1 local
+```
+
+Para ver el panel en local, `.dev.vars` (fuera de git) con `PANEL_SIN_ACCESS=1`
+y `DOMINIO=localhost:8787`; sólo vale en localhost.
+
 ## Estructura
 
 ```
@@ -92,7 +125,11 @@ scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
 scripts/generar-poster-demo-rutina.py  ← fotografía la demo embebida
 scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
-scripts/visitas.py          ← visitas de GoatCounter una a una; el despliegue la publica cifrada en /visitas/
+scripts/visitas.py          ← visitas de GoatCounter una a una; el despliegue la publica cifrada en /visitas/ de GitHub Pages
+scripts/importar-goatcounter.py  ← pasa lo de GoatCounter a la base de datos de Cloudflare
+worker/                     ← Worker de Cloudflare: recoge las visitas y sirve el panel de /visitas/
+migrations/                 ← esquema de la base de datos D1 de las visitas
+wrangler.jsonc              ← configuración de Cloudflare Workers
 ```
 
 Los vídeos no piden mantenimiento: basta con dejar `public/media/<id>.mp4` y su

@@ -317,10 +317,62 @@ const banderas = {
       });
       document.addEventListener('keydown', (e) => e.key === 'Escape' && alternar(false));
     </script>
-    {/* Visitas con GoatCounter: sin cookies, así que no hace falta banner. Sólo en
-        producción, para no contar las visitas de `astro dev`. Además de las
-        páginas se cuentan como eventos las descargas del CV y los clics de
-        contacto, que es lo que dice si alguien ha pasado de mirar a escribir. */}
+    {/* Visitas propias (worker/registro.js, panel en /visitas/): sin cookies ni
+        nada guardado en el navegador, así que no hace falta banner. Sólo en
+        producción, para no contar las visitas de `astro dev`. Manda la página
+        vista, los clics de contacto (lo que dice si alguien ha pasado de mirar
+        a escribir) y, al salir, el tiempo que la página estuvo a la vista. Las
+        descargas de PDF se apuntan en el servidor. Fuera de Cloudflare (GitHub
+        Pages) /_v no existe y el aviso se pierde sin más. */}
+    {import.meta.env.PROD && (
+      <script is:inline>
+        (() => {
+          if (navigator.webdriver) return;
+          const enviar = (datos) => {
+            try {
+              const cuerpo = new Blob([JSON.stringify(datos)], { type: 'text/plain' });
+              if (!navigator.sendBeacon('/_v', cuerpo)) fetch('/_v', { method: 'POST', body: cuerpo, keepalive: true }).catch(() => {});
+            } catch {}
+          };
+          const vista = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now();
+          const q = new URLSearchParams(location.search);
+          const pagina = (so) => enviar({
+            t: 'p', v: vista, r: location.pathname, ti: document.title, ref: document.referrer,
+            c: q.get('utm_source') || q.get('ref') || '', w: screen.width, h: screen.height,
+            d: devicePixelRatio, br: !!navigator.brave, so,
+          });
+          // Chrome congela "Windows 10" y "Android 10" en el User-Agent; la versión real va aquí.
+          const ua = navigator.userAgentData;
+          if (ua && ua.getHighEntropyValues) {
+            ua.getHighEntropyValues(['platformVersion'])
+              .then((x) => pagina({ p: x.platform, v: x.platformVersion }), () => pagina());
+          } else {
+            pagina();
+          }
+          let desde = document.visibilityState === 'visible' ? performance.now() : null;
+          let acumulado = 0;
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+              if (desde !== null) acumulado += performance.now() - desde;
+              desde = null;
+              enviar({ t: 's', v: vista, s: Math.round(acumulado / 1000) });
+            } else {
+              desde = performance.now();
+            }
+          });
+          document.addEventListener('click', (e) => {
+            const a = e.target.closest && e.target.closest('a[href]');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            const tipo = href.startsWith('mailto:') ? 'correo' : href.includes('linkedin.com') ? 'linkedin'
+              : href.includes('github.com') ? 'github' : null;
+            if (tipo) enviar({ t: 'e', e: tipo, r: location.pathname, href });
+          });
+        })();
+      </script>
+    )}
+    {/* GoatCounter, en paralelo mientras se comparan sus cifras con las propias.
+        Se quita después, junto con scripts/visitas.py. */}
     {import.meta.env.PROD && (
       <>
         <script is:inline data-goatcounter="https://florintodor.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
