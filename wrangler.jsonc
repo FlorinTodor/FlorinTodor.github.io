@@ -29,7 +29,8 @@
   // El dominio sirve el Worker directamente (Custom Domain). www no va aquí: es un
   // CNAME con proxy y una Redirect Rule de Cloudflare lo manda a la raíz.
   "routes": [{ "pattern": "florintodor.dev", "custom_domain": true }],
-  "workers_dev": true,
+  // La dirección de pruebas *.workers.dev, apagada: la web sólo en su dominio.
+  "workers_dev": false,
   "preview_urls": false,
   "observability": { "enabled": true }
 }

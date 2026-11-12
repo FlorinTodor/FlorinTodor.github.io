@@ -57,8 +57,8 @@ se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
   oficinas) y, en el panel, las ráfagas de varios PDF en menos de 2 s.
 - **El panel** está en `/visitas/`, en directo, detrás de Cloudflare Access. El
   Worker comprueba además la firma de Access (`worker/acceso.js`) con los
-  secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o entrando por
-  workers.dev, responde 403.
+  secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o si Access
+  dejara pasar algo sin firma, responde 403. La dirección workers.dev está apagada.
 - Lo recogido con GoatCounter se importa con `scripts/importar-goatcounter.py`
   (instrucciones dentro). GoatCounter y `scripts/visitas.py` siguen en paralelo
   mientras se comparan las cifras; después se quitan.
