@@ -51,6 +51,18 @@ Si alguna vez se cambia el dominio, hay que tocar a la vez `routes` en
   siempre el fichero entero, y Safari no reproduce un MP4 sin respuestas 206. El
   Worker sirve el trozo pedido; los tamaños salen de `worker/media.json`, que
   genera `npm run build`.
+- **Caché y seguridad** (`public/_headers`): un año para `/_astro/` (nombres con
+  resumen), un día más una semana de *stale-while-revalidate* para imágenes e
+  iconos, y las páginas se revalidan siempre. HSTS, nosniff, X-Frame-Options,
+  COOP, Referrer-Policy, Permissions-Policy y una CSP sin `'unsafe-inline'`
+  para scripts: `scripts/cabeceras.mjs` añade en cada build el SHA-256 de cada
+  script en línea, así que un script nuevo con `is:inline` funciona sin tocar
+  nada. La demo de `/demo/` va sin CSP (carga fuentes de Google e imágenes de
+  jsDelivr). Lo que responde el Worker (PDF, vídeos, panel) pone sus cabeceras
+  en `worker/`.
+- **301 de verdad** para las fichas que cambiaron de id (`public/_redirects`).
+- **Límite** de 60 avisos de visitas por IP y minuto (`ratelimits` en
+  `wrangler.jsonc`).
 - **Visitas propias** (antes GoatCounter): la web manda cada página vista,
   los clics de contacto y, al salir, el tiempo que la página estuvo a la vista
   (`src/layouts/Base.astro` → `POST /_v`). Las descargas de PDF se apuntan en el
@@ -59,9 +71,11 @@ Si alguna vez se cambia el dominio, hay que tocar a la vez `routes` en
 - Sin cookies, sin nada guardado en el navegador y sin guardar la IP: la sesión
   es un SHA-256 de IP + User-Agent con una sal al azar por día que se borra al
   día siguiente. Se guarda la red (la operadora, o "OVH SAS") para apartar bots.
-- **Bots fuera:** por User-Agent, navegador automatizado, red de servidores
-  alquilados (`worker/agente.js`; Microsoft, Amazon y Google no, por sus
-  oficinas) y, en el panel, las ráfagas de varios PDF en menos de 2 s.
+- **Bots fuera:** por User-Agent, navegador automatizado, descargas de PDF desde
+  redes de servidores alquilados (`worker/agente.js`; Microsoft, Amazon y Google
+  no, por sus oficinas) y, en el panel, las ráfagas de varios PDF en menos de
+  2 s. Las visitas con JavaScript desde esas redes cuentan (suelen ser VPN) y el
+  panel las marca con «VPN o servidor».
 - **El panel** está en `/visitas/`, en directo, detrás de Cloudflare Access. El
   Worker comprueba además la firma de Access (`worker/acceso.js`) con los
   secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o si Access
@@ -123,6 +137,8 @@ public/
   icon/                     ← el resto de iconos y el manifiesto, que sí van
                               declarados con <link> y pueden vivir aquí
   robots.txt                ← atado a la raíz por el protocolo
+  _headers, _redirects      ← caché, cabeceras de seguridad y 301 de Cloudflare
+                              (no se publican: Workers los lee al desplegar)
   demo/*.json               ← datos de las demos interactivas
   docs/*.pdf                ← documentos largos (las memorias del TFG y de Unia)
   certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
@@ -136,8 +152,8 @@ scripts/generar-video-irrgarten.py  ← rehace la demo de Irrgarten
 scripts/generar-miniaturas-certificaciones.py  ← miniatura de cada PDF
 scripts/generar-poster-demo-rutina.py  ← fotografía la demo embebida
 scripts/tapar-datos-personales.py   ← tapa el DNI/NIE de los certificados
-scripts/visitas.py          ← visitas de GoatCounter una a una; el despliegue la publica cifrada en /visitas/ de GitHub Pages
-scripts/importar-goatcounter.py  ← pasa lo de GoatCounter a la base de datos de Cloudflare
+scripts/tamanos-media.mjs   ← (build) bytes de cada vídeo para servirlos por trozos
+scripts/cabeceras.mjs       ← (build) CSP de las páginas con el SHA-256 de cada script en línea
 worker/                     ← Worker de Cloudflare: recoge las visitas y sirve el panel de /visitas/
 migrations/                 ← esquema de la base de datos D1 de las visitas
 wrangler.jsonc              ← configuración de Cloudflare Workers

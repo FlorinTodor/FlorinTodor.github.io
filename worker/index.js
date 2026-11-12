@@ -7,6 +7,7 @@
 //   /media/*     vídeos por trozos, para Safari (rango.js)
 
 import { accesoValido, pruebaLocal } from './acceso.js';
+import { esRedDeServidores } from './agente.js';
 import { conRango, SEGURIDAD } from './rango.js';
 import { registrar, registrarDescarga, tipoDescarga } from './registro.js';
 import panelHtml from './panel/index.html';
@@ -54,7 +55,8 @@ async function visitas(request, env, url) {
            FROM visitas WHERE id > ?1 AND bot = 0 AND host = ?2 ORDER BY id LIMIT ?3`,
       ).bind(despues, env.DOMINIO || DOMINIO, LOTE + 1).all();
       const mas = results.length > LOTE;
-      return respuesta(JSON.stringify({ filas: results.slice(0, LOTE), mas }), 'application/json; charset=utf-8');
+      const filas = results.slice(0, LOTE).map((f) => (esRedDeServidores(f.red) ? { ...f, servidores: 1 } : f));
+      return respuesta(JSON.stringify({ filas, mas }), 'application/json; charset=utf-8');
     }
     default:
       return respuesta('No existe.\n', 'text/plain; charset=utf-8', 404);

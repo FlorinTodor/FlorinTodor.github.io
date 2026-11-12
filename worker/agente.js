@@ -13,10 +13,12 @@ export function esBot(ua, { servidor = false } = {}) {
   return !ua || BOT.test(ua) || (servidor && PREVISUALIZADOR.test(ua));
 }
 
-// Proveedores de servidores alquilados: una persona no navega desde ahí, un
-// robot con User-Agent de Chrome sí. Lista corta a propósito: Microsoft, Amazon
-// y Google se quedan fuera porque sus oficinas salen por la misma red, y quien
-// mira el portafolio puede estar en una de ellas.
+// Proveedores de servidores alquilados. Sin JavaScript (las descargas de PDF)
+// es un robot con User-Agent de Chrome; con JavaScript puede ser una persona
+// con VPN (Proton y otras salen por Datacamp o M247), así que sólo se marca.
+// Lista corta a propósito: Microsoft, Amazon y Google se quedan fuera porque
+// sus oficinas salen por la misma red, y quien mira el portafolio puede estar
+// en una de ellas.
 const RED_DE_SERVIDORES = /\b(ovh|hetzner|digitalocean|linode|akamai connected cloud|contabo|scaleway|online s\.?a\.?s|vultr|choopa|the constant company|leaseweb|m247|datacamp|alibaba|tencent|oracle|hostinger|kamatera|psychz|quadranet|colocrossing|g-core|gcore|zenlayer|hostwinds|servers\.com|hostroyale|ponynet|frantech|buyvm|aeza|stark industries)\b/i;
 
 export function esRedDeServidores(organizacion) {

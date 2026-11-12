@@ -1,5 +1,5 @@
 // Panel de /visitas/: pide las filas al Worker (/visitas/datos, por lotes) y lo
-// calcula todo en el navegador. Es el mismo panel que hacía scripts/visitas.py
+// calcula todo en el navegador. Es el panel que antes se generaba cada 12 horas
 // con la exportación de GoatCounter, ahora en directo.
 'use strict';
 
@@ -375,7 +375,7 @@ function informe(todas) {
       ['Pantalla', textoPantalla(primera)],
     ];
     if (p && p[1] && p[2]) ficha.push(['Resolución real', `${Math.round(p[0] * p[2])}×${Math.round(p[1] * p[2])} px`]);
-    if (primera.red) ficha.push(['Red', e(primera.red)]);
+    if (primera.red) ficha.push(['Red', e(primera.red) + (primera.servidores ? ' (de servidores: VPN o robot)' : '')]);
     if (primera.ua) ficha.push(['User-Agent', `<code>${e(primera.ua)}</code>`]);
     ficha.push(['Sesión', `<code>${e(primera.sesion || 'sin sesión')}</code>`]);
     if (primera.origen === 'goatcounter') ficha.push(['Recogida', 'GoatCounter']);
@@ -402,6 +402,7 @@ function informe(todas) {
           <span class="chip">${dispositivo(primera)}</span>
           ${chips}
           ${mismas.length ? '<span class="chip">repite</span>' : ''}
+          ${primera.servidores ? '<span class="chip origen otro">VPN o servidor</span>' : ''}
         </header>
         <ol>${filasHtml}</ol>
         <dl class="ficha">${ficha.map(([k, x]) => `<div><dt>${k}</dt><dd>${x}</dd></div>`).join('')}</dl>

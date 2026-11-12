@@ -111,7 +111,9 @@ export function filaDelNavegador(d, { ua, cf, host, momento, sesion }) {
     ua: texto(ua, 400),
     pantalla: pantalla(d),
     ...lugar(cf),
-    bot: esBot(ua) || d.wd === true || esRedDeServidores(cf?.asOrganization) ? 1 : 0,
+    // Desde una red de servidores no se aparta: quien ejecuta JavaScript desde
+    // ahí suele ser una persona con VPN. El panel lo marca.
+    bot: esBot(ua) || d.wd === true ? 1 : 0,
     origen: 'navegador',
   };
   const ruta = normalizarRuta(d.r);

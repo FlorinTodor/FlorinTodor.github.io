@@ -10,8 +10,6 @@ SELECCION.md
 # el DNI en la autorización de depósito) y los certificados que muestran DNI o NIE.
 originales/
 
-# --- Visitas descargadas de GoatCounter (scripts/visitas.py): datos de visitantes ---
-.visitas/
 
 # --- Cloudflare: variables locales de `wrangler dev` y su estado ---
 .dev.vars

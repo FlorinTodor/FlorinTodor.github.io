@@ -89,7 +89,8 @@ test('filaDelNavegador: página vista con país, región y pantalla; eventos só
   assert.equal(filaDelNavegador({ t: 'p', r: 'javascript:alert(1)' }, ctx), null);
   assert.equal(filaDelNavegador({ t: 'p', r: '/', wd: true }, ctx).bot, 1);
   const desdeOvh = filaDelNavegador({ t: 'p', r: '/' }, { ...ctx, cf: { country: 'CA', asOrganization: 'OVH SAS' } });
-  assert.equal(desdeOvh.bot, 1);
+  // Con JavaScript, desde una red de servidores suele ser una VPN: cuenta.
+  assert.equal(desdeOvh.bot, 0);
   assert.equal(desdeOvh.red, 'OVH SAS');
 });
 
