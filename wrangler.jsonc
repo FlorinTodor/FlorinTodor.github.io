@@ -26,6 +26,9 @@
   // ACCESS_EQUIPO y ACCESS_AUD se ponen como secretos (wrangler secret put), no aquí:
   // este repo es público.
   "keep_vars": true,
+  // El dominio sirve el Worker directamente (Custom Domain). www no va aquí: es un
+  // CNAME con proxy y una Redirect Rule de Cloudflare lo manda a la raíz.
+  "routes": [{ "pattern": "florintodor.dev", "custom_domain": true }],
   "workers_dev": true,
   "preview_urls": false,
   "observability": { "enabled": true }
