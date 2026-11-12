@@ -7,7 +7,7 @@
 //   /media/*     vídeos por trozos, para Safari (rango.js)
 
 import { accesoValido, pruebaLocal } from './acceso.js';
-import { conRango } from './rango.js';
+import { conRango, SEGURIDAD } from './rango.js';
 import { registrar, registrarDescarga, tipoDescarga } from './registro.js';
 import panelHtml from './panel/index.html';
 import panelCss from './panel/panel.css';
@@ -16,6 +16,8 @@ import panelJs from './panel/panel.js';
 import tamanosMedia from './media.json';
 
 const LOTE = 2000;
+// El CV puede cambiar: una hora en el navegador.
+const CACHE_PDF = 'public, max-age=3600';
 const DOMINIO = 'florintodor.dev';
 
 const CABECERAS_PANEL = {
@@ -67,6 +69,12 @@ export default {
     if (url.pathname.startsWith('/media/')) return conRango(request, env, tamanosMedia);
     if (tipoDescarga(url.pathname)) {
       ctx.waitUntil(registrarDescarga(request, env).catch((e) => console.error('visitas: descarga sin apuntar', e)));
+      const r = await env.ASSETS.fetch(request);
+      if (r.status !== 200) return r;
+      const headers = new Headers(r.headers);
+      headers.set('Cache-Control', CACHE_PDF);
+      for (const [k, v] of Object.entries(SEGURIDAD)) headers.set(k, v);
+      return new Response(r.body, { status: r.status, headers });
     }
     return env.ASSETS.fetch(request);
   },

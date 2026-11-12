@@ -7,6 +7,11 @@
 // el trozo pedido, sin cargarlo en memoria.
 
 export const CACHE_MEDIA = 'public, max-age=86400, stale-while-revalidate=604800';
+// Las de public/_headers no llegan a lo que responde el Worker.
+export const SEGURIDAD = {
+  'X-Content-Type-Options': 'nosniff',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+};
 
 // Deja pasar del flujo sólo los bytes [inicio, fin] y corta la lectura al acabar.
 export function recortar(inicio, fin) {
@@ -65,6 +70,7 @@ export async function conRango(request, env, tamanos = {}) {
   const headers = new Headers(r.headers);
   headers.set('Accept-Ranges', 'bytes');
   headers.set('Cache-Control', CACHE_MEDIA);
+  for (const [k, v] of Object.entries(SEGURIDAD)) headers.set(k, v);
   const entero = () => new Response(r.body, { status: 200, headers });
   if (request.method !== 'GET' || !request.headers.has('Range')) return entero();
   // If-Range con otra versión del fichero: se manda entero, como pide la norma.

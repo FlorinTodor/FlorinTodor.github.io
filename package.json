@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/tamanos-media.mjs",
+    "build": "astro build && node scripts/tamanos-media.mjs && node scripts/cabeceras.mjs",
     "preview": "astro preview",
     "comprobar": "node scripts/comprobar-traducciones.mjs",
     "astro": "astro",

@@ -1,0 +1,31 @@
+# Cabeceras de Cloudflare para los ficheros estáticos (no se publica: Workers lo
+# lee al desplegar). No se aplica a lo que responde el Worker (/_v, /visitas/,
+# PDF y /media/), que pone las suyas en worker/.
+#
+# La Content-Security-Policy de las páginas la añade al final
+# scripts/cabeceras.mjs en cada build, con el resumen de cada script en línea.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: SAMEORIGIN
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+
+# Nombres con resumen del contenido (Astro): no cambian nunca, caché de un año.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Imágenes e iconos sin resumen en el nombre: un día, y otra semana sirviendo la
+# copia guardada mientras se comprueba si hay una nueva.
+/img/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/icon/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/favicon.ico
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/certificaciones/*.jpg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/certificaciones/*.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

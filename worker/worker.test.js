@@ -284,3 +284,13 @@ test('conRango: sin Range, entero y avisando de que admite trozos; fuera del fic
   const otraVersion = await pedir({ Range: 'bytes=0-1', 'If-Range': '"v0"' });
   assert.equal(otraVersion.status, 200);
 });
+
+test('límite por IP: pasado el límite, 429 y no se guarda nada', async () => {
+  const env = { DB: d1Falso(), LIMITE_VISITAS: { limit: async () => ({ success: false }) } };
+  assert.equal((await enviar(env, { t: 'p', r: '/' })).status, 429);
+  assert.equal(env.DB.sqlite.prepare('SELECT COUNT(*) AS n FROM visitas').get().n, 0);
+  const pendientes = [];
+  await registrar(peticion({ t: 'p', r: '/' }), { ...env, LIMITE_VISITAS: { limit: async () => ({ success: true }) } }, { waitUntil: (p) => pendientes.push(p) });
+  await Promise.all(pendientes);
+  assert.equal(env.DB.sqlite.prepare('SELECT COUNT(*) AS n FROM visitas').get().n, 1);
+});

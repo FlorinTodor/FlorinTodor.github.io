@@ -152,6 +152,7 @@ export async function registrar(request, env, ctx, ahora = new Date()) {
   } catch {
     return new Response(null, { status: 400 });
   }
+  if (!(await dentroDelLimite(env, request))) return new Response(null, { status: 429 });
   ctx.waitUntil((async () => {
     const sesion = await sesionDe(env.DB, request, ahora);
     if (d?.t === 's') {
@@ -169,6 +170,15 @@ export async function registrar(request, env, ctx, ahora = new Date()) {
     if (fila) await insertar(env.DB, fila);
   })().catch((e) => console.error('visitas: no se pudo guardar', e)));
   return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+}
+
+// Límite de avisos por IP (wrangler.jsonc, `ratelimits`): una persona manda
+// tres o cuatro por página; quien mande cientos no llena la base de datos ni
+// gasta el cupo diario gratuito. La IP sólo se usa como clave, no se guarda.
+async function dentroDelLimite(env, request) {
+  if (!env.LIMITE_VISITAS) return true;
+  const { success } = await env.LIMITE_VISITAS.limit({ key: request.headers.get('CF-Connecting-IP') || 'sin-ip' });
+  return success;
 }
 
 // ¿Es uno de los PDF que se cuentan? Devuelve el tipo de evento o null.
@@ -189,6 +199,7 @@ export async function registrarDescarga(request, env, ahora = new Date()) {
   if (rango && !/^bytes=0-/.test(rango)) return;
   const ua = request.headers.get('User-Agent') || '';
   if (esBot(ua, { servidor: true })) return;
+  if (!(await dentroDelLimite(env, request))) return;
   // Desde un servidor alquilado se apunta como bot, para poder revisarlo, pero
   // no sale en el panel. Las ráfagas de varios PDF las aparta el panel.
   const bot = esRedDeServidores(request.cf?.asOrganization) ? 1 : 0;

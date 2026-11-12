@@ -21,6 +21,8 @@
       "migrations_dir": "migrations"
     }
   ],
+  // Avisos de visitas por IP y minuto, en cada sitio de Cloudflare (worker/registro.js).
+  "ratelimits": [{ "name": "LIMITE_VISITAS", "namespace_id": "2611", "simple": { "limit": 60, "period": 60 } }],
   // El panel (HTML, CSS y su JS de navegador) va dentro del Worker como texto.
   "rules": [{ "type": "Text", "globs": ["**/panel/*.html", "**/panel/*.css", "**/panel/*.js"], "fallthrough": false }],
   // ACCESS_EQUIPO y ACCESS_AUD se ponen como secretos (wrangler secret put), no aquí:

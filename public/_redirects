@@ -1,0 +1,6 @@
+# Redirecciones de Cloudflare (301 de verdad, no la página que redirige de Astro).
+# Fichas que cambiaron de id: la URL vieja ya estaba indexada y enlazada.
+/proyectos/habla-con-tu-dinero/ /proyectos/unia/ 301
+/proyectos/habla-con-tu-dinero /proyectos/unia/ 301
+/en/proyectos/habla-con-tu-dinero/ /en/proyectos/unia/ 301
+/en/proyectos/habla-con-tu-dinero /en/proyectos/unia/ 301
