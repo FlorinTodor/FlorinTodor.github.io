@@ -51,7 +51,10 @@ se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
   D1 `visitas-portafolio` (esquema en `migrations/`).
 - Sin cookies, sin nada guardado en el navegador y sin guardar la IP: la sesión
   es un SHA-256 de IP + User-Agent con una sal al azar por día que se borra al
-  día siguiente.
+  día siguiente. Se guarda la red (la operadora, o "OVH SAS") para apartar bots.
+- **Bots fuera:** por User-Agent, navegador automatizado, red de servidores
+  alquilados (`worker/agente.js`; Microsoft, Amazon y Google no, por sus
+  oficinas) y, en el panel, las ráfagas de varios PDF en menos de 2 s.
 - **El panel** está en `/visitas/`, en directo, detrás de Cloudflare Access. El
   Worker comprueba además la firma de Access (`worker/acceso.js`) con los
   secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o entrando por
@@ -63,11 +66,12 @@ se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
 ```bash
 npm test                                   # pruebas del Worker (node:test, D1 en memoria)
 npx wrangler d1 migrations apply visitas-portafolio --local
-npx wrangler dev                           # http://localhost:8787 con dist/ y una D1 local
+npx wrangler dev --local-upstream localhost:8787   # http://localhost:8787 con dist/ y una D1 local
 ```
 
 Para ver el panel en local, `.dev.vars` (fuera de git) con `PANEL_SIN_ACCESS=1`
-y `DOMINIO=localhost:8787`; sólo vale en localhost.
+y `DOMINIO=localhost:8787`; sólo vale en localhost (sin `--local-upstream`,
+wrangler dev se hace pasar por florintodor.dev y el panel da 403).
 
 ## Estructura
 

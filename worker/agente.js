@@ -13,6 +13,16 @@ export function esBot(ua, { servidor = false } = {}) {
   return !ua || BOT.test(ua) || (servidor && PREVISUALIZADOR.test(ua));
 }
 
+// Proveedores de servidores alquilados: una persona no navega desde ahí, un
+// robot con User-Agent de Chrome sí. Lista corta a propósito: Microsoft, Amazon
+// y Google se quedan fuera porque sus oficinas salen por la misma red, y quien
+// mira el portafolio puede estar en una de ellas.
+const RED_DE_SERVIDORES = /\b(ovh|hetzner|digitalocean|linode|akamai connected cloud|contabo|scaleway|online s\.?a\.?s|vultr|choopa|the constant company|leaseweb|m247|datacamp|alibaba|tencent|oracle|hostinger|kamatera|psychz|quadranet|colocrossing|g-core|gcore|zenlayer|hostwinds|servers\.com|hostroyale|ponynet|frantech|buyvm|aeza|stark industries)\b/i;
+
+export function esRedDeServidores(organizacion) {
+  return typeof organizacion === 'string' && RED_DE_SERVIDORES.test(organizacion);
+}
+
 // En orden: las apps y los navegadores basados en Chrome antes que Chrome, y
 // Chrome antes que Safari (todos dicen "Safari").
 const NAVEGADORES = [

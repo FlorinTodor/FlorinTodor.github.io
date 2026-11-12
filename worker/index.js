@@ -44,7 +44,7 @@ async function visitas(request, env, url) {
       const despues = Math.max(0, parseInt(url.searchParams.get('despues'), 10) || 0);
       const { results } = await env.DB.prepare(
         `SELECT id, momento, sesion, ruta, titulo, evento, referer, esquema, navegador, sistema, ua, pantalla,
-                ubicacion, region, segundos, origen
+                ubicacion, region, red, segundos, origen
            FROM visitas WHERE id > ?1 AND bot = 0 AND host = ?2 ORDER BY id LIMIT ?3`,
       ).bind(despues, env.DOMINIO || DOMINIO, LOTE + 1).all();
       const mas = results.length > LOTE;

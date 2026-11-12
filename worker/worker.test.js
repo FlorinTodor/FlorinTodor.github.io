@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { accesoValido, pruebaLocal } from './acceso.js';
-import { esBot, navegador, sistema } from './agente.js';
+import { esBot, esRedDeServidores, navegador, sistema } from './agente.js';
 import { d1Falso } from './d1-falso.js';
 import { filaDelNavegador, normalizarRuta, procedencia, registrar, registrarDescarga, tipoDescarga } from './registro.js';
 
@@ -41,6 +41,16 @@ test('bots: los rastreadores fuera; las vistas previas de enlaces sólo cuentan 
   assert.ok(esBot('WhatsApp/2.24.1 A', { servidor: true }));
 });
 
+test('redes de servidores alquilados: OVH o Hetzner sí; las operadoras y las oficinas de Microsoft no', () => {
+  assert.ok(esRedDeServidores('OVH SAS'));
+  assert.ok(esRedDeServidores('Hetzner Online GmbH'));
+  assert.ok(esRedDeServidores('DIGITALOCEAN-ASN'));
+  assert.ok(!esRedDeServidores('Telefonica de Espana SAU'));
+  assert.ok(!esRedDeServidores('Vodafone Spain'));
+  assert.ok(!esRedDeServidores('Microsoft Corporation'));
+  assert.ok(!esRedDeServidores(undefined));
+});
+
 // --- Lo que llega del navegador ---
 
 test('procedencia: campaña antes que la cabecera, y el enlace sin https://', () => {
@@ -77,6 +87,9 @@ test('filaDelNavegador: página vista con país, región y pantalla; eventos só
   assert.equal(filaDelNavegador({ t: 'e', e: 'inventado', r: '/' }, ctx), null);
   assert.equal(filaDelNavegador({ t: 'p', r: 'javascript:alert(1)' }, ctx), null);
   assert.equal(filaDelNavegador({ t: 'p', r: '/', wd: true }, ctx).bot, 1);
+  const desdeOvh = filaDelNavegador({ t: 'p', r: '/' }, { ...ctx, cf: { country: 'CA', asOrganization: 'OVH SAS' } });
+  assert.equal(desdeOvh.bot, 1);
+  assert.equal(desdeOvh.red, 'OVH SAS');
 });
 
 // --- Con la base de datos ---
@@ -153,6 +166,15 @@ test('registrarDescarga: con el enlace directo desde fuera se ve de dónde vino'
   }), { cf: {} }), env);
   const fila = env.DB.sqlite.prepare('SELECT ruta, referer, esquema FROM visitas').get();
   assert.deepEqual({ ...fila }, { ruta: 'cv: fuera de la web', referer: 'www.linkedin.com', esquema: 'h' });
+});
+
+test('registrarDescarga: desde un servidor alquilado se apunta como bot, con su red', async () => {
+  const env = { DB: d1Falso() };
+  await registrarDescarga(Object.assign(new Request('https://florintodor.dev/CV_Florin_Emanuel_Todor_Gliga.pdf', {
+    headers: { 'CF-Connecting-IP': '198.51.100.9', 'User-Agent': CHROME_WIN },
+  }), { cf: { country: 'CA', regionCode: 'QC', asOrganization: 'OVH SAS' } }), env);
+  const fila = env.DB.sqlite.prepare('SELECT bot, red, ubicacion FROM visitas').get();
+  assert.deepEqual({ ...fila }, { bot: 1, red: 'OVH SAS', ubicacion: 'CA-QC' });
 });
 
 // --- Access ---

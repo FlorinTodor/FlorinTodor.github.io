@@ -6,7 +6,7 @@
 // día y se borra: sirve para unir las páginas de una misma visita, pero no para
 // seguir a nadie de un día para otro.
 
-import { esBot, navegador, sistema } from './agente.js';
+import { esBot, esRedDeServidores, navegador, sistema } from './agente.js';
 
 export const EVENTOS = ['cv', 'correo', 'linkedin', 'github', 'memoria'];
 const MAX_CUERPO = 4096;
@@ -66,6 +66,7 @@ function lugar(cf = {}) {
   return {
     ubicacion: pais && codigo ? `${pais}-${codigo}` : pais,
     region: pais ? texto(cf.region, 80) : '',
+    red: texto(cf.asOrganization, 80),
   };
 }
 
@@ -90,7 +91,7 @@ export async function sesionDe(db, request, ahora) {
 }
 
 const COLUMNAS = ['momento', 'host', 'sesion', 'vista', 'ruta', 'titulo', 'evento', 'referer', 'esquema',
-  'navegador', 'sistema', 'ua', 'pantalla', 'ubicacion', 'region', 'segundos', 'bot', 'origen'];
+  'navegador', 'sistema', 'ua', 'pantalla', 'ubicacion', 'region', 'red', 'segundos', 'bot', 'origen'];
 
 function insertar(db, fila) {
   const valores = COLUMNAS.map((c) => fila[c] ?? null);
@@ -110,7 +111,7 @@ export function filaDelNavegador(d, { ua, cf, host, momento, sesion }) {
     ua: texto(ua, 400),
     pantalla: pantalla(d),
     ...lugar(cf),
-    bot: esBot(ua) || d.wd === true ? 1 : 0,
+    bot: esBot(ua) || d.wd === true || esRedDeServidores(cf?.asOrganization) ? 1 : 0,
     origen: 'navegador',
   };
   const ruta = normalizarRuta(d.r);
@@ -188,6 +189,9 @@ export async function registrarDescarga(request, env, ahora = new Date()) {
   if (rango && !/^bytes=0-/.test(rango)) return;
   const ua = request.headers.get('User-Agent') || '';
   if (esBot(ua, { servidor: true })) return;
+  // Desde un servidor alquilado se apunta como bot, para poder revisarlo, pero
+  // no sale en el panel. Las ráfagas de varios PDF las aparta el panel.
+  const bot = esRedDeServidores(request.cf?.asOrganization) ? 1 : 0;
   const sesion = await sesionDe(env.DB, request, ahora);
   const desde = new Date(ahora.getTime() - MISMA_DESCARGA_MIN * 60_000).toISOString();
   const repetida = await env.DB.prepare(
@@ -206,6 +210,6 @@ export async function registrarDescarga(request, env, ahora = new Date()) {
     momento: ahora.toISOString(), host: url.host, sesion, vista: null,
     ruta: `${tipo}: ${pagina}`, titulo: url.pathname, evento: 1, ...origen,
     navegador: navegador(ua), sistema: sistema(ua, null), ua: ua.slice(0, 400), pantalla: '',
-    ...lugar(request.cf), bot: 0, origen: 'servidor',
+    ...lugar(request.cf), bot, origen: 'servidor',
   });
 }

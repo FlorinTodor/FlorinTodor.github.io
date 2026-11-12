@@ -21,6 +21,9 @@ const REDES = [['linkedin', 'LinkedIn', 'red'], ['lnkd.in', 'LinkedIn', 'red'], 
 const RECARGA = 10;
 // Sin actividad durante más de esto, lo siguiente es otra visita.
 const CORTE_MIN = 30;
+// Dos PDF del mismo navegador con menos de esto entre ellos: un robot que los
+// baja todos de golpe (una persona no hace dos clics en tan poco).
+const RAFAGA_MS = 2000;
 const POR_TANDA = 200;
 
 // --- Utilidades ---
@@ -155,6 +158,26 @@ const huella = (v) => [v.navegador, v.sistema, v.pantalla, v.ubicacion].join('|'
 
 // --- Visitas ---
 
+// Aparta las descargas en ráfaga (filas ya ordenadas por fecha).
+function sinRafagas(filas) {
+  const porSesion = new Map();
+  for (const v of filas) {
+    if (v.origen !== 'servidor') continue;
+    if (!porSesion.has(v.sesion)) porSesion.set(v.sesion, []);
+    porSesion.get(v.sesion).push(v);
+  }
+  const fuera = new Set();
+  for (const lista of porSesion.values()) {
+    for (let i = 1; i < lista.length; i++) {
+      if (lista[i].t - lista[i - 1].t < RAFAGA_MS) {
+        fuera.add(lista[i]);
+        fuera.add(lista[i - 1]);
+      }
+    }
+  }
+  return [filas.filter((v) => !fuera.has(v)), fuera.size];
+}
+
 function sesiones(filas) {
   const grupos = new Map();
   filas.forEach((v, i) => {
@@ -227,7 +250,8 @@ const bloque = (titulo, contenido, nota = '') =>
   `<div class="bloque"><h3>${titulo}</h3>${contenido}${nota ? `<p class="nota">${nota}</p>` : ''}</div>`;
 const codigo = (k) => `<code>${e(k)}</code>`;
 
-function informe(filas) {
+function informe(todas) {
+  const [filas, rafagas] = sinRafagas(todas);
   const grupos = sesiones(filas);
   const pasos = new Map(grupos.map((g) => [g, pasosDe(g)]));
   const paginas = grupos.flatMap((g) => pasos.get(g).filter(([v]) => !evento(v)).map(([v]) => v));
@@ -351,6 +375,7 @@ function informe(filas) {
       ['Pantalla', textoPantalla(primera)],
     ];
     if (p && p[1] && p[2]) ficha.push(['Resolución real', `${Math.round(p[0] * p[2])}×${Math.round(p[1] * p[2])} px`]);
+    if (primera.red) ficha.push(['Red', e(primera.red)]);
     if (primera.ua) ficha.push(['User-Agent', `<code>${e(primera.ua)}</code>`]);
     ficha.push(['Sesión', `<code>${e(primera.sesion || 'sin sesión')}</code>`]);
     if (primera.origen === 'goatcounter') ficha.push(['Recogida', 'GoatCounter']);
@@ -393,7 +418,8 @@ function informe(filas) {
   const ahora = madrid(Date.now());
   const sub = `En directo: cargado el ${fDia(ahora)} a las ${fHora(ahora)} (hora de Madrid) · ${filas.length} registros`
     + (recargas ? ` · ${recargas} recarga${recargas > 1 ? 's' : ''} juntada${recargas > 1 ? 's' : ''}` : '')
-    + ' · bots excluidos' + (hastaGoat ? ` · hasta el ${hastaGoat}, de GoatCounter` : '');
+    + ' · bots excluidos' + (rafagas ? ` (y ${rafagas} descargas de PDF en ráfaga)` : '')
+    + (hastaGoat ? ` · hasta el ${hastaGoat}, de GoatCounter` : '');
   return { sub, resumen, tarjetas };
 }
 
