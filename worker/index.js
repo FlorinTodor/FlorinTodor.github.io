@@ -4,12 +4,16 @@
 //   /_v          visitas que manda la web (registro.js)
 //   /CV_*, /docs/*.pdf   se apunta la descarga y se sirve el PDF
 //   /visitas/    el panel, tras Cloudflare Access (acceso.js)
+//   /media/*     vídeos por trozos, para Safari (rango.js)
 
 import { accesoValido, pruebaLocal } from './acceso.js';
+import { conRango } from './rango.js';
 import { registrar, registrarDescarga, tipoDescarga } from './registro.js';
 import panelHtml from './panel/index.html';
 import panelCss from './panel/panel.css';
 import panelJs from './panel/panel.js';
+// Generado por scripts/tamanos-media.mjs en `npm run build`.
+import tamanosMedia from './media.json';
 
 const LOTE = 2000;
 const DOMINIO = 'florintodor.dev';
@@ -60,6 +64,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === '/_v') return registrar(request, env, ctx);
     if (url.pathname === '/visitas' || url.pathname.startsWith('/visitas/')) return visitas(request, env, url);
+    if (url.pathname.startsWith('/media/')) return conRango(request, env, tamanosMedia);
     if (tipoDescarga(url.pathname)) {
       ctx.waitUntil(registrarDescarga(request, env).catch((e) => console.error('visitas: descarga sin apuntar', e)));
     }

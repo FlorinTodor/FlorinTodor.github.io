@@ -16,3 +16,7 @@ originales/
 # --- Cloudflare: variables locales de `wrangler dev` y su estado ---
 .dev.vars
 .wrangler/
+
+# Tamaños de dist/media/ para el Worker (scripts/tamanos-media.mjs, se genera en cada build)
+worker/media.json
+__pycache__/

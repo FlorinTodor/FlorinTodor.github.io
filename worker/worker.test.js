@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { accesoValido, pruebaLocal } from './acceso.js';
 import { esBot, esRedDeServidores, navegador, sistema } from './agente.js';
 import { d1Falso } from './d1-falso.js';
+import { conRango, leerRango } from './rango.js';
 import { filaDelNavegador, normalizarRuta, procedencia, registrar, registrarDescarga, tipoDescarga } from './registro.js';
 
 const CHROME_WIN = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36';
@@ -218,4 +219,68 @@ test('prueba local: sólo en localhost y con PANEL_SIN_ACCESS=1', () => {
   assert.equal(pruebaLocal(new Request('http://localhost:8787/visitas/'), env), true);
   assert.equal(pruebaLocal(new Request('https://florintodor.dev/visitas/'), env), false);
   assert.equal(pruebaLocal(new Request('http://localhost:8787/visitas/'), {}), false);
+});
+
+// --- Vídeos por trozos (Safari) ---
+
+
+// Estáticos de mentira: devuelven el fichero entero, a trozos de 7 bytes, como
+// un flujo de verdad, y sin Content-Length, como dentro de Workers.
+function estaticos(bytes) {
+  return {
+    async fetch(req) {
+      if (req.headers.has('Range')) throw new Error('a los estáticos no les llega Range');
+      let i = 0;
+      const body = req.method === 'HEAD' ? null : new ReadableStream({
+        pull(c) { if (i >= bytes.length) { c.close(); return; } c.enqueue(bytes.subarray(i, i + 7)); i += 7; },
+      });
+      return new Response(body, { headers: { 'Content-Type': 'video/mp4', ETag: '"v1"' } });
+    },
+  };
+}
+const FICHERO = Uint8Array.from({ length: 100 }, (_, i) => i);
+const pedir = (headers = {}, method = 'GET') => conRango(new Request('https://florintodor.dev/media/demo.mp4', { method, headers }), { ASSETS: estaticos(FICHERO) }, { '/media/demo.mp4': 100 });
+const bytesDe = async (r) => [...new Uint8Array(await r.arrayBuffer())];
+
+test('leerRango: inicio-fin, abierto, los últimos N y fuera del fichero', () => {
+  assert.deepEqual(leerRango('bytes=0-1', 100), [0, 1]);
+  assert.deepEqual(leerRango('bytes=90-', 100), [90, 99]);
+  assert.deepEqual(leerRango('bytes=-10', 100), [90, 99]);
+  assert.deepEqual(leerRango('bytes=95-500', 100), [95, 99]);
+  assert.equal(leerRango('bytes=100-', 100), 'fuera');
+  assert.equal(leerRango('bytes=0-1,5-6', 100), null);
+  assert.equal(leerRango('items=0-1', 100), null);
+});
+
+test('conRango: Safari pide bytes=0-1 y recibe 206 con esos dos bytes', async () => {
+  const r = await pedir({ Range: 'bytes=0-1' });
+  assert.equal(r.status, 206);
+  assert.equal(r.headers.get('Content-Range'), 'bytes 0-1/100');
+  assert.equal(r.headers.get('Content-Length'), '2');
+  assert.equal(r.headers.get('Accept-Ranges'), 'bytes');
+  assert.deepEqual(await bytesDe(r), [0, 1]);
+});
+
+test('conRango: un trozo en medio que cruza varios trozos del flujo', async () => {
+  const r = await pedir({ Range: 'bytes=5-20' });
+  assert.equal(r.status, 206);
+  assert.deepEqual(await bytesDe(r), Array.from({ length: 16 }, (_, i) => i + 5));
+});
+
+test('conRango: sin el tamaño apuntado se sirve entero, como antes', async () => {
+  const r = await conRango(new Request('https://florintodor.dev/media/nuevo.mp4', { headers: { Range: 'bytes=0-1' } }), { ASSETS: estaticos(FICHERO) }, {});
+  assert.equal(r.status, 200);
+  assert.equal((await bytesDe(r)).length, 100);
+});
+
+test('conRango: sin Range, entero y avisando de que admite trozos; fuera del fichero, 416', async () => {
+  const entero = await pedir();
+  assert.equal(entero.status, 200);
+  assert.equal(entero.headers.get('Accept-Ranges'), 'bytes');
+  assert.equal((await bytesDe(entero)).length, 100);
+  const fuera = await pedir({ Range: 'bytes=200-' });
+  assert.equal(fuera.status, 416);
+  assert.equal(fuera.headers.get('Content-Range'), 'bytes */100');
+  const otraVersion = await pedir({ Range: 'bytes=0-1', 'If-Range': '"v0"' });
+  assert.equal(otraVersion.status, 200);
 });

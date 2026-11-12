@@ -322,8 +322,7 @@ const banderas = {
         producción, para no contar las visitas de `astro dev`. Manda la página
         vista, los clics de contacto (lo que dice si alguien ha pasado de mirar
         a escribir) y, al salir, el tiempo que la página estuvo a la vista. Las
-        descargas de PDF se apuntan en el servidor. Fuera de Cloudflare (GitHub
-        Pages) /_v no existe y el aviso se pierde sin más. */}
+        descargas de PDF se apuntan en el servidor. */}
     {import.meta.env.PROD && (
       <script is:inline>
         (() => {
@@ -370,27 +369,6 @@ const banderas = {
           });
         })();
       </script>
-    )}
-    {/* GoatCounter, en paralelo mientras se comparan sus cifras con las propias.
-        Se quita después, junto con scripts/visitas.py. */}
-    {import.meta.env.PROD && (
-      <>
-        <script is:inline data-goatcounter="https://florintodor.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-        <script is:inline>
-          document.addEventListener('click', (e) => {
-            const a = e.target.closest('a[href]');
-            if (!a || !window.goatcounter?.count) return;
-            const href = a.getAttribute('href');
-            let evento = null;
-            if (/CV_.*\.pdf$/.test(href)) evento = 'cv';
-            else if (href.startsWith('mailto:')) evento = 'correo';
-            else if (href.includes('linkedin.com')) evento = 'linkedin';
-            else if (href.includes('github.com')) evento = 'github';
-            else if (href.includes('/docs/') && href.endsWith('.pdf')) evento = 'memoria';
-            if (evento) window.goatcounter.count({ path: `${evento}: ${location.pathname}`, title: href, event: true });
-          });
-        </script>
-      </>
     )}
   </body>
 </html>

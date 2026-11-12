@@ -41,9 +41,8 @@ publica**. La salida de emergencia es lanzar el workflow a mano desde Actions
   redacción oficial. Traducirlos a mano sería inventarse terminología legal.
 - **La memoria del TFG.** Está en español y sólo existe el PDF; la ficha inglesa
   lo avisa.
-- **`/visitas/`.** El panel de visitas (`worker/panel/` en Cloudflare, y
-  `scripts/visitas.py` cifrado en GitHub Pages mientras siga) es sólo para el
-  dueño del sitio: no es contenido del portafolio.
+- **`/visitas/`.** El panel de visitas (`worker/panel/`) es sólo para el dueño
+  del sitio, tras Cloudflare Access: no es contenido del portafolio.
 - **Los vídeos de las demos.** Están grabados en español; la nota de la portada lo
   advierte en la versión inglesa.
 

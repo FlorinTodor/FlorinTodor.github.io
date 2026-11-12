@@ -83,8 +83,9 @@ export default defineConfig({
   site: SITIO,
   build: { format: 'directory' },
   // Fichas que cambiaron de id. La URL vieja ya estaba indexada y enlazada:
-  // Pages no sabe hacer un 301, así que Astro deja en ella una página que
-  // redirige y declara la nueva como canónica.
+  // Cloudflare responde con un 301 de verdad (public/_redirects) y, por si
+  // acaso, Astro deja además en ella una página que redirige y declara la
+  // nueva como canónica.
   redirects: {
     '/proyectos/habla-con-tu-dinero/': '/proyectos/unia/',
     '/en/proyectos/habla-con-tu-dinero/': '/en/proyectos/unia/',

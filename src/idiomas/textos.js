@@ -65,7 +65,7 @@ export const TEXTOS = {
     cabecera: { descargarCv: 'Descargar CV' },
 
     pie: {
-      hecho: 'Hecho con Astro y publicado en GitHub Pages.',
+      hecho: 'Hecho con Astro y publicado en Cloudflare.',
     },
 
     portada: {
@@ -402,7 +402,7 @@ export const TEXTOS = {
     cabecera: { descargarCv: 'Download CV' },
 
     pie: {
-      hecho: 'Built with Astro and published on GitHub Pages.',
+      hecho: 'Built with Astro and published on Cloudflare.',
     },
 
     portada: {

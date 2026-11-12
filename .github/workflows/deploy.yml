@@ -1,27 +1,28 @@
-name: Desplegar en GitHub Pages
+name: Desplegar en Cloudflare
 
+# La web (dist/) y el Worker de las visitas (worker/) en Cloudflare Workers,
+# con wrangler.jsonc. Necesita los secretos CLOUDFLARE_API_TOKEN y
+# CLOUDFLARE_ACCOUNT_ID.
 on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Cada 12 horas se vuelve a publicar para refrescar /visitas/ (la página
-  # cifrada con las visitas de GoatCounter; ver scripts/visitas.py).
-  schedule:
-    - cron: '17 5,17 * * *'
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Si empujas dos veces seguidas, cancela el despliegue anterior.
+# Un push mientras otro se publica espera a que acabe (no se corta a medias).
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: despliegue
+  cancel-in-progress: false
 
 jobs:
-  construir:
+  desplegar:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: 'false'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,85 +37,19 @@ jobs:
       # dependencias, así que va antes del npm ci y falla en segundos.
       #
       # Para publicar igualmente (un arreglo urgente en español, sin tiempo de
-      # traducirlo): Actions -> Desplegar en GitHub Pages -> Run workflow. Al
+      # traducirlo): Actions -> Desplegar en Cloudflare -> Run workflow. Al
       # lanzarlo a mano no se comprueba. Es a propósito que haya que ir a
       # buscarlo: si el salto fuera cómodo, dejaría de ser una regla.
       - name: Comprobar que la versión inglesa está al día
         if: github.event_name != 'workflow_dispatch'
         run: npm run comprobar
       - run: npm ci
-      - run: npm run build
-      # La web tal cual sale del build, para Cloudflare (job `cloudflare`). Va
-      # antes de la página de GoatCounter: allí /visitas/ la sirve el Worker.
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sitio
-          path: dist
-          retention-days: 1
-      # Va después del build para quedar fuera del sitemap. Si GoatCounter falla,
-      # la página sale con el aviso y el sitio se publica igual. En los
-      # programados puede esperar una hora al límite de exportaciones.
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install cryptography
-      - name: Página de visitas
-        env:
-          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
-          VISITAS_CLAVE: ${{ secrets.VISITAS_CLAVE }}
-        run: python scripts/visitas.py --publicar dist/visitas/index.html
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  # La misma web en Cloudflare Workers, con el Worker de las visitas (worker/) y
-  # su base de datos D1. Sin los secretos CLOUDFLARE_API_TOKEN y
-  # CLOUDFLARE_ACCOUNT_ID se salta con un aviso y GitHub Pages sigue como hasta
-  # ahora. Las migraciones de migrations/ se aplican antes de publicar.
-  cloudflare:
-    needs: construir
-    runs-on: ubuntu-latest
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      WRANGLER_SEND_METRICS: 'false'
-    steps:
-      - id: secretos
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::warning::Faltan CLOUDFLARE_API_TOKEN o CLOUDFLARE_ACCOUNT_ID: no se publica en Cloudflare."
-            echo "listo=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "listo=true" >> "$GITHUB_OUTPUT"
-          fi
-      - if: steps.secretos.outputs.listo == 'true'
-        uses: actions/checkout@v4
-      - if: steps.secretos.outputs.listo == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - if: steps.secretos.outputs.listo == 'true'
-        run: npm ci
-      - if: steps.secretos.outputs.listo == 'true'
+      - name: Pruebas del Worker
         run: npm test
-      - if: steps.secretos.outputs.listo == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: sitio
-          path: dist
+      # astro build y, después, los tamaños de dist/media/ para el Worker.
+      - run: npm run build
+      # Las migraciones de migrations/ van antes que el Worker que las usa.
       - name: Base de datos y Worker
-        if: steps.secretos.outputs.listo == 'true'
         run: |
           npx wrangler d1 migrations apply visitas-portafolio --remote
           npx wrangler deploy
-
-  desplegar:
-    needs: construir
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.despliegue.outputs.page_url }}
-    steps:
-      - id: despliegue
-        uses: actions/deploy-pages@v4

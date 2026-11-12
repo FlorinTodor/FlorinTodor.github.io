@@ -11,7 +11,7 @@
     // Como GitHub Pages: /proyectos/unia -> /proyectos/unia/ y el 404.html de Astro.
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/_v", "/visitas", "/visitas/*", "/CV_*", "/docs/*"]
+    "run_worker_first": ["/_v", "/visitas", "/visitas/*", "/CV_*", "/docs/*", "/media/*"]
   },
   "d1_databases": [
     {

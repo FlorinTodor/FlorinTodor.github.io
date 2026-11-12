@@ -1,50 +1,57 @@
 # Portafolio - Florin Emanuel Todor Gliga
 
-Sitio estático hecho con [Astro](https://astro.build), publicado en GitHub Pages.
+Sitio estático hecho con [Astro](https://astro.build), publicado en Cloudflare
+Workers, con un Worker pequeño para las visitas y los vídeos.
 
 ```bash
 npm install
 npm run dev      # http://localhost:4321
-npm run build    # genera dist/
+npm run build    # genera dist/ (y worker/media.json, los tamaños de los vídeos)
 npm run preview  # sirve dist/ para comprobarlo antes de publicar
+npm test         # pruebas del Worker
 ```
 
 ## Publicar
 
-1. Crea un repo **público** (por ejemplo `portafolio`).
-2. Sube este directorio a la rama `main`.
-3. **Settings → Pages → Source = GitHub Actions**.
-4. Cada `push` a `main` despliega solo (`.github/workflows/deploy.yml`).
+Cada `push` a `main` despliega solo (`.github/workflows/deploy.yml`): comprueba
+las traducciones, pasa las pruebas, compila, aplica las migraciones de la base de
+datos y publica con `wrangler deploy`. Necesita dos secretos en GitHub:
+`CLOUDFLARE_API_TOKEN` (plantilla «Edit Cloudflare Workers» con D1 → Editar,
+limitada a la cuenta) y `CLOUDFLARE_ACCOUNT_ID`.
 
 El repo del portafolio es público, pero **no contiene el código de los proyectos
 privados** - sólo sus resúmenes, capturas y vídeos.
 
 ## Dominio
 
-El sitio se sirve en **https://florintodor.dev**. Ya está todo configurado:
+El sitio se sirve en **https://florintodor.dev**:
 
-- `public/CNAME` contiene el dominio (una línea, sin `https://` ni barra final).
-  Astro lo copia tal cual a `dist/`; si desaparece, GitHub Pages vuelve a
-  `florintodor.github.io` en el siguiente despliegue.
-- Los registros DNS del registrador apuntan `@` a las cuatro IP de GitHub Pages
-  (`185.199.108–111.153`) y `www` por CNAME a `florintodor.github.io.`.
+- El dominio está registrado en name.com con los nameservers de Cloudflare (plan
+  Free): los DNS se llevan en Cloudflare.
+- `florintodor.dev` es un *Custom Domain* del Worker (`routes` en
+  `wrangler.jsonc`): Cloudflare le pone su registro DNS y su certificado.
+- `www` tiene que redirigir a la raíz: CNAME con proxy y una *Redirect Rule* de
+  Cloudflare (plantilla «Redirect from WWW to root»). Mientras siga como CNAME sin
+  proxy a `florintodor.github.io`, quien redirige es GitHub Pages, que dejará de
+  renovar su certificado porque la raíz ya no apunta a GitHub.
+- `florintodor.github.io` (el repo se llama así) redirige al dominio con la última
+  publicación de GitHub Pages; ya no se publica allí.
 - `site:` en `astro.config.mjs` debe coincidir con el dominio: de ahí salen las
   URL absolutas del sitemap y de las etiquetas Open Graph.
-- Con dominio propio el sitio cuelga de la raíz, así que `base` no hace falta.
 
-Si alguna vez se cambia el dominio, hay que tocar esos tres sitios a la vez
-(CNAME, DNS y `site:`) y volver a marcar **Enforce HTTPS** en Settings → Pages
-cuando GitHub reemita el certificado.
+Si alguna vez se cambia el dominio, hay que tocar a la vez `routes` en
+`wrangler.jsonc`, `site:` y el `DOMINIO` de `worker/index.js` y del panel.
 
 ## Cloudflare y visitas
 
-La misma web se publica también en **Cloudflare Workers** (job `cloudflare` del
-workflow, con `wrangler.jsonc`). Cuando el dominio pase a Cloudflare, GitHub Pages
-se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
-
 - Los ficheros de `dist/` los sirve Cloudflare directamente. El Worker
-  (`worker/`) sólo va por delante en `/_v`, `/visitas/`, `/CV_*` y `/docs/*`.
-- **Visitas propias** en lugar de GoatCounter: la web manda cada página vista,
+  (`worker/`) sólo va por delante en `/_v`, `/visitas/`, `/CV_*`, `/docs/*` y
+  `/media/*`.
+- **Vídeos por trozos** (`worker/rango.js`): los estáticos de Workers devuelven
+  siempre el fichero entero, y Safari no reproduce un MP4 sin respuestas 206. El
+  Worker sirve el trozo pedido; los tamaños salen de `worker/media.json`, que
+  genera `npm run build`.
+- **Visitas propias** (antes GoatCounter): la web manda cada página vista,
   los clics de contacto y, al salir, el tiempo que la página estuvo a la vista
   (`src/layouts/Base.astro` → `POST /_v`). Las descargas de PDF se apuntan en el
   servidor, también si llegan con el enlace directo. Todo va a la base de datos
@@ -59,9 +66,9 @@ se queda sólo para que los enlaces viejos a `florintodor.github.io` redirijan.
   Worker comprueba además la firma de Access (`worker/acceso.js`) con los
   secretos `ACCESS_EQUIPO` y `ACCESS_AUD`, así que sin ellos, o si Access
   dejara pasar algo sin firma, responde 403. La dirección workers.dev está apagada.
-- Lo recogido con GoatCounter se importa con `scripts/importar-goatcounter.py`
-  (instrucciones dentro). GoatCounter y `scripts/visitas.py` siguen en paralelo
-  mientras se comparan las cifras; después se quitan.
+- El historial de GoatCounter (del 29-sep-2026 al cambio, el 12-nov) está
+  importado en la base de datos con `origen = 'goatcounter'`. GoatCounter ya no se
+  usa.
 
 ```bash
 npm test                                   # pruebas del Worker (node:test, D1 en memoria)
@@ -95,7 +102,7 @@ src/
   pages/                    ← sólo rutas: dos ficheros de tres líneas por página
     index.astro, proyectos/[id].astro, blog/, certificaciones/, rss.xml.js
     en/                     ← las mismas, con idioma="en"
-    404.astro               ← bilingüe: Pages lo sirve para cualquier ruta rota
+    404.astro               ← bilingüe: Cloudflare lo sirve para cualquier ruta rota
   content/blog/             ← artículos en español
   content/blog/en/          ← los mismos, traducidos
   components/
@@ -115,7 +122,7 @@ public/
                               piden /favicon.ico sin preguntar
   icon/                     ← el resto de iconos y el manifiesto, que sí van
                               declarados con <link> y pueden vivir aquí
-  CNAME, robots.txt         ← atados a la raíz por el protocolo
+  robots.txt                ← atado a la raíz por el protocolo
   demo/*.json               ← datos de las demos interactivas
   docs/*.pdf                ← documentos largos (las memorias del TFG y de Unia)
   certificaciones/<id>.pdf  ← el certificado (y <id>.jpg o .png, su portada)
@@ -192,7 +199,7 @@ artículos sin gemelo). No juzga la calidad de la traducción, sólo si existe.
 
 Corre también en el despliegue, antes de compilar: **si falla, el sitio no se
 publica**. Para saltárselo (un arreglo urgente en español que no da tiempo a
-traducir), lanza el workflow a mano desde **Actions → Desplegar en GitHub Pages →
+traducir), lanza el workflow a mano desde **Actions → Desplegar en Cloudflare →
 Run workflow**: en ese caso la comprobación no se ejecuta. Al añadir una entrada a
 `formacion` o `competencias` hay que tocar los dos idiomas, porque esas dos listas
 son casi todo texto y viven enteras en `textos.js`.
@@ -306,7 +313,7 @@ Guarda cada uno como `public/media/<id>.mp4`. La tarjeta y la página del proyec
 lo detectan solos y sustituyen el hueco de «Pendiente de grabar».
 
 ```bash
-# comprimir antes de subir (el repo de Pages tiene un límite de 1 GB)
+# comprimir antes de subir: Cloudflare no sirve ficheros de más de 25 MiB
 ffmpeg -i original.mp4 -vf "scale=1280:-2,fps=24" -c:v libx264 -crf 30 -an salida.mp4
 ```
 
@@ -326,7 +333,7 @@ normativos provienen del BOE y el DOUE, de dominio público.
 generado con datos inventados, en `public/demo/rutina-export/` (y `en/` dentro).
 
 Unia, el asistente bancario, no tiene demo interactiva: su código es público y la
-ficha enseña el vídeo de la entrega. Pages no puede ejecutar su backend, y una
+ficha enseña el vídeo de la entrega. Un sitio estático no puede ejecutar su backend, y una
 conversación guionizada enseñaría menos que la grabación real.
 
 ## Nunca metas claves aquí
