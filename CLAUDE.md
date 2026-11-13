@@ -44,7 +44,10 @@ publica**. La salida de emergencia es lanzar el workflow a mano desde Actions
 - **`/visitas/`.** El panel de visitas (`worker/panel/`) es sólo para el dueño
   del sitio, tras Cloudflare Access: no es contenido del portafolio.
 - **Los vídeos de las demos.** Están grabados en español; la nota de la portada lo
-  advierte en la versión inglesa.
+  advierte en la versión inglesa. La excepción es una web con interfaz inglesa
+  (Radar España): su demo se graba también en inglés (`public/media/<id>-en.mp4`).
+  Su vídeo de presentación (`<id>-presentacion.mp4`) está narrado en español, y
+  el pie del vídeo lo dice en la ficha inglesa.
 
 Si aparece algo nuevo que entre en esta lista, dilo en la página en vez de
 traducirlo a medias.

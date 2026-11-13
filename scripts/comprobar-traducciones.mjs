@@ -143,6 +143,17 @@ if (fs.existsSync(new URL('../public/media/poster/rutina-export.jpg', import.met
   fallos.push('public/media/poster/: falta rutina-export-en.jpg');
 }
 
+// Cada vídeo de public/media/ (la demo, su versión inglesa <id>-en o la
+// presentación <id>-presentacion) necesita su cartel: sin él, la ficha y el
+// VideoObject apuntan a una imagen que no existe.
+for (const f of fs.readdirSync(new URL('../public/media/', import.meta.url))) {
+  if (!f.endsWith('.mp4')) continue;
+  const cartel = f.replace(/\.mp4$/, '.jpg');
+  if (!fs.existsSync(new URL(`../public/media/poster/${cartel}`, import.meta.url))) {
+    fallos.push(`public/media/poster/: falta ${cartel}`);
+  }
+}
+
 // -----------------------------------------------------------------------------
 if (fallos.length) {
   console.error(`\n✗ ${fallos.length} cosas sin traducir:\n`);

@@ -8,13 +8,14 @@
  * que se estira con un ::after hasta cubrir la tarjeta; los enlaces del pie van
  * por encima de esa capa.
  */
-import { hayVideo, hayDemo, buscarCartel, DEMOS_INTERACTIVAS } from '../utilidades/demos.js';
+import { hayVideo, videoDe, hayDemo, buscarCartel, DEMOS_INTERACTIVAS } from '../utilidades/demos.js';
 import { t } from '../idiomas/textos.js';
 import { enlace, recurso } from '../idiomas/rutas.js';
 
 const { p, idioma = 'es', destacado = false, etiquetas = 3 } = Astro.props;
 const T = t(idioma).tarjeta;
 const video = hayVideo(p.id);
+const nombreVideo = videoDe(p.id, idioma);
 // Las demos que se juegan en la página y los prototipos que viven fuera no
 // tienen vídeo del que sacar un fotograma: enseñan una foto, si es que la hay.
 const interactiva = DEMOS_INTERACTIVAS.includes(p.id);
@@ -25,8 +26,8 @@ const cartel = !video && (interactiva || p.prototipo) ? buscarCartel(p.id, idiom
   {video && (
     <div class="miniatura">
       <video
-        src={recurso(`media/${p.id}.mp4`)}
-        poster={recurso(`media/poster/${p.id}.jpg`)}
+        src={recurso(`media/${nombreVideo}.mp4`)}
+        poster={recurso(`media/poster/${nombreVideo}.jpg`)}
         muted loop playsinline preload="none"></video>
       <span class="insignia-video">{T.insignia}</span>
     </div>

@@ -10,13 +10,15 @@ import { perfil } from '../idiomas/contenido.js';
 import { t, LOCALE } from '../idiomas/textos.js';
 import { enlace, recurso } from '../idiomas/rutas.js';
 import { datosVideo, duracionIso } from '../utilidades/videos.js';
-import { hayVideo as tieneVideo, buscarGif, DEMOS_INTERACTIVAS } from '../utilidades/demos.js';
+import { hayVideo as tieneVideo, videoDe, hayPresentacion, buscarGif, DEMOS_INTERACTIVAS } from '../utilidades/demos.js';
 
 const { p, idioma = 'es' } = Astro.props;
 const T = t(idioma);
 const F = T.ficha;
 
 const hayVideo = tieneVideo(p.id);
+// <id> o <id>-en: la demo grabada con la interfaz en el idioma de la página, si la hay.
+const nombreVideo = videoDe(p.id, idioma);
 const gif = buscarGif(p.id);
 
 const conDemo = DEMOS_INTERACTIVAS.includes(p.id);
@@ -45,7 +47,8 @@ const acciones = [
 
 // Duración, tamaño y fecha salen del propio MP4 al compilar: no hay nada que
 // regenerar a mano cuando se cambia un vídeo.
-const video = hayVideo ? datosVideo(p.id) : null;
+const video = hayVideo ? datosVideo(nombreVideo) : null;
+const presentacion = hayPresentacion(p.id) ? datosVideo(`${p.id}-presentacion`) : null;
 
 // Cada proyecto es una obra con autor: refuerza la autoría a nombre completo.
 // `inLanguage` es el de la página, no el del código ni el de la memoria.
@@ -117,20 +120,40 @@ if (p.memoria) {
 }
 
 // Sin VideoObject, Google no sabe que la demo existe: no la indexa ni la
-// enseña como resultado de vídeo, aunque el <video> esté en la página. El
-// vídeo está grabado en español las dos veces: es la misma grabación.
+// enseña como resultado de vídeo, aunque el <video> esté en la página. Casi
+// todas las demos están grabadas en español y la ficha inglesa enseña esa
+// misma grabación; la que tiene versión inglesa (<id>-en.mp4) declara la suya.
 if (video) {
   esquema.push({
     '@type': 'VideoObject',
     '@id': `${url}#video`,
     name: F.demostracionAlt(p.titulo),
     description: p.resumen,
-    thumbnailUrl: new URL(`media/poster/${p.id}.jpg`, Astro.site).href,
-    contentUrl: new URL(`media/${p.id}.mp4`, Astro.site).href,
+    thumbnailUrl: new URL(`media/poster/${nombreVideo}.jpg`, Astro.site).href,
+    contentUrl: new URL(`media/${nombreVideo}.mp4`, Astro.site).href,
     uploadDate: video.fecha,
     duration: duracionIso(video.segundos),
     width: video.ancho,
     height: video.alto,
+    inLanguage: nombreVideo === p.id ? 'es-ES' : 'en',
+    isFamilyFriendly: true,
+    creator: { '@id': 'https://florintodor.dev/#persona' },
+  });
+}
+
+// El vídeo de presentación, narrado en español en las dos versiones.
+if (presentacion) {
+  esquema.push({
+    '@type': 'VideoObject',
+    '@id': `${url}#presentacion`,
+    name: F.presentacionAlt(p.titulo),
+    description: p.resumen,
+    thumbnailUrl: new URL(`media/poster/${p.id}-presentacion.jpg`, Astro.site).href,
+    contentUrl: new URL(`media/${p.id}-presentacion.mp4`, Astro.site).href,
+    uploadDate: presentacion.fecha,
+    duration: duracionIso(presentacion.segundos),
+    width: presentacion.ancho,
+    height: presentacion.alto,
     inLanguage: 'es-ES',
     isFamilyFriendly: true,
     creator: { '@id': 'https://florintodor.dev/#persona' },
@@ -150,32 +173,48 @@ if (video) {
   <div style="max-width:1080px;margin:0 auto">
     <a class="volver" href={`${enlace(idioma)}#proyectos`}>{F.volver}</a>
 
-    <header class="cabecera-proyecto">
-      <h1>{p.titulo}</h1>
-      <div class="meta">
-        <span class="etiqueta verde">{p.anio}</span>
-        {p.categorias.map((c) => <span class="etiqueta">{c}</span>)}
-        {p.privado && <span class="etiqueta ambar">{F.privado}</span>}
-      </div>
-      <p class="resumen">{p.resumen}</p>
+    <header class={presentacion ? 'cabecera-proyecto con-presentacion' : 'cabecera-proyecto'}>
+      <div>
+        <h1>{p.titulo}</h1>
+        <div class="meta">
+          <span class="etiqueta verde">{p.anio}</span>
+          {p.categorias.map((c) => <span class="etiqueta">{c}</span>)}
+          {p.privado && <span class="etiqueta ambar">{F.privado}</span>}
+        </div>
+        <p class="resumen">{p.resumen}</p>
 
-      {p.cifras && (
-        <ul class="cifras" aria-label={F.cifras}>
-          {p.cifras.map((c) => <li><strong>{c.valor}</strong><span>{c.texto}</span></li>)}
-        </ul>
+        {p.cifras && (
+          <ul class="cifras" aria-label={F.cifras}>
+            {p.cifras.map((c) => <li><strong>{c.valor}</strong><span>{c.texto}</span></li>)}
+          </ul>
+        )}
+
+        {/* Los enlaces van arriba: quien entra busca el código y la demo, no
+            quiere bajar a un panel lateral para encontrarlos. */}
+        <div class="acciones-proyecto">
+          {acciones.map((a, i) => (
+            <a
+              class={i === 0 ? 'boton' : 'boton fantasma'}
+              href={a.href}
+              {...(a.externo ? { target: '_blank', rel: 'noopener' } : {})}
+            >{a.texto}</a>
+          ))}
+        </div>
+      </div>
+
+      {/* La presentación va junto al resumen, con forma de móvil: es lo que
+          cuenta el proyecto en medio minuto. Tiene voz, así que no arranca
+          sola; se oye al darle al play. */}
+      {presentacion && (
+        <figure class="presentacion">
+          <video
+            src={recurso(`media/${p.id}-presentacion.mp4`)}
+            poster={recurso(`media/poster/${p.id}-presentacion.jpg`)}
+            aria-label={F.presentacionAlt(p.titulo)}
+            controls playsinline preload="none"></video>
+          <figcaption>{F.presentacionPie(presentacion.segundos)}</figcaption>
+        </figure>
       )}
-
-      {/* Los enlaces van arriba: quien entra busca el código y la demo, no
-          quiere bajar a un panel lateral para encontrarlos. */}
-      <div class="acciones-proyecto">
-        {acciones.map((a, i) => (
-          <a
-            class={i === 0 ? 'boton' : 'boton fantasma'}
-            href={a.href}
-            {...(a.externo ? { target: '_blank', rel: 'noopener' } : {})}
-          >{a.texto}</a>
-        ))}
-      </div>
     </header>
 
     <div class="columnas-proyecto">
@@ -193,8 +232,8 @@ if (video) {
             <div class="marco-media">
               {hayVideo ? (
                 <video
-                  src={recurso(`media/${p.id}.mp4`)}
-                  poster={recurso(`media/poster/${p.id}.jpg`)}
+                  src={recurso(`media/${nombreVideo}.mp4`)}
+                  poster={recurso(`media/poster/${nombreVideo}.jpg`)}
                   controls muted={!video.audio} loop={!video.audio} playsinline preload="none"></video>
               ) : (
                 <img
@@ -248,8 +287,8 @@ if (video) {
                 </a>
               </div>
               <video
-                src={recurso(`media/${p.id}.mp4`)}
-                poster={recurso(`media/poster/${p.id}.jpg`)}
+                src={recurso(`media/${nombreVideo}.mp4`)}
+                poster={recurso(`media/poster/${nombreVideo}.jpg`)}
                 aria-label={F.demostracionAlt(p.titulo)}
                 controls muted loop playsinline preload="none"></video>
             </div>

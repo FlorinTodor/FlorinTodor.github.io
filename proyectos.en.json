@@ -43,7 +43,7 @@
         "About 2,400 stations with their own page (incoming trains with platform and delay, lines, walking connections and accessibility) and nearly 1,900 Wikimedia Commons photos reviewed one by one: licence, author and no recognisable people",
         "Only sources with a reuse licence, every piece of data with its attribution and date. No internal app or viewer endpoints: Adif blocks automated clients, and that block is not bypassed"
       ],
-      "pantallaTexto": "Recorded in production (the map's interface is in Spanish): Madrid with its commuter trains, a high-speed train with what it has left to its destination, a station page and an alert. The site refuses to be embedded in other pages (one of its defences), so here it is on video.",
+      "pantallaTexto": "Recorded in production on 13 November 2026, with the site in English: a delayed AVE with its route along the track, its stops and its punctuality; a cancelled train; Atocha station with Renfe's notices; the Following tab and its Telegram alerts; an official alert in the Canary Islands, and the day in figures. Official alerts keep the wording their source publishes, in Spanish. The site refuses to be embedded in other pages (one of its defences), so here it is on video.",
       "apartados": [
         {
           "titulo": "Security",

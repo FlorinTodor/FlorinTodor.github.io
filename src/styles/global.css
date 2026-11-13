@@ -374,6 +374,19 @@ code { font-family: var(--mono); font-size: .87em; background: var(--panel-alto)
 .cabecera-proyecto .resumen { color: var(--texto-suave); font-size: 1.03rem; max-width: 68ch; }
 .acciones-proyecto { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.3rem; }
 
+/* Vídeo de presentación (vertical) al lado del resumen; debajo en pantallas estrechas. */
+.cabecera-proyecto.con-presentacion { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 2.2rem; align-items: start; }
+.presentacion { margin: 0; }
+.presentacion video {
+  display: block; width: 100%; height: auto; aspect-ratio: 9 / 16;
+  border: 1px solid var(--borde-fuerte); border-radius: 18px; background: #04182c; box-shadow: var(--sombra);
+}
+.presentacion figcaption { margin-top: .55rem; font-size: .8rem; line-height: 1.4; color: var(--texto-tenue); text-align: center; }
+@media (max-width: 760px) {
+  .cabecera-proyecto.con-presentacion { grid-template-columns: minmax(0, 1fr); }
+  .presentacion { width: min(100%, 300px); margin: .4rem auto 0; }
+}
+
 .marco-media { border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; background: #04182c; margin: 1.4rem 0; }
 .marco-media video, .marco-media img { width: 100%; height: auto; }
 .hueco-media {

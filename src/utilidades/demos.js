@@ -12,6 +12,23 @@ const rutas = ficherosPublicos('media');
 
 export const hayVideo = (id) => rutas.some((f) => f.endsWith(`/media/${id}.mp4`));
 
+/**
+ * Nombre del vídeo de un proyecto en un idioma, sin la extensión.
+ *
+ * Casi todas las demos sólo existen en español. Una web que tiene interfaz
+ * inglesa se graba también así, en <id>-en.mp4 con su cartel
+ * poster/<id>-en.jpg, y la versión inglesa del sitio enseña ésa.
+ */
+export const videoDe = (id, idioma = 'es') =>
+  idioma === 'en' && rutas.some((f) => f.endsWith(`/media/${id}-en.mp4`)) ? `${id}-en` : id;
+
+/**
+ * Vídeo de presentación: vertical, con voz y subtítulos, para contar el
+ * proyecto en medio minuto. Va aparte de la demo (media/<id>-presentacion.mp4
+ * y su cartel) y la ficha lo pone en la cabecera.
+ */
+export const hayPresentacion = (id) => rutas.some((f) => f.endsWith(`/media/${id}-presentacion.mp4`));
+
 export const buscarGif = (id) =>
   rutas.find((f) => new RegExp(`/media/${id}\\.(gif|png|jpg|webp)$`).test(f));
 

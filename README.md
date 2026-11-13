@@ -125,6 +125,8 @@ src/
   styles/global.css         ← paleta y estilos
 public/
   media/<id>.mp4            ← vídeo de cada proyecto (se detecta solo)
+  media/<id>-en.mp4         ← opcional: la demo con la interfaz en inglés
+  media/<id>-presentacion.mp4  ← opcional: presentación vertical con voz
   img/florin-emanuel-todor-gliga.jpg  ← retrato
   img/cv-preview-1.jpg      ← primera página del CV (y cv-preview-1-en.jpg)
   CV_Florin_Emanuel_Todor_Gliga.pdf      ← CV descargable
@@ -338,6 +340,16 @@ Un `.mp4` sin audio pesa mucho menos que un `.gif` equivalente.
 Si el vídeo tiene sonido (el de Unia lleva la voz del asistente), deja el audio
 (`-c:a aac -b:a 96k` en vez de `-an`). La ficha lo detecta y entonces no lo
 silencia ni lo pone en bucle; en la tarjeta de la portada sigue mudo.
+
+Hay dos vídeos opcionales más por proyecto, cada uno con su cartel en `poster/`
+(`npm run comprobar` falla si falta alguno):
+
+- `<id>-en.mp4`: la demo grabada con la interfaz en inglés, para una web que la
+  tiene (Radar España). La versión inglesa del sitio la enseña en su lugar, en la
+  ficha y en la tarjeta de la portada.
+- `<id>-presentacion.mp4`: un vídeo vertical con voz que cuenta el proyecto en
+  medio minuto. Va en la cabecera de la ficha, junto al resumen, y no arranca
+  solo. El del radar está narrado en español, y en la ficha inglesa lo dice su pie.
 
 ## Las dos demos interactivas
 
