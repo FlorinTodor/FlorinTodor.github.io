@@ -3,6 +3,8 @@ import { test } from 'node:test';
 import { accesoValido, pruebaLocal } from './acceso.js';
 import { esBot, esRedDeServidores, navegador, sistema } from './agente.js';
 import { d1Falso } from './d1-falso.js';
+import { readFileSync } from 'node:fs';
+import { desdeGithub, REPOS, repoDePagina } from './paginas-github.js';
 import { conRango, leerRango } from './rango.js';
 import { filaDelNavegador, normalizarRuta, procedencia, registrar, registrarDescarga, tipoDescarga } from './registro.js';
 
@@ -294,4 +296,49 @@ test('límite por IP: pasado el límite, 429 y no se guarda nada', async () => {
   await registrar(peticion({ t: 'p', r: '/' }), { ...env, LIMITE_VISITAS: { limit: async () => ({ success: true }) } }, { waitUntil: (p) => pendientes.push(p) });
   await Promise.all(pendientes);
   assert.equal(env.DB.sqlite.prepare('SELECT COUNT(*) AS n FROM visitas').get().n, 1);
+});
+
+// --- Webs de GitHub Pages de otros repos ---
+
+test('repoDePagina: /rutina y lo que cuelga de ella; no las fichas ni nombres parecidos', () => {
+  assert.equal(repoDePagina('/rutina'), 'rutina');
+  assert.equal(repoDePagina('/rutina/abc/'), 'rutina');
+  assert.equal(repoDePagina('/bugbounty/notas/xss'), 'bugbounty');
+  assert.equal(repoDePagina('/rutinas/'), undefined);
+  assert.equal(repoDePagina('/proyectos/rutina-export/'), undefined);
+  assert.equal(repoDePagina('/demo/rutina-export/'), undefined);
+});
+
+test('desdeGithub: pide la misma ruta a github.io, sin cookies, y deja la URL del dominio', async () => {
+  let pedida;
+  const pedir = async (url, init) => {
+    pedida = { url, init };
+    return new Response('<h1>hola</h1>', { status: 200, headers: { 'Content-Type': 'text/html' } });
+  };
+  const r = await desdeGithub(new Request('https://florintodor.dev/rutina/abc/?x=1', {
+    headers: { Cookie: 'CF_Authorization=secreto', 'If-None-Match': '"e1"' },
+  }), pedir);
+  assert.equal(pedida.url, 'https://florintodor.github.io/rutina/abc/?x=1');
+  assert.equal(pedida.init.redirect, 'manual');
+  assert.equal(pedida.init.headers.get('cookie'), null);
+  assert.equal(pedida.init.headers.get('if-none-match'), '"e1"');
+  assert.equal(r.status, 200);
+  assert.equal(await r.text(), '<h1>hola</h1>');
+});
+
+test('desdeGithub: la barra que añade GitHub vuelve al dominio; otras redirecciones, tal cual', async () => {
+  const redirige = (destino) => async () => new Response(null, { status: 301, headers: { Location: destino } });
+  const pedir = (ruta, destino) => desdeGithub(new Request(`https://florintodor.dev${ruta}`), redirige(destino));
+  assert.equal((await pedir('/bugbounty', 'https://florintodor.github.io/bugbounty/')).headers.get('Location'), 'https://florintodor.dev/bugbounty/');
+  assert.equal((await pedir('/bugbounty', '/bugbounty/')).headers.get('Location'), 'https://florintodor.dev/bugbounty/');
+  assert.equal((await pedir('/rutina/x', 'https://example.com/y')).headers.get('Location'), 'https://example.com/y');
+  assert.equal((await desdeGithub(new Request('https://florintodor.dev/rutina/', { method: 'POST' }), redirige('/'))).status, 405);
+});
+
+test('wrangler.jsonc: el Worker va por delante en cada repo de GitHub Pages', () => {
+  const config = readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8');
+  for (const repo of REPOS) {
+    assert.ok(config.includes(`"/${repo}"`), `falta "/${repo}" en run_worker_first`);
+    assert.ok(config.includes(`"/${repo}/*"`), `falta "/${repo}/*" en run_worker_first`);
+  }
 });

@@ -30,12 +30,13 @@ El sitio se sirve en **https://florintodor.dev**:
   Free): los DNS se llevan en Cloudflare.
 - `florintodor.dev` es un *Custom Domain* del Worker (`routes` en
   `wrangler.jsonc`): Cloudflare le pone su registro DNS y su certificado.
-- `www` tiene que redirigir a la raíz: CNAME con proxy y una *Redirect Rule* de
-  Cloudflare (plantilla «Redirect from WWW to root»). Mientras siga como CNAME sin
-  proxy a `florintodor.github.io`, quien redirige es GitHub Pages, que dejará de
-  renovar su certificado porque la raíz ya no apunta a GitHub.
-- `florintodor.github.io` (el repo se llama así) redirige al dominio con la última
-  publicación de GitHub Pages; ya no se publica allí.
+- `www` redirige a la raíz: CNAME con proxy y una *Redirect Rule* de Cloudflare
+  (plantilla «Redirect from WWW to root»). No depende de GitHub.
+- `florintodor.github.io` (el repo se llama así) ya no publica la web: GitHub
+  Pages sirve la rama `gh-pages`, que sólo manda cada ruta a la misma en
+  florintodor.dev. Va **sin dominio propio** en Pages a propósito: con él, GitHub
+  redirigiría también las webs de otros repos (ver *Webs de otros repos* abajo) y
+  el Worker daría vueltas.
 - `site:` en `astro.config.mjs` debe coincidir con el dominio: de ahí salen las
   URL absolutas del sitemap y de las etiquetas Open Graph.
 
@@ -45,8 +46,14 @@ Si alguna vez se cambia el dominio, hay que tocar a la vez `routes` en
 ## Cloudflare y visitas
 
 - Los ficheros de `dist/` los sirve Cloudflare directamente. El Worker
-  (`worker/`) sólo va por delante en `/_v`, `/visitas/`, `/CV_*`, `/docs/*` y
-  `/media/*`.
+  (`worker/`) sólo va por delante en `/_v`, `/visitas/`, `/CV_*`, `/docs/*`,
+  `/media/*`, `/bugbounty/` y `/rutina/`.
+- **Webs de otros repos** (`worker/paginas-github.js`): los repos `bugbounty` y
+  `rutina` publican su propia web en GitHub Pages, y sus enlaces son
+  `florintodor.dev/bugbounty/` y `florintodor.dev/rutina/...`. El Worker las pide
+  a `florintodor.github.io` y las devuelve con la misma URL. Un repo nuevo con
+  Pages va en `REPOS` de ese fichero y en `run_worker_first` (las pruebas fallan
+  si falta en el segundo).
 - **Vídeos por trozos** (`worker/rango.js`): los estáticos de Workers devuelven
   siempre el fichero entero, y Safari no reproduce un MP4 sin respuestas 206. El
   Worker sirve el trozo pedido; los tamaños salen de `worker/media.json`, que

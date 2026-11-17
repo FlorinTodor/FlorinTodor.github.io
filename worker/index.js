@@ -5,9 +5,11 @@
 //   /CV_*, /docs/*.pdf   se apunta la descarga y se sirve el PDF
 //   /visitas/    el panel, tras Cloudflare Access (acceso.js)
 //   /media/*     vídeos por trozos, para Safari (rango.js)
+//   /bugbounty/*, /rutina/*   webs de GitHub Pages de esos repos (paginas-github.js)
 
 import { accesoValido, pruebaLocal } from './acceso.js';
 import { esRedDeServidores } from './agente.js';
+import { desdeGithub, repoDePagina } from './paginas-github.js';
 import { conRango, SEGURIDAD } from './rango.js';
 import { registrar, registrarDescarga, tipoDescarga } from './registro.js';
 import panelHtml from './panel/index.html';
@@ -69,6 +71,7 @@ export default {
     if (url.pathname === '/_v') return registrar(request, env, ctx);
     if (url.pathname === '/visitas' || url.pathname.startsWith('/visitas/')) return visitas(request, env, url);
     if (url.pathname.startsWith('/media/')) return conRango(request, env, tamanosMedia);
+    if (repoDePagina(url.pathname)) return desdeGithub(request);
     if (tipoDescarga(url.pathname)) {
       ctx.waitUntil(registrarDescarga(request, env).catch((e) => console.error('visitas: descarga sin apuntar', e)));
       const r = await env.ASSETS.fetch(request);
